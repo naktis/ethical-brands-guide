@@ -8,11 +8,11 @@ namespace Business.Services
     public interface ICategoryProvider
     {
         public Task<CategoryOutDto> Add(CategoryInDto category);
-        public Task Delete(int id);
-        public Task Edit(CategoryInDto category);
-        public Task<CategoryOutDto> Get(int id);
+        public Task Delete(int key);
+        public Task Update(int key, CategoryInDto newCategory);
+        public Task<CategoryOutDto> Get(int key);
         public Task<IEnumerable<CategoryOutDto>> GetAll();
-        public Task<bool> ExistsByKey(int id);
-        public Task<bool> ExistsByName(string name);
+        public Task<bool> KeyExists(int key);
+        public Task<bool> Exists(CategoryInDto category);
     }
 }
