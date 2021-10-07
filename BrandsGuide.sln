@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{A26CD907-826E-41AF-8E39-FD65A0B956A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91BBBDD7-E530-4D3D-B912-0E5441E014EB} = {91BBBDD7-E530-4D3D-B912-0E5441E014EB}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{91BBBDD7-E530-4D3D-B912-0E5441E014EB}"
 EndProject
@@ -12,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E} = {0E0688C4-1042-4E88-89E5-BE9A0AFED28E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "Commons\Commons.csproj", "{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.csproj", "{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
