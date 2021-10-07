@@ -1,3 +1,4 @@
+using Business.Services;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,9 @@ namespace Api
         {
             services.AddDbContext<AppDbContext>(
                 options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+
+            services.AddTransient<IMapper, Mapper>();
+            services.AddTransient<ICategoryProvider, CategoryProvider>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
