@@ -1,4 +1,5 @@
 using Business.Services;
+using Business.Calculators;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,8 @@ namespace Api
 
             services.AddTransient<IMapper, Mapper>();
             services.AddTransient<ICategoryProvider, CategoryProvider>();
+            services.AddTransient<ICompanyProvider, CompanyProvider>();
+            services.AddTransient<IRatingCalculator, RatingCalculator>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

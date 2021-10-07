@@ -47,14 +47,14 @@ namespace Business.Services
             };
         }
 
-        public CompanyOutDto CompanyToDto(Company entity)
+        public CompanyOutDto CompanyToDto(Company company, Rating rating)
         {
             return new CompanyOutDto
             {
-                CompanyId = entity.CompanyId,
-                Name = entity.Name,
-                Description = entity.Description,
-                RatingId = entity.RatingId
+                CompanyId = company.CompanyId,
+                Name = company.Name,
+                Description = company.Description,
+                Rating = RatingToDto(rating)
             };
         }
 
@@ -64,7 +64,7 @@ namespace Business.Services
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                RatingId = dto.RatingId
+                Rating = RatingFromDto(dto.Rating)
             };
         }
 
@@ -72,7 +72,6 @@ namespace Business.Services
         {
             return new RatingOutDto
             {
-                RatingId = entity.RatingId,
                 PlanetRating = entity.PlanetRating,
                 PeopleRating = entity.PeopleRating,
                 AnimalsRating = entity.AnimalsRating,
@@ -131,12 +130,12 @@ namespace Business.Services
             return brands;
         }
 
-        public IEnumerable<CompanyOutDto> CompanyToDto(IEnumerable<Company> entities)
+        public IEnumerable<MultiCompanyOutDto> CompanyToDto(IEnumerable<Company> entities)
         {
-            var companies = new List<CompanyOutDto>();
+            var companies = new List<MultiCompanyOutDto>();
 
             foreach (var e in entities)
-                companies.Add(CompanyToDto(e));
+                companies.Add(MultiCompanyToDto(e));
 
             return companies;
         }
@@ -149,6 +148,31 @@ namespace Business.Services
                 users.Add(UserToDto(e));
 
             return users;
+        }
+
+        public Category CopyFromDto(Category oldCategory, CategoryInDto newCategory)
+        {
+            oldCategory.Name = newCategory.Name;
+
+            return oldCategory;
+        }
+
+        public Company CopyFromDto(Company oldCompany, CompanyInDto newCompany)
+        {
+            oldCompany.Name = newCompany.Name;
+            oldCompany.Description = newCompany.Description;
+            oldCompany.Rating = RatingFromDto(newCompany.Rating);
+
+            return oldCompany;
+        }
+
+        public MultiCompanyOutDto MultiCompanyToDto(Company company)
+        {
+            return new MultiCompanyOutDto
+            {
+                CompanyId = company.CompanyId,
+                Name = company.Name
+            };
         }
     }
 }

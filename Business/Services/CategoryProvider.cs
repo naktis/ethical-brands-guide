@@ -26,42 +26,41 @@ namespace Business.Services
             return _mapper.CategoryToDto(createdCategory.Entity);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int key)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories.FindAsync(key);
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Edit(CategoryInDto category)
+        public async Task Update(int key, CategoryInDto newCategory)
         {
-            _context.Update(_mapper.CategoryFromDto(category));
+            var oldCategory = await _context.Categories.FindAsync(key);
+            oldCategory = _mapper.CopyFromDto(oldCategory, newCategory);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<CategoryOutDto> Get(int id)
+        public async Task<CategoryOutDto> Get(int key)
         {
-            var category = await _context.Categories.FindAsync(id);
-            return _mapper.CategoryToDto(category);
+            return _mapper.CategoryToDto(await _context.Categories.FindAsync(key));
         }
 
         public async Task<IEnumerable<CategoryOutDto>> GetAll()
         {
-            var categories = await _context.Categories.ToListAsync();
-            return _mapper.CategoryToDto(categories);
+            return _mapper.CategoryToDto(await _context.Categories.ToListAsync());
         }
 
-        public async Task<bool> ExistsByKey(int id)
+        public async Task<bool> KeyExists(int key)
         {
-            if (await _context.Categories.FindAsync(id) == null)
+            if (await _context.Categories.FindAsync(key) == null)
                 return false;
 
             return true;
         }
 
-        public async Task<bool> ExistsByName(string name)
+        public async Task<bool> Exists(CategoryInDto category)
         {
-            if (await _context.Categories.AnyAsync(c => c.Name == name))
+            if (await _context.Categories.AnyAsync(c => c.Name == category.Name))
                 return true;
 
             return false;
