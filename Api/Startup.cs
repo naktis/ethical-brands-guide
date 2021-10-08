@@ -36,6 +36,7 @@ namespace Api
             services.AddTransient<IMapper, Mapper>();
             services.AddTransient<ICategoryProvider, CategoryProvider>();
             services.AddTransient<ICompanyProvider, CompanyProvider>();
+            services.AddTransient<IBrandProvider, BrandProvider>();
             services.AddTransient<IRatingCalculator, RatingCalculator>();
 
             services.AddControllers();

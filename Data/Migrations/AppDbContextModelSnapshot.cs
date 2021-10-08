@@ -28,9 +28,6 @@ namespace Data.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -41,8 +38,6 @@ namespace Data.Migrations
                     b.HasKey("BrandId");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("CreatorId");
 
                     b.ToTable("Brands");
                 });
@@ -130,29 +125,6 @@ namespace Data.Migrations
                     b.ToTable("Ratings");
                 });
 
-            modelBuilder.Entity("Data.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("Data.Models.Brand", b =>
                 {
                     b.HasOne("Data.Models.Company", "Company")
@@ -161,15 +133,7 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Models.User", "Creator")
-                        .WithMany("Brands")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Company");
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Data.Models.BrandCategory", b =>
@@ -220,11 +184,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Rating", b =>
                 {
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Data.Models.User", b =>
-                {
-                    b.Navigation("Brands");
                 });
 #pragma warning restore 612, 618
         }

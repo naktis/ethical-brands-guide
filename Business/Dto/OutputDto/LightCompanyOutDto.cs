@@ -2,7 +2,7 @@
 
 namespace Business.Dto.OutputDto
 {
-    public class MultiCompanyOutDto
+    public class LightCompanyOutDto
     {
         public int CompanyId { get; set; }
         public string Name { get; set; }

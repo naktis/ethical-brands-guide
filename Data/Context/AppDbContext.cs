@@ -30,13 +30,6 @@ namespace Data.Context
                 .WithMany(c => c.BrandsCategories)
                 .HasForeignKey(bc => bc.CategoryId);
 
-            modelBuilder.Entity<User>(e =>
-            {
-                e.Property(u => u.Name).IsRequired();
-                e.Property(u => u.Password).IsRequired();
-                e.Property(u => u.Type).IsRequired();
-            });
-
             modelBuilder.Entity<Company>()
                 .Property(c => c.Name)
                 .IsRequired();
@@ -60,6 +53,5 @@ namespace Data.Context
         public DbSet<BrandCategory> BrandsCategories { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

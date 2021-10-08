@@ -14,8 +14,6 @@ namespace Business.Services
                 BrandId = entity.BrandId,
                 Name = entity.Name,
                 Description = entity.Description,
-                CreatorId = entity.CreatorId,
-                CompanyId = entity.CompanyId
             };
         }
 
@@ -25,8 +23,6 @@ namespace Business.Services
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                CreatorId = dto.CreatorId,
-                CompanyId = dto.CompanyId
             };
         }
 
@@ -91,25 +87,6 @@ namespace Business.Services
             };
         }
 
-        public UserOutDto UserToDto(User entity)
-        {
-            return new UserOutDto
-            {
-                Name = entity.Name,
-                Type = entity.Type
-            };
-        }
-
-        public User UserFromDto(UserInDto dto)
-        {
-            return new User
-            {
-                Name = dto.Name,
-                Password = dto.Password,
-                Type = dto.Type
-            };
-        }
-
         public IEnumerable<CategoryOutDto> CategoryToDto(IEnumerable<Category> entities)
         {
             var categories = new List<CategoryOutDto>();
@@ -120,34 +97,24 @@ namespace Business.Services
             return categories;
         }
 
-        public IEnumerable<BrandOutDto> BrandToDto(IEnumerable<Brand> entities)
+        public IEnumerable<LightBrandOutDto> BrandToDto(IEnumerable<Brand> entities)
         {
-            var brands = new List<BrandOutDto>();
+            var brands = new List<LightBrandOutDto>();
 
             foreach (var e in entities)
-                brands.Add(BrandToDto(e));
+                brands.Add(BrandToLightDto(e));
 
             return brands;
         }
 
-        public IEnumerable<MultiCompanyOutDto> CompanyToDto(IEnumerable<Company> entities)
+        public IEnumerable<LightCompanyOutDto> CompanyToDto(IEnumerable<Company> entities)
         {
-            var companies = new List<MultiCompanyOutDto>();
+            var companies = new List<LightCompanyOutDto>();
 
             foreach (var e in entities)
-                companies.Add(MultiCompanyToDto(e));
+                companies.Add(CompanyToLightDto(e));
 
             return companies;
-        }
-
-        public IEnumerable<UserOutDto> UserToDto(IEnumerable<User> entities)
-        {
-            var users = new List<UserOutDto>();
-
-            foreach (var e in entities)
-                users.Add(UserToDto(e));
-
-            return users;
         }
 
         public Category CopyFromDto(Category oldCategory, CategoryInDto newCategory)
@@ -166,12 +133,30 @@ namespace Business.Services
             return oldCompany;
         }
 
-        public MultiCompanyOutDto MultiCompanyToDto(Company company)
+        public Brand CopyFromDto(Brand oldBrand, BrandInDto newBrand)
         {
-            return new MultiCompanyOutDto
+            oldBrand.Name = newBrand.Name;
+            oldBrand.Description = newBrand.Description;
+            oldBrand.CompanyId = newBrand.CompanyId;
+
+            return oldBrand;
+        }
+
+        private LightCompanyOutDto CompanyToLightDto(Company company)
+        {
+            return new LightCompanyOutDto
             {
                 CompanyId = company.CompanyId,
                 Name = company.Name
+            };
+        }
+
+        public LightBrandOutDto BrandToLightDto(Brand entity)
+        {
+            return new LightBrandOutDto
+            {
+                BrandId = entity.BrandId,
+                Name = entity.Name
             };
         }
     }

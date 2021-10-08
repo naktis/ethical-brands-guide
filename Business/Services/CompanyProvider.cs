@@ -58,7 +58,7 @@ namespace Business.Services
             return _mapper.CompanyToDto(company, rating);
         }
 
-        public async Task<IEnumerable<MultiCompanyOutDto>> GetAll()
+        public async Task<IEnumerable<LightCompanyOutDto>> GetAll()
         {
             return _mapper.CompanyToDto(await _context.Companies.ToListAsync());
         }
@@ -73,10 +73,7 @@ namespace Business.Services
 
         public async Task<bool> Exists(CompanyInDto category)
         {
-            if (await _context.Companies.AnyAsync(c => c.Name == category.Name))
-                return true;
-
-            return false;
+            return await _context.Companies.AnyAsync(c => c.Name == category.Name);
         }
     }
 }
