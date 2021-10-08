@@ -14,19 +14,16 @@ namespace Business.Services
 
         public Brand BrandFromDto(BrandInDto dto);
         public BrandOutDto BrandToDto(Brand entity);
-        public IEnumerable<BrandOutDto> BrandToDto(IEnumerable<Brand> entity);
+        public IEnumerable<LightBrandOutDto> BrandToDto(IEnumerable<Brand> entity);
+        public Brand CopyFromDto(Brand oldBrand, BrandInDto newBrand);
+        public LightBrandOutDto BrandToLightDto(Brand entity);
 
         public Company CompanyFromDto(CompanyInDto dto);
         public CompanyOutDto CompanyToDto(Company company, Rating rating);
-        public MultiCompanyOutDto MultiCompanyToDto(Company company);
-        public IEnumerable<MultiCompanyOutDto> CompanyToDto(IEnumerable<Company> entity);
+        public IEnumerable<LightCompanyOutDto> CompanyToDto(IEnumerable<Company> entity);
         public Company CopyFromDto(Company oldCompany, CompanyInDto newCompany);
 
         public Rating RatingFromDto(RatingInDto dto);
         public RatingOutDto RatingToDto(Rating entity);
-
-        public User UserFromDto(UserInDto dto);
-        public UserOutDto UserToDto(User entity);
-        public IEnumerable<UserOutDto> UserToDto(IEnumerable<User> entity);
     }
 }

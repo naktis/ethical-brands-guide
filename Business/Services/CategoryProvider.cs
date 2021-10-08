@@ -36,7 +36,7 @@ namespace Business.Services
         public async Task Update(int key, CategoryInDto newCategory)
         {
             var oldCategory = await _context.Categories.FindAsync(key);
-            oldCategory = _mapper.CopyFromDto(oldCategory, newCategory);
+            oldCategory = _mapper.CopyFromDto(oldCategory, newCategory); // not unnecessary assignment
             await _context.SaveChangesAsync();
         }
 
@@ -60,10 +60,7 @@ namespace Business.Services
 
         public async Task<bool> Exists(CategoryInDto category)
         {
-            if (await _context.Categories.AnyAsync(c => c.Name == category.Name))
-                return true;
-
-            return false;
+            return await _context.Categories.AnyAsync(c => c.Name == category.Name);
         }
     }
 }
