@@ -32,9 +32,10 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<LightBrandOutDto>> GetBrands(string query)
+        public async Task<ActionResult<IEnumerable<LightBrandOutDto>>> GetBrands(
+            string query, string sortType = "any", int categoryId = 0)
         {
-            return Ok(_provider.Get(query));
+            return Ok(await _provider.Get(query, sortType, categoryId));
         }
 
         [HttpGet("Count")]
