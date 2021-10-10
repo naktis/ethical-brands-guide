@@ -37,6 +37,12 @@ namespace Api.Controllers
             return Ok(_provider.Get(query));
         }
 
+        [HttpGet("Count")]
+        public async Task<ActionResult<CategoryOutDto>> GetBrand()
+        {
+            return Ok(await _provider.Count());
+        }
+
         [HttpPost(Name = nameof(PostBrand))]
         public async Task<ActionResult<LightBrandOutDto>> PostBrand(BrandInDto brand)
         {

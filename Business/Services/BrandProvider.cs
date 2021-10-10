@@ -133,5 +133,10 @@ namespace Business.Services
 
             return true;
         }
+
+        public async Task<int> Count()
+        {
+            return await _context.Brands.CountAsync();
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace Business.Services
         public IEnumerable<LightBrandOutDto> Get(string query);
         public Task<BrandOutDto> Get(int key);
         public Task<bool> KeyExists(int key);
+        public Task<int> Count();
     }
 }
