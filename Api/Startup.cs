@@ -39,6 +39,14 @@ namespace Api
             services.AddTransient<IBrandProvider, BrandProvider>();
             services.AddTransient<IRatingCalculator, RatingCalculator>();
 
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,6 +63,8 @@ namespace Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 

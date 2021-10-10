@@ -1,38 +1,251 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-size: calc(10px + 2vmin);
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+  height: 100%;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  flex-wrap: wrap;
+  background-color: #11324d;
+  padding-bottom: 10px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+.App-header > div {
+  flex: 1;
+  padding-left: 40px;
+  padding-right: 40px;
+  flex-grow: 2;
+}
+
+h1 {
+  font-family: "Lora", serif;
+  font-weight: lighter;
+  padding-bottom: 10px;
+}
+
+.App-header h1 {
+  font-size: calc(10px + 2vmin);
+  text-align: left;
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+}
+
+#Header-button-div {
+  padding-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  direction: rtl;
+  flex-grow: 1;
+}
+
+button {
+  padding: 10px;
+  height: 50px;
+  color: white;
+  background-color: inherit;
+  border-radius: 5px;
+  font-family: "Lato", sans-serif;
+}
+
+button:hover {
+  background-color: #6b7aa1;
+  cursor: pointer;
+}
+
+main {
+  background-color: #e7e0c9;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: 100%;
+}
+
+#main-search-div {
+  padding-top: 150px;
+  padding-bottom: 30px;
+  background-color: #11324d;
+}
+
+#input-row input[type="text"] {
+  height: 50px;
+  width: 80%;
+  max-width: 700px;
+  font-size: larger;
+  border-radius: 50px;
+  padding: 10px;
+  padding-left: 20px;
+  font-family: "Lato", sans-serif;
+}
+
+#input-row {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#input-row button {
+  border: none;
+  height: max-content;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#input-row img {
+  max-height: 70px;
+  padding-left: 15px;
+}
+
+#input-row img:hover {
+  cursor: pointer;
+  opacity: 60%;
+}
+
+#main-search-result-filter {
+  display: flex;
+  max-width: 1200px;
+  justify-content: center;
+  align-self: center;
+  padding-top: 20px;
+  flex-direction: column;
+}
+
+#result-div {
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 20px;
+  justify-content: center;
+  align-self: center;
+}
+
+#filter-div {
+  max-width: 1200px;
+  color: black;
+  height: fit-content;
+  align-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: space-evenly;
+  align-items: baseline;
+  margin: 10px;
+}
+
+#filter-div h3 {
+  margin: 0px;
+  font-size: large;
+  padding: 10px 20px 10px 20px;
+}
+
+#filter-div div {
+  display: flex;
+  margin: 10px;
+}
+
+select {
+  background-color: white;
+  border-radius: 20px;
+  padding-left: 10px;
+  max-height: 40px;
+}
+
+.Brand-card {
+  flex-shrink: 2;
+  background-color: white;
+  color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  padding: 2px 16px;
+  height: fit-content;
+  font-size: large;
+  width: 200px;
+  border-radius: 5px;
+}
+
+.Brand-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.Brand-card h2 {
+  font-family: "Lora", serif;
+  font-weight: lighter;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position: fixed;
+  background: white;
+  width: 80%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  padding: 0px 20px 0px 20px;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.Modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Lora", serif;
+  align-items: baseline;
+}
+
+.Modal-header button {
+  background-color: rgb(139, 38, 38);
+  width: 50px;
+  height: auto;
+  min-height: 50px;
+  border-radius: 100%;
+  border: none;
+  font-weight: bold;
+  font-size: large;
+}
+
+.Modal-header button:hover {
+  background-color: rgb(93, 23, 23);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#body {
+  background-color: #50441e;
+}
+
+@media screen and (max-width: 550px) {
+  .App-header > div {
+    flex-grow: 1;
+    padding-right: 10px;
   }
-  to {
-    transform: rotate(360deg);
+
+  #Header-button-div {
+    padding-right: 40px;
+  }
+
+  .Brand-card {
+    width: 100%;
   }
 }
