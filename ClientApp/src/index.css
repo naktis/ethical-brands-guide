@@ -14,5 +14,6 @@ code {
 html,
 body,
 #root {
-  height: auto;
+  height: 100%;
+  background-color: #e7e0c9;
 }

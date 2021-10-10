@@ -156,7 +156,7 @@ namespace Business.Services
             return new LightBrandOutDto
             {
                 BrandId = entity.BrandId,
-                Name = entity.Name
+                BrandName = entity.Name
             };
         }
     }

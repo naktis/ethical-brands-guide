@@ -10,7 +10,7 @@ namespace Business.Services
         public Task<LightBrandOutDto> Add(BrandInDto dto);
         public Task Delete(int key);
         public Task Update(int key, BrandInDto dto);
-        public IEnumerable<LightBrandOutDto> Get(string query);
+        public Task<IEnumerable<LightBrandOutDto>> Get(string query, string sortType, int categoryId);
         public Task<BrandOutDto> Get(int key);
         public Task<bool> KeyExists(int key);
         public Task<int> Count();

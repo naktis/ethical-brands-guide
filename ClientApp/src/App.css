@@ -161,7 +161,7 @@ select {
   color: black;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  padding: 2px 16px;
+  padding: 10px 10px 20px 10px;
   height: fit-content;
   font-size: large;
   width: 200px;
@@ -176,6 +176,25 @@ select {
 .Brand-card h2 {
   font-family: "Lora", serif;
   font-weight: lighter;
+  margin: 0px;
+}
+
+.Brand-name {
+  display: flex;
+  height: 4.5em;
+  align-items: center;
+  justify-content: center;
+}
+
+.Brand-card h3 {
+  font-weight: lighter;
+  font-size: medium;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.Brand-card {
+  font-size: medium;
 }
 
 .modal {
@@ -233,6 +252,10 @@ select {
 
 #body {
   background-color: #50441e;
+}
+
+.stars {
+  font-size: xx-large;
 }
 
 @media screen and (max-width: 550px) {

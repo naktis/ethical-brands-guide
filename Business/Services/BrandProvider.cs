@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Business.Calculators;
 using Data.Models;
 using System.Linq;
+using System;
 
 namespace Business.Services
 {
@@ -116,14 +117,53 @@ namespace Business.Services
 
             return brandDto;
         }
-        
-        public IEnumerable<LightBrandOutDto> Get(string query)
-        {
-            if (query == null)
-                return _mapper.BrandToDto(_context.Brands.ToList());
 
-            var brands = _context.Brands.Where(x => x.Name.Contains(query)).ToList();
-            return _mapper.BrandToDto(brands);
+        public async Task<IEnumerable<LightBrandOutDto>> Get(string query, string sortType = "any", int categoryId = 0)
+        {
+            var brands = new List<Brand>();
+
+            if (query == null && categoryId == 0)
+                brands = _context.Brands.ToList();
+            else if (query != null && categoryId == 0)
+                brands = _context.Brands.Where(b => b.Name.Contains(query)).ToList();
+            else if (query == null && categoryId != 0)
+                brands = _context.Brands.Where(
+                    b => b.BrandsCategories.Any(c => c.Category.CategoryId == categoryId))
+                    .ToList();
+            else // query != null && categoryId != null
+                brands = _context.Brands.Where(
+                    b => b.BrandsCategories.Any(c => c.Category.CategoryId == categoryId) && 
+                    b.Name.Contains(query))
+                    .ToList();
+
+            var brandsDto = new List<LightBrandOutDto>();
+
+            foreach (var b in brands)
+            {
+                var dto = _mapper.BrandToLightDto(b);
+
+                var company = await _context.Companies.FindAsync(b.CompanyId);
+                dto.CompanyName = company.Name;
+
+                var rating = await _context.Ratings.FindAsync(company.RatingId);
+                dto.RatingTotal = rating.TotalRating;
+                dto.RatingAnimals = rating.AnimalsRating;
+                dto.RatingPlanet = rating.PlanetRating;
+                dto.RatingPeople = rating.PeopleRating;
+
+                brandsDto.Add(dto);
+            }
+
+            var sortBrands = new Dictionary<string, List<LightBrandOutDto>>()
+            {
+                {"any", brandsDto},
+                {"total", brandsDto.OrderByDescending(b => b.RatingTotal).ToList()},
+                {"planet", brandsDto.OrderByDescending(b => b.RatingPlanet).ToList()},
+                {"people", brandsDto.OrderByDescending(b => b.RatingPeople).ToList()},
+                {"animals", brandsDto.OrderByDescending(b => b.RatingAnimals).ToList()}
+            };
+
+            return sortBrands[sortType];
         }
         
         public async Task<bool> KeyExists(int key)
