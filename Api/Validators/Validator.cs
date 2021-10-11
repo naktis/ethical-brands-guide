@@ -23,10 +23,10 @@ namespace Api.Validators
         public bool SortTypeInvalid(string sortType)
         {
             var supportedSorts = new List<string>() { 
-                "any", "planet", "people", "animals"
+                "any", "total", "planet", "people", "animals"
             };
 
-            return !supportedSorts.Contains(sortType);
+            return !supportedSorts.Contains(sortType.ToLower());
         }
     }
 }
