@@ -3,8 +3,7 @@ import BrandCard from "./BrandCard";
 import Modal from './Modal.js';
 import axios from "axios";
 import SelectOption from "./SelectOption";
-
-
+import BrandModal from "./BrandModal";
 
 class Main extends React.Component {
   _isMounted = false;
@@ -18,9 +17,10 @@ class Main extends React.Component {
       categoryId: 0,
       brands: [],
       query: "",
-      sortType: "any"
+      sortType: "any",
+      brandId: 0,
+      brandKey: 0
 		};
-		this.showBrand = this.showBrand.bind(this);
 		this.hideBrand = this.hideBrand.bind(this);
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
@@ -75,12 +75,16 @@ class Main extends React.Component {
     return <h1>{this.state.brandCount} prekės ženklų reitingai</h1>
   };
 
-  showBrand = () => {
-		this.setState({ show: true });
+  showBrand = (key) => {
+		this.setState({ show: true, brandId: key, brandKey: Math.random()});
 	};
+
+  makeBrandModal = (id) => {
+    return <BrandModal id={id}/>
+  }
 	
 	hideBrand = () => {
-	this.setState({ show: false });
+	  this.setState({ show: false });
 	};
 
   handleSearch(query, sortType, categoryId){
@@ -150,11 +154,11 @@ class Main extends React.Component {
         </div>
         <div id="result-div">
           { this.state.brands.map(function (brand){
-                  return <BrandCard brand={brand} onClick={this.showBrand} key={brand.brandId}
+                  return <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
                   sortType={this.state.sortType} />
           }, this) }
-          <Modal show={this.state.show} handleClose={this.hideBrand} title="Brando pavadinimas">
-					  <p>Jonas joja ir dainuoja</p>
+          <Modal show={this.state.show} handleClose={this.hideBrand} title={""}>
+            <BrandModal id={this.state.brandId} key={this.state.brandKey}/>
 				  </Modal>
         </div>
       </main>

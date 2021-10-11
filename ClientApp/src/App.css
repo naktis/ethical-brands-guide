@@ -215,7 +215,16 @@ select {
   left: 50%;
   transform: translate(-50%, -50%);
   color: black;
-  padding: 0px 20px 0px 20px;
+  padding: 0px 15px 0px 15px;
+  border-radius: 5px;
+}
+
+.modal-main h1 {
+  margin: 0;
+}
+
+.modal-main p {
+  font-size: large;
 }
 
 .display-block {
@@ -230,7 +239,6 @@ select {
   display: flex;
   justify-content: space-between;
   font-family: "Lora", serif;
-  align-items: baseline;
 }
 
 .Modal-header button {
@@ -242,6 +250,7 @@ select {
   border: none;
   font-weight: bold;
   font-size: large;
+  margin-top: 15px;
 }
 
 .Modal-header button:hover {
@@ -256,6 +265,32 @@ select {
 
 .stars {
   font-size: xx-large;
+}
+
+.Brand-categories {
+  display: flex;
+  justify-content: space-evenly;
+  height: 1.5em;
+  align-items: center;
+}
+
+.Company-content {
+  text-align: left;
+  font-size: medium;
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  margin: 15px;
+  margin-bottom: 20px;
+}
+
+.Company-content h3 {
+  text-align: center;
+}
+
+.Company-content .stars {
+  font-size: x-large;
+  padding-bottom: 5px;
 }
 
 @media screen and (max-width: 550px) {

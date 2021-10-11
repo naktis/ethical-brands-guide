@@ -43,6 +43,7 @@ class BrandCard extends React.Component{
         else {
             return <div><div className="stars">&#9734;&#9734;&#9734;&#9734;&#9734;</div><div>{ratingName}</div></div>
         }
+        
     };
 
     render() {
