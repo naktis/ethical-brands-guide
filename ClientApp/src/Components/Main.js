@@ -4,6 +4,7 @@ import Modal from './Modal.js';
 import axios from "axios";
 import SelectOption from "./SelectOption";
 import BrandModal from "./BrandModal";
+import BrandForm from "./BrandForm/BrandForm";
 
 class Main extends React.Component {
   _isMounted = false;
@@ -19,7 +20,11 @@ class Main extends React.Component {
       query: "",
       sortType: "any",
       brandId: 0,
-      brandKey: 0
+      brandKey: 0,
+      showEdit: false,
+      brandName: "",
+      brandDescription: "",
+      brandCategoryId: 0
 		};
 		this.hideBrand = this.hideBrand.bind(this);
     this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -27,10 +32,19 @@ class Main extends React.Component {
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.makeRatingCountString = this.makeRatingCountString.bind(this);
+    this.editBrand = this.editBrand.bind(this);
+    this.deleteBrand = this.deleteBrand.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getEmptyBrand = this.getEmptyBrand.bind(this);
 	}
 
   componentDidMount() {
     this._isMounted = true;
+    this.fetchData();
+  }
+
+  fetchData() {
     const _this = this;
 
     axios.get("https://localhost:44321/api/Brand/Count").then(function(response) {
@@ -66,7 +80,7 @@ class Main extends React.Component {
     if (this.state.brandCount === 0)
       return <h1>Prekės ženklų reitingų nėra</h1>
 
-    if (this.state.brandCount % 10 === 1)
+    if (this.state.brandCount % 10 === 1 && this.state.brandCount % 100 !== 11)
       return <h1>{this.state.brandCount} prekės ženklo reitingas</h1>
     
     if (this.state.brandCount % 10 === 0 || (this.state.brandCount % 100 >= 11 && this.state.brandCount % 100 <= 19))
@@ -75,9 +89,13 @@ class Main extends React.Component {
     return <h1>{this.state.brandCount} prekės ženklų reitingai</h1>
   };
 
-  showBrand = (key) => {
-		this.setState({ show: true, brandId: key, brandKey: Math.random()});
+  showBrand = (id) => {
+		this.setState({ show: true, brandId: id, brandKey: Math.random()});
 	};
+
+  showEdit = () => {
+    this.setState({ showEdit: true});
+  }
 
   makeBrandModal = (id) => {
     return <BrandModal id={id}/>
@@ -85,6 +103,10 @@ class Main extends React.Component {
 	
 	hideBrand = () => {
 	  this.setState({ show: false });
+	};
+
+  hideEdit = () => {
+	  this.setState({ showEdit: false });
 	};
 
   handleSearch(query, sortType, categoryId){
@@ -101,7 +123,6 @@ class Main extends React.Component {
       }).catch((error) => {
         console.log(error);
     })
-    
   }
 
   handleRatingChange(e) {
@@ -118,6 +139,55 @@ class Main extends React.Component {
 
  handleQueryChange = (e) => {
     this.setState({ query: e.target.value });
+  }
+
+  getEmptyBrand() {
+return { 
+			name: "",
+			description: "",
+			categoryId: 0,
+			companyId: 0
+		}
+  }
+
+  editBrand() {
+    this.showEdit();
+  }
+
+  deleteBrand() {
+    axios.delete(`https://localhost:44321/api/Brand/${this.state.brandId}`).then(function(response) {
+      console.log(`Brand has been deleted`);
+      }).catch((error) => {
+        console.log(error);
+    })
+  }
+
+  handleSubmit(brand) {
+    console.log("AUGUSTINA");
+    console.log(this.state.brandId);
+    axios.put(`https://localhost:44321/api/Brand/${this.state.brandId}`, brand)
+		.then(function (response) {
+			console.log(response);
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+  }
+
+  brandKeeper(brand) {
+    this.setState({ 
+      brandName: brand.name,
+      brandDescription: brand.description,
+      brandCategoryId: brand.categoryId
+    });
+  }
+
+  getLastBrand() {
+    return {
+      name: this.state.brandName,
+      description: this.state.brandDescription,
+      categoryId: this.state.brandCategoryId
+    }
   }
 
   render() {
@@ -157,8 +227,14 @@ class Main extends React.Component {
                   return <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
                   sortType={this.state.sortType} />
           }, this) }
-          <Modal show={this.state.show} handleClose={this.hideBrand} title={""}>
-            <BrandModal id={this.state.brandId} key={this.state.brandKey}/>
+          <Modal show={this.state.show} handleClose={this.hideBrand} 
+            title={""} editable={true} editBrand={this.editBrand}
+            deleteBrand={this.deleteBrand}>
+            <BrandModal id={this.state.brandId} key={this.state.brandKey} brandKeeper={this.brandKeeper}/>
+				  </Modal>
+          <Modal show={this.state.showEdit} handleClose={this.hideEdit} 
+            title={"Prekės ženklo redagavimas"} editable={false} >
+            <BrandForm brand={ this.getEmptyBrand() } handleSubmit={this.handleSubmit}/>
 				  </Modal>
         </div>
       </main>

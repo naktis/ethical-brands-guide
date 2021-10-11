@@ -22,14 +22,12 @@ class BrandModal extends React.Component {
 
   componentDidMount() {
     const _this = this;
-    console.log(this.props.id)
 
     if (typeof this.props.id !== "undefined" && this.props.id !== 0) {
       axios.get(`https://localhost:44321/api/Brand/${this.props.id}`).then(function(response) {
       _this.setState({
         brand: response.data
       })
-      console.log(response.data)
       }).catch((error) => {
         console.log(error);
     })
@@ -59,7 +57,7 @@ class BrandModal extends React.Component {
         <hr></hr>
         <div className="Brand-categories">
           {this.state.brand.categories.map(function (c){
-                    return <p>{c.name}</p>
+              return <p key={c.categoryId}>{c.name}</p>
             })}
         </div>
         <hr></hr>
@@ -74,26 +72,28 @@ class BrandModal extends React.Component {
           <div>
             <h3>Reitingai</h3>
             <table>
-              <tr>
-                <td>Tvarumas</td>
-                <td>{this.stars(this.state.brand.company.rating.planetRating)}</td>
-                <td>{this.state.brand.company.rating.planetRating}</td>
-              </tr>
-              <tr>
-                <td>Socialinė gerovė</td>
-                <td>{this.stars(this.state.brand.company.rating.peopleRating)}</td>
-                <td>{this.state.brand.company.rating.peopleRating}</td>
-              </tr>
-              <tr>
-                <td>Gyvūnų gerovė</td>
-                <td>{this.stars(this.state.brand.company.rating.animalsRating)}</td>
-                <td>{this.state.brand.company.rating.animalsRating}</td>
-              </tr>
-              <tr>
-                <td>Bendras</td>
-                <td>{this.stars(this.state.brand.company.rating.totalRating)}</td>
-                <td>{this.state.brand.company.rating.totalRating}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>Tvarumas</td>
+                  {this.stars(this.state.brand.company.rating.planetRating)}
+                  <td>{this.state.brand.company.rating.planetRating}</td>
+                </tr>
+                <tr>
+                  <td>Socialinė gerovė</td>
+                  {this.stars(this.state.brand.company.rating.peopleRating)}
+                  <td>{this.state.brand.company.rating.peopleRating}</td>
+                </tr>
+                <tr>
+                  <td>Gyvūnų gerovė</td>
+                  {this.stars(this.state.brand.company.rating.animalsRating)}
+                  <td>{this.state.brand.company.rating.animalsRating}</td>
+                </tr>
+                <tr>
+                  <td>Bendras</td>
+                  {this.stars(this.state.brand.company.rating.totalRating)}
+                  <td>{this.state.brand.company.rating.totalRating}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

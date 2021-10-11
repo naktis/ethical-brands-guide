@@ -37,6 +37,7 @@ h1 {
   text-align: left;
   font-family: "Cinzel", serif;
   font-weight: 700;
+  cursor: pointer;
 }
 
 #Header-button-div {
@@ -245,7 +246,7 @@ select {
   background-color: rgb(139, 38, 38);
   width: 50px;
   height: auto;
-  min-height: 50px;
+  height: 50px;
   border-radius: 100%;
   border: none;
   font-weight: bold;
@@ -293,6 +294,73 @@ select {
   padding-bottom: 5px;
 }
 
+.New-brand-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  text-align: left;
+  font-size: large;
+  row-gap: 10px;
+  justify-content: space-between;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.New-brand-form input[type="text"],
+.New-brand-form select,
+.New-brand-form textarea {
+  width: 100%;
+  border-radius: 5px;
+  height: 50px;
+  font-size: large;
+  padding-left: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+  color: gray;
+  border-style: solid;
+}
+
+textarea {
+  padding-top: 10px;
+}
+
+.New-brand-form input[type="text"] {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.New-brand-form select {
+  width: 105%;
+}
+
+.New-brand-form input[type="submit"] {
+  margin-top: 20px;
+  height: 40px;
+  margin-bottom: 50px;
+  cursor: pointer;
+  background-color: #11324d;
+  color: white;
+  border-radius: 5px;
+}
+
+.New-brand-form input[type="submit"]:hover {
+  background-color: #3d6485;
+}
+
+.Brand-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.Brand-buttons button {
+  background-color: #3d6485;
+}
+
+.Brand-buttons button:hover {
+  background-color: #172b3b;
+}
+
 @media screen and (max-width: 550px) {
   .App-header > div {
     flex-grow: 1;
@@ -305,5 +373,10 @@ select {
 
   .Brand-card {
     width: 100%;
+  }
+
+  .Company-content {
+    flex-direction: column;
+    justify-content: center;
   }
 }
