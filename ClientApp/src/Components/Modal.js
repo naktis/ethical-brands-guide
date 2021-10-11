@@ -1,13 +1,34 @@
-// Based on srouce code found here: https://www.digitalocean.com/community/tutorials/react-modal-component
-
-const Modal = ({ handleClose, show, children, title }) => {
+const Modal = ({ handleClose, show, children, title, editable, editBrand, deleteBrand }) => {
     const showHideClassName = show ? "modal display-block" : "modal display-none";
+
+    const exitToEdit = () => {
+      handleClose();
+      editBrand();
+    }
+
+    const exitToDelete = () => {
+      handleClose();
+      deleteBrand();
+    }
+
+    const makeBrandButtons = () => {
+      if (editable === true) {
+        return <div className="Brand-buttons"><button type="button" onClick={exitToEdit}>&#9998;</button>
+          <button type="button" onClick={exitToDelete}>&#128465;</button></div>
+      }
+    }
+
+    const makeTitle = () => {
+      if (title !== "")
+        return <h3>{title}</h3>
+    }
   
     return (
       <div className={showHideClassName}>
         <section className="modal-main">
           <div className="Modal-header">
-						<h3>{title}</h3>
+						{ makeTitle() }
+            { makeBrandButtons() }
             <button type="button" onClick={handleClose}>
               X
             </button>
