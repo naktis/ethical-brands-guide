@@ -1,20 +1,11 @@
-using Business.Services;
-using Business.Calculators;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api
 {
@@ -33,11 +24,7 @@ namespace Api
             services.AddDbContext<AppDbContext>(
                 options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
-            services.AddTransient<IMapper, Mapper>();
-            services.AddTransient<ICategoryProvider, CategoryProvider>();
-            services.AddTransient<ICompanyProvider, CompanyProvider>();
-            services.AddTransient<IBrandProvider, BrandProvider>();
-            services.AddTransient<IRatingCalculator, RatingCalculator>();
+            services.ConfigureDependencyInjection();
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
@@ -45,7 +32,6 @@ namespace Api
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
-
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

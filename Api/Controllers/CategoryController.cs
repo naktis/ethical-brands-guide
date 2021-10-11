@@ -1,4 +1,5 @@
-﻿using Business.Dto.InputDto;
+﻿using Api.Validators;
+using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,23 @@ namespace Api.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryProvider _provider;
+        private readonly IValidator _validator;
 
-        public CategoryController(ILogger<CategoryController> logger, ICategoryProvider provider)
+        public CategoryController(ILogger<CategoryController> logger, 
+            ICategoryProvider provider, IValidator validator)
         {
             _logger = logger;
             _provider = provider;
+            _validator = validator;
         }
 
 
         [HttpGet("{key}")]
         public async Task<ActionResult<CategoryOutDto>> GetCategory(int key)
         {
+            if (_validator.KeyNegative(key))
+                return BadRequest();
+
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
@@ -45,12 +52,16 @@ namespace Api.Controllers
 
             var createdCategory = await _provider.Add(category);
 
+            _logger.LogInformation($"New category (id={createdCategory.CategoryId}) has been added");
             return CreatedAtRoute(nameof(PostCategory), createdCategory);
         }
 
         [HttpPut("{key}")]
         public async Task<ActionResult<CategoryOutDto>> UpdateCategory([FromRoute] int key, [FromBody] CategoryInDto newCategory)
         {
+            if (_validator.KeyNegative(key))
+                return BadRequest();
+
             if (await _provider.Exists(newCategory))
                 return BadRequest();
 
@@ -59,17 +70,22 @@ namespace Api.Controllers
 
             await _provider.Update(key, newCategory);
 
+            _logger.LogInformation($"Category with id={key} has been updated");
             return Ok();
         }
 
         [HttpDelete("{key}")]
         public async Task<IActionResult> DeleteCategory(int key)
         {
+            if (_validator.KeyNegative(key))
+                return BadRequest();
+
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
             await _provider.Delete(key);
 
+            _logger.LogInformation($"Category with id={key} has been deleted");
             return Ok();
         }
     }

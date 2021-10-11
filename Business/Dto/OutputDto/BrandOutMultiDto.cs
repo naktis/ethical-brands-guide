@@ -1,6 +1,6 @@
 ﻿namespace Business.Dto.OutputDto
 {
-    public class LightBrandOutDto
+    public class BrandOutMultiDto
     {
         public int BrandId { get; set; }
         public string BrandName { get; set; }
