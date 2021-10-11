@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public interface ICompanyProvider
+    public interface ICompanyProvider : IProvider<CompanyInDto, CompanyOutDto>
     {
         public Task<CompanyOutDto> Add(CompanyInDto company);
-        public Task Delete(int key);
-        public Task Update(int key, CompanyInDto newCompany);
-        public Task<CompanyOutDto> Get(int key);
-        public Task<IEnumerable<LightCompanyOutDto>> GetAll();
-        public Task<bool> KeyExists(int key);
+        public Task<IEnumerable<CompanyOutMultiDto>> GetAll();
         public Task<bool> Exists(CompanyInDto company);
     }
 }

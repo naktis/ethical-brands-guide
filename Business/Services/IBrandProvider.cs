@@ -5,14 +5,10 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public interface IBrandProvider
+    public interface IBrandProvider : IProvider<BrandInDto, BrandOutDto>
     {
-        public Task<LightBrandOutDto> Add(BrandInDto dto);
-        public Task Delete(int key);
-        public Task Update(int key, BrandInDto dto);
-        public Task<IEnumerable<LightBrandOutDto>> Get(string query, string sortType, int categoryId);
-        public Task<BrandOutDto> Get(int key);
-        public Task<bool> KeyExists(int key);
+        public Task<BrandOutPostDto> Add(BrandInDto dto);
+        public Task<IEnumerable<BrandOutMultiDto>> Get(string query, string sortType, int categoryId);
         public Task<int> Count();
     }
 }

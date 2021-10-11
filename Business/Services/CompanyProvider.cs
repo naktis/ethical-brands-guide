@@ -5,16 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Calculators;
+using Business.Mappers.Interfaces;
 
 namespace Business.Services
 {
     public class CompanyProvider : ICompanyProvider
     {
         private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly ICompanyMapper _mapper;
         private readonly IRatingCalculator _calculator;
 
-        public CompanyProvider(AppDbContext context, IMapper mapper, IRatingCalculator ratingProcessor)
+        public CompanyProvider(AppDbContext context, ICompanyMapper mapper, IRatingCalculator ratingProcessor)
         {
             _context = context;
             _mapper = mapper;
@@ -23,7 +24,7 @@ namespace Business.Services
 
         public async Task<CompanyOutDto> Add(CompanyInDto company)
         {
-            var entity = _mapper.CompanyFromDto(company);
+            var entity = _mapper.EntityFromDto(company);
             entity.Rating.TotalRating = _calculator.GetTotal(entity.Rating);
 
             var createdCompany = await _context.Companies.AddAsync(entity);
@@ -31,7 +32,7 @@ namespace Business.Services
 
             var createdRating = await _context.Ratings.FindAsync(createdCompany.Entity.RatingId);
 
-            return _mapper.CompanyToDto(createdCompany.Entity, createdRating);
+            return _mapper.EntityToDto(createdCompany.Entity, createdRating);
         }
 
         public async Task Delete(int key)
@@ -55,12 +56,12 @@ namespace Business.Services
         {
             var company = await _context.Companies.FindAsync(key);
             var rating = await _context.Ratings.FindAsync(company.RatingId);
-            return _mapper.CompanyToDto(company, rating);
+            return _mapper.EntityToDto(company, rating);
         }
 
-        public async Task<IEnumerable<LightCompanyOutDto>> GetAll()
+        public async Task<IEnumerable<CompanyOutMultiDto>> GetAll()
         {
-            return _mapper.CompanyToDto(await _context.Companies.ToListAsync());
+            return _mapper.EntityToDto(await _context.Companies.ToListAsync());
         }
 
         public async Task<bool> KeyExists(int key)

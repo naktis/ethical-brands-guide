@@ -1,4 +1,5 @@
-﻿using Business.Dto.InputDto;
+﻿using Api.Validators;
+using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,14 @@ namespace Api.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICompanyProvider _provider;
+        private readonly IValidator _validator;
 
-        public CompanyController(ILogger<CategoryController> logger, ICompanyProvider provider)
+        public CompanyController(ILogger<CategoryController> logger, 
+            ICompanyProvider provider, IValidator validator)
         {
             _logger = logger;
             _provider = provider;
+            _validator = validator;
         }
 
 
@@ -45,6 +49,7 @@ namespace Api.Controllers
 
             var createdCompany = await _provider.Add(company);
 
+            _logger.LogInformation($"New company (id={createdCompany.CompanyId}) has been added");
             return CreatedAtRoute(nameof(PostCompany), createdCompany);
         }
 
@@ -59,6 +64,7 @@ namespace Api.Controllers
 
             await _provider.Update(key, newCompany);
 
+            _logger.LogInformation($"Company with id={key} has been updated");
             return Ok();
         }
 
@@ -70,6 +76,7 @@ namespace Api.Controllers
 
             await _provider.Delete(key);
 
+            _logger.LogInformation($"Company with id={key} has been deleted");
             return Ok();
         }
     }
