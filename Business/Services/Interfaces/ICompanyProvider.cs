@@ -3,7 +3,7 @@ using Business.Dto.OutputDto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Business.Services
+namespace Business.Services.Interfaces
 {
     public interface ICompanyProvider : IProvider<CompanyInDto, CompanyOutDto>
     {

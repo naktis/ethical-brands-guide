@@ -3,6 +3,7 @@ using Business.Calculators;
 using Business.Mappers;
 using Business.Mappers.Interfaces;
 using Business.Services;
+using Business.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api
@@ -16,6 +17,7 @@ namespace Api
             services.AddTransient<ICompanyMapper, CompanyMapper>();
             services.AddTransient<IRatingMapper, RatingMapper>();
             services.AddTransient<IBrandCategoryMapper, BrandCategoryMapper>();
+            services.AddTransient<IBrandCategoryProvider, BrandCategoryProvider>();
 
             services.AddTransient<ICategoryProvider, CategoryProvider>();
             services.AddTransient<ICompanyProvider, CompanyProvider>();

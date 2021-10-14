@@ -1,6 +1,4 @@
-﻿using Business.Dto.InputDto;
-
-namespace Business.Dto.OutputDto
+﻿namespace Business.Dto.OutputDto
 {
     public class CompanyOutDto
     {

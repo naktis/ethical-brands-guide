@@ -5,10 +5,8 @@ using System.Collections.Generic;
 
 namespace Business.Mappers.Interfaces
 {
-    public interface ICategoryMapper : IMapper<Category, CategoryInDto>
+    public interface ICategoryMapper : IMapper<Category, CategoryInDto, CategoryOutDto>
     {
-        public CategoryOutDto EntityToDto(Category entity);
-        public IEnumerable<CategoryOutDto> EntityToDto(IEnumerable<Category> entity);
-        public Category CopyFromDto(Category oldCategory, CategoryInDto newCategory);
+        public IEnumerable<CategoryOutDto> EntitiesToDtos(IEnumerable<Category> entity);
     }
 }

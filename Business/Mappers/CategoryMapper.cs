@@ -2,11 +2,7 @@
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
 using Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Mappers
 {
@@ -29,7 +25,7 @@ namespace Business.Mappers
             };
         }
 
-        public IEnumerable<CategoryOutDto> EntityToDto(IEnumerable<Category> entities)
+        public IEnumerable<CategoryOutDto> EntitiesToDtos(IEnumerable<Category> entities)
         {
             var categories = new List<CategoryOutDto>();
 

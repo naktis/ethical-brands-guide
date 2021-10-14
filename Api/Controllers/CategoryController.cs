@@ -1,7 +1,7 @@
 ﻿using Api.Validators;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
-using Business.Services;
+using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 ﻿using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
+using Business.Services.Interfaces;
 using Data.Context;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,19 +15,14 @@ namespace Business.Services
     {
         private readonly AppDbContext _context;
         private readonly IBrandMapper _mapper;
-        private readonly ICategoryMapper _categoryMapper;
-        private readonly ICompanyMapper _companyMapper;
-        private readonly IBrandCategoryMapper _bcMapper;
+        private readonly IBrandCategoryProvider _bcProvider;
 
         public BrandProvider(AppDbContext context, IBrandMapper mapper, 
-            ICategoryMapper categoryMapper, ICompanyMapper companyMapper,
-            IBrandCategoryMapper bcMapper)
+            IBrandCategoryProvider bcProvider)
         {
             _context = context;
             _mapper = mapper;
-            _categoryMapper = categoryMapper;
-            _companyMapper = companyMapper;
-            _bcMapper = bcMapper;
+            _bcProvider = bcProvider;
         }
 
         public async Task<BrandOutPostDto> Add(BrandInDto dto)
@@ -40,20 +36,8 @@ namespace Business.Services
             company.Brands.Add(createdBrand.Entity);
             await _context.SaveChangesAsync();
 
-            // Map brand with categories
-            if(dto.CategoryIds.Any())
-            {
-                foreach (var categoryId in dto.CategoryIds)
-                {
-                    var category = await _context.Categories.FindAsync(categoryId);
-                    var brandCategory = _bcMapper.NewEntity(category, createdBrand.Entity);
-
-                    var createdBrandCategory = await _context.BrandsCategories.AddAsync(brandCategory);
-                    createdBrand.Entity.BrandsCategories.Add(createdBrandCategory.Entity);
-                    category.BrandsCategories.Add(createdBrandCategory.Entity);
-                }
-                await _context.SaveChangesAsync();
-            }
+            if (dto.CategoryIds.Any())
+                await _bcProvider.AddRange(dto.CategoryIds, createdBrand.Entity);
             
             return _mapper.EntityToPostDto(createdBrand.Entity);
         }
@@ -73,49 +57,26 @@ namespace Business.Services
         {
             var brand = await _context.Brands.FindAsync(key);
             brand = _mapper.CopyFromDto(brand, newBrand);
-            brand.Company = await _context.Companies.FindAsync(brand.CompanyId); ;
-
-            // Remove old brandscategories
-            var brandCategories = await _context.BrandsCategories.Where(x => x.BrandId == key).ToListAsync();
-            if (brandCategories.Any())
-                _context.BrandsCategories.RemoveRange(brandCategories);
-
+            brand.Company = await _context.Companies.FindAsync(brand.CompanyId);
             await _context.SaveChangesAsync();
 
-            // Add new brandscategories
+            await _bcProvider.RemoveRangeByBrand(key);
+            
             if (newBrand.CategoryIds.Any())
-            {
-                foreach (var categoryId in newBrand.CategoryIds)
-                {
-                    var category = await _context.Categories.FindAsync(categoryId);
-                    var brandCategory = _bcMapper.NewEntity(category, brand);
-
-                    var createdBrandCategory = await _context.BrandsCategories.AddAsync(brandCategory);
-                    brand.BrandsCategories.Add(createdBrandCategory.Entity);
-                    category.BrandsCategories.Add(createdBrandCategory.Entity);
-                }
-                await _context.SaveChangesAsync();
-            }
+                await _bcProvider.AddRange(newBrand.CategoryIds, brand);
         }
         
         public async Task<BrandOutDto> Get(int key)
         {
-            var brand = await _context.Brands.FindAsync(key);
-            var brandCategories = await _context.BrandsCategories.Where(x => x.BrandId == key).ToListAsync();
-            var company = await _context.Companies.FindAsync(brand.CompanyId);
-            var rating = await _context.Ratings.FindAsync(company.RatingId);
+            var brand = await _context.Brands
+                .Where(b => b.BrandId == key)
+                .Include(b => b.Company)
+                .ThenInclude(c => c.Rating)
+                .Include(b => b.BrandsCategories)
+                .ThenInclude(bc => bc.Category)
+                .FirstOrDefaultAsync();
 
-            var brandDto = _mapper.EntityToDto(brand);
-            brandDto.Company = _companyMapper.EntityToDto(company, rating);
-
-            brandDto.Categories = new List<CategoryOutDto>();
-            foreach (var bc in brandCategories)
-            {
-                var category = await _context.Categories.FindAsync(bc.CategoryId);
-                brandDto.Categories.Add(_categoryMapper.EntityToDto(category));
-            }
-
-            return brandDto;
+            return _mapper.EntityToDto(brand);
         }
 
         public async Task<IEnumerable<BrandOutMultiDto>> Get(string query, string sortType = "any", int categoryId = 0)
@@ -123,60 +84,68 @@ namespace Business.Services
             var brands = new List<Brand>();
 
             if (query == null && categoryId == 0)
-                brands = await _context.Brands.ToListAsync();
+                brands = await _context.Brands
+                    .Include(b => b.Company)
+                    .ThenInclude(c => c.Rating)
+                    .ToListAsync();
             else if (query != null && categoryId == 0)
-                brands = await _context.Brands.Where(b => b.Name.Contains(query)).ToListAsync();
+                brands = await _context.Brands
+                    .Where(b => b.Name.Contains(query))
+                    .Include(b => b.Company)
+                    .ThenInclude(c => c.Rating)
+                    .ToListAsync();
             else if (query == null && categoryId != 0)
-                brands = await _context.Brands.Where(
-                    b => b.BrandsCategories.Any(c => c.Category.CategoryId == categoryId))
+                brands = await _context.Brands
+                    .Where(b => b.BrandsCategories
+                        .Any(c => c.Category.CategoryId == categoryId))
+                    .Include(b => b.Company)
+                    .ThenInclude(c => c.Rating)
                     .ToListAsync();
             else // query != null && categoryId != null
                 brands = await _context.Brands.Where(
-                    b => b.BrandsCategories.Any(c => c.Category.CategoryId == categoryId) && 
-                    b.Name.Contains(query))
+                    b => b.BrandsCategories
+                    .Any(c => c.Category.CategoryId == categoryId) && b.Name.Contains(query))
+                    .Include(b => b.Company)
+                    .ThenInclude(c => c.Rating)
                     .ToListAsync();
 
-            var brandsDto = new List<BrandOutMultiDto>();
-
-            foreach (var b in brands)
-            {
-                var dto = _mapper.EntityToMultiDto(b);
-
-                var company = await _context.Companies.FindAsync(b.CompanyId);
-                dto.CompanyName = company.Name;
-
-                var rating = await _context.Ratings.FindAsync(company.RatingId);
-                dto.RatingTotal = rating.TotalRating;
-                dto.RatingAnimals = rating.AnimalsRating;
-                dto.RatingPlanet = rating.PlanetRating;
-                dto.RatingPeople = rating.PeopleRating;
-
-                brandsDto.Add(dto);
-            }
-
-            var sortOptions = new Dictionary<string, List<BrandOutMultiDto>>()
-            {
-                {"any", brandsDto},
-                {"total", brandsDto.OrderByDescending(b => b.RatingTotal).ToList()},
-                {"planet", brandsDto.OrderByDescending(b => b.RatingPlanet).ToList()},
-                {"people", brandsDto.OrderByDescending(b => b.RatingPeople).ToList()},
-                {"animals", brandsDto.OrderByDescending(b => b.RatingAnimals).ToList()}
-            };
-
-            return sortOptions[sortType];
+            return Sort(_mapper.EntitiesToDtos(brands), sortType);
         }
 
         public async Task<bool> KeyExists(int key)
         {
-            if (await _context.Brands.FindAsync(key) == null)
-                return false;
-
-            return true;
+            return await _context.Brands.FindAsync(key) != null;
         }
 
         public async Task<int> Count()
         {
             return await _context.Brands.CountAsync();
+        }
+
+        public async Task RemoveRangeByCompany(int companyId)
+        {
+            var brands = await _context.Brands.Where(b => b.CompanyId == companyId).ToListAsync();
+
+            foreach (var b in brands)
+                await _bcProvider.RemoveRangeByBrand(b.BrandId);
+
+            _context.Brands.RemoveRange(brands);
+
+            await _context.SaveChangesAsync();
+        }
+
+        private IEnumerable<BrandOutMultiDto> Sort(IList<BrandOutMultiDto> brands, string sortType)
+        {
+            var sortOptions = new Dictionary<string, IList<BrandOutMultiDto>>()
+            {
+                {"any", brands},
+                {"total", brands.OrderByDescending(b => b.RatingTotal).ToList()},
+                {"planet", brands.OrderByDescending(b => b.RatingPlanet).ToList()},
+                {"people", brands.OrderByDescending(b => b.RatingPeople).ToList()},
+                {"animals", brands.OrderByDescending(b => b.RatingAnimals).ToList()}
+            };
+
+            return sortOptions[sortType];
         }
     }
 }

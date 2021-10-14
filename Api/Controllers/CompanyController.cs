@@ -1,7 +1,7 @@
 ﻿using Api.Validators;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
-using Business.Services;
+using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -56,9 +56,6 @@ namespace Api.Controllers
         [HttpPut("{key}")]
         public async Task<ActionResult<CompanyOutDto>> UpdateCompany([FromRoute] int key, [FromBody] CompanyInDto newCompany)
         {
-            if (await _provider.Exists(newCompany))
-                return BadRequest();
-
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
