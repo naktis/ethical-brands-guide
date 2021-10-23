@@ -24,7 +24,7 @@ class BrandModal extends React.Component {
     const _this = this;
 
     if (typeof this.props.id !== "undefined" && this.props.id !== 0) {
-      axios.get(`https://localhost:44321/api/Brand/${this.props.id}`).then(function(response) {
+      axios.get(`https://localhost:5001/api/Brand/${this.props.id}`).then(function(response) {
       _this.setState({
         brand: response.data
       })

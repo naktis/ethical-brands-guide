@@ -16,7 +16,7 @@ class CategorySelect extends React.Component {
 	componentDidMount() {
     const _this = this;
 
-    axios.get("https://localhost:44321/api/Category").then(function(response) {
+    axios.get("https://localhost:5001/api/Category").then(function(response) {
       _this.setState({
         categories: response.data
         })

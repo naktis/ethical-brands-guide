@@ -1,12 +1,15 @@
 import './App.css';
-import Main from './Components/Main';
 import Header from './Components/Header';
+import Main from './Components/Main';
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Main />
+      <footer>
+        Etiškų maisto prekių ženklų gidas, 2021
+      </footer>
     </div>
   );
 }

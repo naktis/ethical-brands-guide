@@ -2,6 +2,8 @@ import React from "react";
 import Modal from './Modal.js';
 import BrandForm from "./BrandForm/BrandForm";
 import axios from "axios";
+import { Link } from 'react-router-dom'
+
 
 class Header extends React.Component {
 	constructor() {
@@ -50,8 +52,18 @@ class Header extends React.Component {
 	render() {
 		return(
 			<header className="App-header">
-				<div><h1 onClick={this.refreshPage}>Etiškų maisto prekių ženklų gidas</h1></div>
-				<div id="Header-button-div"><button onClick={this.showModal}>SUKURTI NAUJĄ</button></div>
+				<div>
+					<Link to="/" className="Title">
+						<h1>Etiškų maisto prekių ženklų gidas</h1>
+					</Link>
+				</div>
+				
+				<div id="Header-button-div">
+					<Link to="/create">
+						<button onClick={this.showModal}>SUKURTI NAUJĄ</button>
+					</Link>
+				</div>
+
 				<Modal show={this.state.show} handleClose={this.hideModal} title="Naujo prekės ženklo kūrimas">
 					<BrandForm brand={ this.emptyBrand() } handleSubmit={this.handleSubmit}/>
 				</Modal>
@@ -59,5 +71,7 @@ class Header extends React.Component {
 		)
 	}
 }
+
+//onClick={this.refreshPage}
 
 export default Header;

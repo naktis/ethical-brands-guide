@@ -42,7 +42,7 @@ class BrandForm extends React.Component {
     const _this = this;
     //_this.state.brand = _this.props.brand;
 
-    axios.get("https://localhost:44321/api/Category").then(function(response) {
+    axios.get("https://localhost:5001/api/Category").then(function(response) {
       _this.setState({
         categories: response.data
       })
@@ -51,7 +51,7 @@ class BrandForm extends React.Component {
         console.log(error);
     })
 
-    axios.get("https://localhost:44321/api/Company").then(function(response) {
+    axios.get("https://localhost:5001/api/Company").then(function(response) {
       _this.setState({
         companies: response.data
       })
