@@ -4,7 +4,6 @@ import BrandForm from "./BrandForm/BrandForm";
 import axios from "axios";
 import { Link } from 'react-router-dom'
 
-
 class Header extends React.Component {
 	constructor() {
 		super();

@@ -3,8 +3,9 @@ import BrandCard from "./BrandCard";
 import Modal from './Modal.js';
 import axios from "axios";
 import SelectOption from "./SelectOption";
-import BrandModal from "./BrandModal";
+import BrandDetails from "./View/BrandDetails";
 import BrandForm from "./BrandForm/BrandForm";
+import { Link } from 'react-router-dom';
 
 class HomePage extends React.Component {
   _isMounted = false;
@@ -39,7 +40,7 @@ class HomePage extends React.Component {
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
 	}
 
-  componentDidMount() {
+  componentWillMount() {
     this._isMounted = true;
     this.fetchData();
   }
@@ -90,7 +91,8 @@ class HomePage extends React.Component {
   };
 
   showBrand = (id) => {
-		this.setState({ show: true, brandId: id, brandKey: Math.random()});
+		//this.setState({ show: true, brandId: id, brandKey: Math.random()});
+    this.setState({ brandId: id, brandKey: Math.random()});
 	};
 
   showEdit = () => {
@@ -98,7 +100,7 @@ class HomePage extends React.Component {
   }
 
   makeBrandModal = (id) => {
-    return <BrandModal id={id}/>
+    return <BrandDetails id={id}/>
   }
 	
 	hideBrand = () => {
@@ -224,13 +226,16 @@ return {
         </div>
         <div id="result-div">
           { this.state.brands.map(function (brand){
-                  return <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
-                  sortType={this.state.sortType} />
+              return (
+                <Link to={`/view/${brand.brandId}`} className="DecorationNone">
+                  <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
+                    sortType={this.state.sortType} />
+                </Link>)
           }, this) }
           <Modal show={this.state.show} handleClose={this.hideBrand} 
             title={""} editable={true} editBrand={this.editBrand}
             deleteBrand={this.deleteBrand}>
-            <BrandModal id={this.state.brandId} key={this.state.brandKey} brandKeeper={this.brandKeeper}/>
+            <BrandDetails id={this.state.brandId} key={this.state.brandKey} brandKeeper={this.brandKeeper}/>
 				  </Modal>
           <Modal show={this.state.showEdit} handleClose={this.hideEdit} 
             title={"Prekės ženklo redagavimas"} editable={false} >

@@ -42,6 +42,10 @@ h1 {
   color: white;
 }
 
+.DecorationNone {
+  text-decoration: none;
+}
+
 #Header-button-div {
   padding-top: 10px;
   margin-bottom: 10px;

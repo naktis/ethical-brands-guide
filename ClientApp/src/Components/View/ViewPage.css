@@ -1,0 +1,41 @@
+.Brand-details {
+  color: black;
+  max-width: 1000px;
+  background-color: white;
+  padding: 10px 50px 20px 50px;
+  border-radius: 5px;
+}
+
+.View-page {
+  padding-top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.View-page button {
+  background-color: #11324d;
+  font-size: 40px;
+  height: 60px;
+  width: 120px;
+  margin: 20px 0px 0px 20px;
+  padding: 0px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.View-page button:hover {
+  background-color: #6b7aa1;
+}
+
+.Sides {
+  max-width: 30px;
+  min-width: 200px;
+}
+
+.loading {
+  min-width: 500px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
