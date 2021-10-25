@@ -1,10 +1,7 @@
 import React from "react";
 import BrandCard from "./BrandCard";
-import Modal from './Modal.js';
 import axios from "axios";
 import SelectOption from "./SelectOption";
-import BrandDetails from "./View/BrandDetails";
-import BrandForm from "./Create/BrandForm";
 import { Link } from 'react-router-dom';
 
 class HomePage extends React.Component {
@@ -22,7 +19,6 @@ class HomePage extends React.Component {
       sortType: "any",
       brandId: 0,
       brandKey: 0,
-      showEdit: false,
       brandName: "",
       brandDescription: "",
       brandCategoryId: 0
@@ -33,8 +29,6 @@ class HomePage extends React.Component {
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.makeRatingCountString = this.makeRatingCountString.bind(this);
-    this.editBrand = this.editBrand.bind(this);
-    this.deleteBrand = this.deleteBrand.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
@@ -91,24 +85,11 @@ class HomePage extends React.Component {
   };
 
   showBrand = (id) => {
-		//this.setState({ show: true, brandId: id, brandKey: Math.random()});
     this.setState({ brandId: id, brandKey: Math.random()});
 	};
-
-  showEdit = () => {
-    this.setState({ showEdit: true});
-  }
-
-  makeBrandModal = (id) => {
-    return <BrandDetails id={id}/>
-  }
 	
 	hideBrand = () => {
 	  this.setState({ show: false });
-	};
-
-  hideEdit = () => {
-	  this.setState({ showEdit: false });
 	};
 
   handleSearch(query, sortType, categoryId){
@@ -151,11 +132,7 @@ return {
 			companyId: 0
 		}
   }
-
-  editBrand() {
-    this.showEdit();
-  }
-
+/*
   deleteBrand() {
     axios.delete(`https://localhost:44321/api/Brand/${this.state.brandId}`).then(function(response) {
       console.log(`Brand has been deleted`);
@@ -163,6 +140,7 @@ return {
         console.log(error);
     })
   }
+  */
 
   handleSubmit(brand) {
     console.log("AUGUSTINA");
@@ -232,15 +210,6 @@ return {
                     sortType={this.state.sortType} />
                 </Link>)
           }, this) }
-          <Modal show={this.state.show} handleClose={this.hideBrand} 
-            title={""} editable={true} editBrand={this.editBrand}
-            deleteBrand={this.deleteBrand}>
-            <BrandDetails id={this.state.brandId} key={this.state.brandKey} brandKeeper={this.brandKeeper}/>
-				  </Modal>
-          <Modal show={this.state.showEdit} handleClose={this.hideEdit} 
-            title={"Prekės ženklo redagavimas"} editable={false} >
-            <BrandForm brand={ this.getEmptyBrand() } handleSubmit={this.handleSubmit}/>
-				  </Modal>
         </div>
       </main>
     )

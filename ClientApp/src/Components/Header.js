@@ -59,7 +59,7 @@ class Header extends React.Component {
 				
 				<div id="Header-button-div">
 					<Link to="/create">
-						<button>SUKURTI NAUJĄ</button>
+						<button>SUKURTI ŽENKLĄ</button>
 					</Link>
 				</div>
 

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { components, default as ReactSelect } from "react-select";
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link  } from 'react-router-dom'
 
 class BrandForm extends React.Component {
 	constructor(props) {
@@ -123,7 +123,7 @@ class BrandForm extends React.Component {
           type="text" 
           value={this.state.fields["name"]}
           onChange={this.handleChange.bind(this, "name")}
-          maxLength="40"
+          maxLength="50"
         />
         <span style={{ color: "red" }}>{this.state.errors["name"]}</span>
 
@@ -131,13 +131,14 @@ class BrandForm extends React.Component {
         <textarea 
           value={this.state.fields["description"]}
           onChange={this.handleChange.bind(this, "description")}
-          required 
-          minLength="5" 
-          maxLength="200"
+          maxLength="500"
         />
         <span style={{ color: "red" }}>{this.state.errors["description"]}</span>
 
-        <label>Kategorija</label>
+        <div className="Form-double-label-div">
+          <label>Kategorija</label>
+          <div><Link to="/categories">Redaguoti kategorijas</Link></div>
+        </div>
         <ReactSelect
           options={this.state.categoryOptions}
           isMulti
@@ -150,7 +151,10 @@ class BrandForm extends React.Component {
           placeholder="Pasirinkite kategorijas"
         />
 
-        <label>Įmonė</label>
+        <div className="Form-double-label-div">
+          <label>Įmonė</label>
+          <div>Redaguoti įmones</div>
+        </div>
         <select 
           value={this.state.fields["companyId"]} 
           onChange={this.handleChange.bind(this, "companyId")} 

@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 import './Shared.css';
 
 function BackButton() {
+  let history = useHistory();
+
   return(
-    <Link to="/"><button type="button" className="Back-button">&#8592;</button></Link>
+    <button type="button" className="Back-button" onClick={() => history.goBack()}>&#8592;</button>
   )
 }
 

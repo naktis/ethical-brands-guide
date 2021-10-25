@@ -9,3 +9,19 @@ textarea {
   min-height: 100px;
   width: auto;
 }
+
+.Form-double-label-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Form-double-label-div div {
+  text-decoration: underline;
+  color: #11324d;
+  font-size: medium;
+}
+
+.Form-double-label-div div:hover {
+  cursor: pointer;
+  color: #697885;
+}

@@ -1,0 +1,53 @@
+.Edit-category-list {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.Edit-category-page {
+  font-size: large;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+.Edit-category-page h1 {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.Item-Row {
+  padding: 10px 10px 10px 10px;
+  border: solid 1px;
+}
+
+.Item-Row:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.Edit-category-page button {
+  background-color: #11324d;
+  align-self: start;
+}
+
+.New-category {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 20px 0px 0px 0px;
+}
+
+.New-category * {
+  width: 100%;
+}
+
+.New-category input[type="text"] {
+  flex: 500%;
+  font-size: medium;
+}
+
+.Edit-category-label {
+  margin: 50px 0px 0px 0px;
+}
