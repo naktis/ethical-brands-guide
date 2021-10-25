@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from './HomePage';
-import CreatePage from './CreatePage';
+import CreatePage from './Create/CreatePage';
 import ViewPage from './View/ViewPage';
 import EditPage from './EditPage';
 

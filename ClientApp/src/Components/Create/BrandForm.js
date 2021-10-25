@@ -1,7 +1,8 @@
 import React from "react";
 import axios from "axios";
-import { components } from "react-select";
-import { default as ReactSelect } from "react-select";
+import { components, default as ReactSelect } from "react-select";
+import { Redirect } from 'react-router-dom'
+import FormValid from "./FormValid";
 
 const Option = (props) => {
   return (
@@ -28,7 +29,8 @@ class BrandForm extends React.Component {
       description: this.props.brand.description,
       companyId: this.props.brand.companyId,
       categoryOptions: [],
-      optionSelected: null
+      optionSelected: null,
+      createSucessful: false
 		};
 
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
@@ -97,11 +99,14 @@ class BrandForm extends React.Component {
     });
   };
 
-  collectData() {
-    var categoryIds = [];
-    this.state.optionSelected.forEach(o => {
-      categoryIds.push(o.value);
-    })
+  collectData(e) {
+    e.preventDefault();
+    let categoryIds = [];
+
+    if (this.state.optionSelected !== null)
+      this.state.optionSelected.forEach(o => {
+        categoryIds.push(o.value);
+      })
 
     let newBrand = {
       name: this.state.name,
@@ -109,15 +114,20 @@ class BrandForm extends React.Component {
       companyId: this.state.companyId,
       categoryIds: categoryIds
     }
-    this.props.handleSubmit(newBrand);
+
+    if (FormValid(newBrand)) {
+      this.props.handleSubmit(newBrand);
+      this.setState({createSucessful: true});
+    }
   }
 
 	render() {
 		return(
-			<div className="New-brand-form">
+			<form className="New-brand-form">
+        <h1>{this.props.title}</h1>
         <label>Pavadinimas:</label>
-        <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-        <label>Aprašymas</label><textarea value={this.state.description} onChange={this.handleDescriptionChange} />
+        <input type="text" value={this.state.name} onChange={this.handleNameChange} required minLength="2" maxLength="40"/>
+        <label>Aprašymas</label><textarea value={this.state.description} onChange={this.handleDescriptionChange} required minLength="5" maxLength="200"/>
         <label>Kategorija</label>
         <ReactSelect
           options={this.state.categoryOptions}
@@ -130,15 +140,18 @@ class BrandForm extends React.Component {
           onChange={this.handleOptionsChange}
           allowSelectAll={true}
           value={this.state.optionSelected}
+          placeholder="Pasirinkite kategoriją"
         />
         <label>Įmonė</label>
-        <select value={this.state.companyId} onChange={this.handleCompanyChange}>
+        <select value={this.state.companyId} onChange={this.handleCompanyChange} required="required">
+        <option value="0" disabled={true}>Pasirinkite įmonę</option>
           { this.state.companies.map(function (company){
               return <option value={company.companyId} key={company.companyId}>{company.name}</option>
           }) }
         </select>
         <input type="submit" value="KURTI" onClick={ this.collectData }/>
-      </div>
+        {this.state.createSucessful ? <Redirect to="/" /> : <div></div>}
+      </form>
 		)
 	}
 }

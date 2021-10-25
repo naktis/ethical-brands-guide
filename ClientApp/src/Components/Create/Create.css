@@ -1,0 +1,10 @@
+.Create-page {
+  padding-top: 100px;
+}
+
+textarea {
+  padding-top: 10px;
+  max-width: 485px;
+  min-width: 485px;
+  min-height: 100px;
+}

@@ -20,7 +20,7 @@ class BrandDetails extends React.Component {
 		};
 	}
 
-  componentWillMount() {
+  componentDidMount() {
     const _this = this;
 
     if (typeof this.props.id !== "undefined" && this.props.id !== 0) {
@@ -71,7 +71,7 @@ class BrandDetails extends React.Component {
                 <p>{this.state.brand.company.description}</p>
                 <p>{this.state.brand.company.rating.description}</p>
               </div>
-              <div>
+              <div className="Ratings-div">
                 <h3>Reitingai</h3>
                 <table>
                   <tbody>

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from './Modal.js';
-import BrandForm from "./BrandForm/BrandForm";
+import BrandForm from "./Create/BrandForm";
 import axios from "axios";
 import { Link } from 'react-router-dom'
 
@@ -59,7 +59,7 @@ class Header extends React.Component {
 				
 				<div id="Header-button-div">
 					<Link to="/create">
-						<button onClick={this.showModal}>SUKURTI NAUJĄ</button>
+						<button>SUKURTI NAUJĄ</button>
 					</Link>
 				</div>
 

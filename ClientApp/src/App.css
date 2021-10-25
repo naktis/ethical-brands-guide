@@ -40,6 +40,7 @@ h1 {
   cursor: pointer;
   text-decoration: none;
   color: white;
+  white-space: nowrap;
 }
 
 .DecorationNone {
@@ -316,7 +317,6 @@ select {
 .New-brand-form input[type="text"],
 .New-brand-form select,
 .New-brand-form textarea {
-  width: 100%;
   border-radius: 5px;
   height: 50px;
   font-size: large;
@@ -327,27 +327,19 @@ select {
   border-style: solid;
 }
 
-textarea {
-  padding-top: 10px;
-}
-
 .New-brand-form input[type="text"] {
   display: flex;
   flex-wrap: wrap;
 }
 
-.New-brand-form select {
-  width: 105%;
-}
-
 .New-brand-form input[type="submit"] {
   margin-top: 20px;
   height: 40px;
-  margin-bottom: 50px;
   cursor: pointer;
   background-color: #11324d;
   color: white;
   border-radius: 5px;
+  width: 100%;
 }
 
 .New-brand-form input[type="submit"]:hover {
@@ -384,5 +376,31 @@ textarea {
   .Company-content {
     flex-direction: column;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .App-header > div {
+    flex-grow: 1;
+    padding-right: 10px;
+  }
+
+  #Header-button-div {
+    padding-right: 40px;
+  }
+
+  .Brand-card {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1070px) {
+  .Company-content {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .Brand-details p {
+    font-size: initial;
   }
 }

@@ -12,17 +12,6 @@
   justify-content: space-between;
 }
 
-.View-page button {
-  background-color: #11324d;
-  font-size: 40px;
-  height: 60px;
-  width: 120px;
-  margin: 20px 0px 0px 20px;
-  padding: 0px;
-  padding-bottom: 5px;
-  text-align: center;
-}
-
 .View-page button:hover {
   background-color: #6b7aa1;
 }
@@ -38,4 +27,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 1070px) {
+  .Ratings-div {
+    display: flex;
+    flex-direction: column;
+  }
 }

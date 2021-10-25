@@ -4,7 +4,7 @@ import Modal from './Modal.js';
 import axios from "axios";
 import SelectOption from "./SelectOption";
 import BrandDetails from "./View/BrandDetails";
-import BrandForm from "./BrandForm/BrandForm";
+import BrandForm from "./Create/BrandForm";
 import { Link } from 'react-router-dom';
 
 class HomePage extends React.Component {
@@ -40,7 +40,7 @@ class HomePage extends React.Component {
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
 	}
 
-  componentWillMount() {
+  componentDidMount() {
     this._isMounted = true;
     this.fetchData();
   }
@@ -227,7 +227,7 @@ return {
         <div id="result-div">
           { this.state.brands.map(function (brand){
               return (
-                <Link to={`/view/${brand.brandId}`} className="DecorationNone">
+                <Link to={`/view/${brand.brandId}`} className="DecorationNone" key={brand.brandId}>
                   <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
                     sortType={this.state.sortType} />
                 </Link>)
