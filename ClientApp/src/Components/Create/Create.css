@@ -4,7 +4,8 @@
 
 textarea {
   padding-top: 10px;
-  max-width: 485px;
+  max-width: 700px;
   min-width: 485px;
   min-height: 100px;
+  width: auto;
 }
