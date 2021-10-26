@@ -77,7 +77,7 @@ class EditCategoryPage extends React.Component {
 	render() {
 		return(
 			<GenericPage>
-        <div className="Edit-category-page">
+        <div className="Edit-page">
 				<h1>Kategorijos</h1>
         <label>Sukurti naują kategoriją</label>
         <div className="New-category">
@@ -88,7 +88,7 @@ class EditCategoryPage extends React.Component {
             maxLength="40"
             placeholder="Kategorijos pavadinimas"
           />
-          <button onClick={this.handleSubmit.bind(this)}>Sukurti</button>
+          <button onClick={this.handleSubmit.bind(this)}>Kurti</button>
         </div>
         <span style={{ color: "red" }}>{this.state.error}</span>
   

@@ -6,6 +6,7 @@ import CreatePage from './Create/CreatePage';
 import ViewPage from './View/ViewPage';
 import EditPage from './EditPage';
 import EditCategoryPage from './Edit/EditCategoryPage';
+import EditCompanyPage from './Edit/EditCompanyPage';
 
 const Main = () => {
   return (
@@ -15,6 +16,7 @@ const Main = () => {
       <Route exact path="/view/:id" component={ViewPage} />
       <Route exact path="/edit" component={EditPage} />
       <Route exact path="/categories" component={EditCategoryPage} />
+      <Route exact path="/companies" component={EditCompanyPage} />
     </Switch>
   );
 }

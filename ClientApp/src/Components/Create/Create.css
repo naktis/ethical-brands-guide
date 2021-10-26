@@ -5,8 +5,9 @@
 textarea {
   padding-top: 10px;
   max-width: 700px;
-  min-width: 485px;
+  min-width: 495px;
   min-height: 100px;
+  max-height: 400px;
   width: auto;
 }
 
@@ -15,13 +16,13 @@ textarea {
   justify-content: space-between;
 }
 
-.Form-double-label-div div {
+.Form-double-label-div a {
   text-decoration: underline;
   color: #11324d;
   font-size: medium;
 }
 
-.Form-double-label-div div:hover {
+.Form-double-label-div a:hover {
   cursor: pointer;
   color: #697885;
 }

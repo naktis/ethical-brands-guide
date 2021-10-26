@@ -153,7 +153,7 @@ class BrandForm extends React.Component {
 
         <div className="Form-double-label-div">
           <label>Įmonė</label>
-          <div>Redaguoti įmones</div>
+          <div><Link to="/companies">Redaguoti įmones</Link></div>
         </div>
         <select 
           value={this.state.fields["companyId"]} 
