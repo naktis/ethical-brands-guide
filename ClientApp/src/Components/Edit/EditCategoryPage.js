@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import GenericPage from "../Shared/GenericPage";
+import ValidationError from "../Shared/Messages/ValidationError";
+import ServerError from "../Shared/Messages/ServerError";
+import SuccessMessage from "../Shared/Messages/SuccessMessage";
 import './Edit.css';
 
 class EditCategoryPage extends React.Component {
@@ -9,7 +12,9 @@ class EditCategoryPage extends React.Component {
 		this.state = {
       categories: [],
       newCategory: "",
-      error: ""
+      error: "",
+      successMessage: "",
+      duplicateMessage: ""
 		};
 
     this.fetchCategories = this.fetchCategories.bind(this);
@@ -33,7 +38,9 @@ class EditCategoryPage extends React.Component {
 
   handleChange(e) {
     this.setState({
-      newCategory: e.target.value
+      newCategory: e.target.value,
+      successMessage: "",
+      duplicateMessage: ""
     })
   }
 
@@ -65,9 +72,11 @@ class EditCategoryPage extends React.Component {
     axios.post('https://localhost:5001/api/Category', category)
     .then(function (response) {
       _this.fetchCategories();
+      _this.setState({ successMessage: "Kategorija sėkmingai sukurta" });
       console.log(response);
     })
     .catch(function (error) {
+      _this.setState({ duplicateMessage: "Tokia kategorija jau egzistuoja" });
       console.log(error);
     });
 
@@ -90,7 +99,9 @@ class EditCategoryPage extends React.Component {
           />
           <button onClick={this.handleSubmit.bind(this)}>Kurti</button>
         </div>
-        <span style={{ color: "red" }}>{this.state.error}</span>
+        <ValidationError>{this.state.error}</ValidationError>
+        <ServerError>{this.state.duplicateMessage}</ServerError>
+        <SuccessMessage>{this.state.successMessage}</SuccessMessage>
   
         <label className="Edit-category-label">Keisti kategorijas</label>
         <div className="Edit-category-list">

@@ -23,14 +23,13 @@ class HomePage extends React.Component {
       brandDescription: "",
       brandCategoryId: 0
 		};
-		this.hideBrand = this.hideBrand.bind(this);
+
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.makeRatingCountString = this.makeRatingCountString.bind(this);
     this.fetchData = this.fetchData.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
 	}
 
@@ -84,14 +83,6 @@ class HomePage extends React.Component {
     return <h1>{this.state.brandCount} prekės ženklų reitingai</h1>
   };
 
-  showBrand = (id) => {
-    this.setState({ brandId: id, brandKey: Math.random()});
-	};
-	
-	hideBrand = () => {
-	  this.setState({ show: false });
-	};
-
   handleSearch(query, sortType, categoryId){
     const _this = this;
 
@@ -124,13 +115,13 @@ class HomePage extends React.Component {
     this.setState({ query: e.target.value });
   }
 
-  getEmptyBrand() {
-return { 
-			name: "",
-			description: "",
-			categoryId: 0,
-			companyId: 0
-		}
+ getEmptyBrand() {
+    return { 
+      name: "",
+      description: "",
+      categoryId: 0,
+      companyId: 0
+    }
   }
 /*
   deleteBrand() {
@@ -141,34 +132,6 @@ return {
     })
   }
   */
-
-  handleSubmit(brand) {
-    console.log("AUGUSTINA");
-    console.log(this.state.brandId);
-    axios.put(`https://localhost:44321/api/Brand/${this.state.brandId}`, brand)
-		.then(function (response) {
-			console.log(response);
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-  }
-
-  brandKeeper(brand) {
-    this.setState({ 
-      brandName: brand.name,
-      brandDescription: brand.description,
-      brandCategoryId: brand.categoryId
-    });
-  }
-
-  getLastBrand() {
-    return {
-      name: this.state.brandName,
-      description: this.state.brandDescription,
-      categoryId: this.state.brandCategoryId
-    }
-  }
 
   render() {
     return(
@@ -206,8 +169,7 @@ return {
           { this.state.brands.map(function (brand){
               return (
                 <Link to={`/view/${brand.brandId}`} className="DecorationNone" key={brand.brandId}>
-                  <BrandCard brand={brand} onClick={() => this.showBrand(brand.brandId)} key={brand.brandId}
-                    sortType={this.state.sortType} />
+                  <BrandCard brand={brand} key={brand.brandId} sortType={this.state.sortType} />
                 </Link>)
           }, this) }
         </div>

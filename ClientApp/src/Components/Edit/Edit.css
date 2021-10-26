@@ -35,6 +35,7 @@
 .New-category {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 10px;
   margin: 20px 0px 0px 0px;
 }
@@ -68,7 +69,7 @@
   font-size: medium;
   padding: 5px 5px 5px 5px;
   max-width: 490px;
-  height: 50px;
+  height: 35px;
 }
 
 .Edit-page fieldset input[type="text"] {
@@ -103,12 +104,6 @@
   width: 100px;
   margin-top: 10px;
   align-self: center;
-}
-
-.Success-message {
-  margin-top: 10px;
-  color: green;
-  text-align: center;
 }
 
 .New-company textarea,

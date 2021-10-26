@@ -2,6 +2,9 @@ import React from "react";
 import axios from "axios";
 import GenericPage from "../Shared/GenericPage";
 import './Edit.css';
+import ValidationError from "../Shared/Messages/ValidationError";
+import ServerError from "../Shared/Messages/ServerError";
+import SuccessMessage from "../Shared/Messages/SuccessMessage";
 
 class EditCompanyPage extends React.Component {
   constructor(props) {
@@ -176,7 +179,7 @@ class EditCompanyPage extends React.Component {
             onChange={this.handleChange.bind(this, "name")}
             maxLength="50"
           />
-          <span style={{ color: "red" }}>{this.state.errors["name"]}</span>
+          <ValidationError>{this.state.errors["name"]}</ValidationError>
           
           <label>Įmonės aprašymas</label>
           <textarea 
@@ -196,7 +199,7 @@ class EditCompanyPage extends React.Component {
                 maxLength="1"
               />
             </div>
-            <span style={{ color: "red" }}>{this.state.errors["rating"]["planetRating"]}</span>
+            <ValidationError>{this.state.errors["rating"]["planetRating"]}</ValidationError>
 
             <div>
               <label>Socialinė gerovė </label>
@@ -207,7 +210,7 @@ class EditCompanyPage extends React.Component {
                 maxLength="1"
               />
             </div>
-            <span style={{ color: "red" }}>{this.state.errors["rating"]["peopleRating"]}</span>
+            <ValidationError>{this.state.errors["rating"]["peopleRating"]}</ValidationError>
 
             <div>
               <label>Gyvūnų gerovė </label>
@@ -218,7 +221,7 @@ class EditCompanyPage extends React.Component {
                 maxLength="1"
               />
             </div>
-            <span style={{ color: "red" }}>{this.state.errors["rating"]["animalsRating"]}</span>
+            <ValidationError>{this.state.errors["rating"]["animalsRating"]}</ValidationError>
 
             <label>Reitingų paaiškinimas</label>
             <textarea 
@@ -229,8 +232,8 @@ class EditCompanyPage extends React.Component {
           </fieldset>
         </div>
         <button className="New-company-button" onClick={this.handleSubmit.bind(this)}>Kurti</button>
-        <span className="Success-message">{this.state.successMessage}</span>
-        <span className="Duplicate-message">{this.state.duplicateMessage}</span>
+        <SuccessMessage>{this.state.successMessage}</SuccessMessage>
+        <ServerError>{this.state.duplicateMessage}</ServerError>
   
         <label className="Edit-category-label">Keisti įmones</label>
         <div className="Edit-category-list">

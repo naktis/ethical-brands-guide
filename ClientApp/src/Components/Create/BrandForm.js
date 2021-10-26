@@ -1,7 +1,10 @@
 import React from "react";
 import axios from "axios";
 import { components, default as ReactSelect } from "react-select";
-import { Redirect, Link  } from 'react-router-dom'
+import { Link  } from 'react-router-dom'
+import ValidationError from "../Shared/Messages/ValidationError";
+import ServerError from "../Shared/Messages/ServerError";
+import SuccessMessage from "../Shared/Messages/SuccessMessage";
 
 class BrandForm extends React.Component {
 	constructor(props) {
@@ -16,10 +19,13 @@ class BrandForm extends React.Component {
         "companyId": 0, 
         "categories": null
       },
-      errors: {}
+      errors: {},
+      duplicateMessage: this.props.duplicateMessage,
+      successMessage: this.props.successMessage
 		};
 
     this.collectData = this.collectData.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
   componentDidMount() {
@@ -55,12 +61,20 @@ class BrandForm extends React.Component {
     let fields = this.state.fields;
     fields[field] = e.target.value;
     this.setState({ fields });
+    this.setState({
+      successMessage: "",
+      duplicateMessage: ""
+    })
   }
 
   handleCategoryChange = (selected) => {
     let fields = this.state.fields;
     fields["categories"] = selected;
     this.setState({ fields });
+    this.setState({
+      successMessage: "",
+      duplicateMessage: ""
+    })
   };
 
   handleValidation() {
@@ -74,14 +88,6 @@ class BrandForm extends React.Component {
     } else if (fields["name"].length < 2) {
       formValid = false;
       errors["name"] = "Pavadinimą turi sudaryti daugiau nei 1 simbolis";
-    }
-
-    if (!fields["description"]) {
-      formValid = false;
-      errors["description"] = "Įveskite aprašymą";
-    } else if  (fields["description"].length < 10) {
-      formValid = false;
-      errors["description"] = "Aprašymą turi sudaryti daugiau nei 10 simbolių";
     }
 
     if (fields["companyId"] === 0) {
@@ -108,10 +114,31 @@ class BrandForm extends React.Component {
     })
     delete fields["categories"];
 
-    this.props.handleSubmit(fields);
-    this.setState({createSucessful: true});
-
+    //this.props.handleSubmit(fields);
+    this.handleSubmit(fields);
+    this.setState({
+      createSucessful: true,
+      fields: {
+        "name": "", 
+        "description":"", 
+        "companyId": 0, 
+        "categories": null
+      }
+    });
   }
+
+  handleSubmit(brand) {
+		const _this = this;
+		axios.post('https://localhost:5001/api/Brand', brand)
+		.then(function (response) {
+			_this.setState({ successMessage: "Prekės ženklas sėkmingai sukurtas"});
+			console.log(response);
+		})
+		.catch(function (error) {
+			_this.setState({ duplicateMessage: "Tokia prekės ženklo ir įmonės kombinacija jau egzistuoja"});
+			console.log(error);
+		});
+	}
 
 	render() {
 		return(
@@ -125,7 +152,7 @@ class BrandForm extends React.Component {
           onChange={this.handleChange.bind(this, "name")}
           maxLength="50"
         />
-        <span style={{ color: "red" }}>{this.state.errors["name"]}</span>
+        <ValidationError>{this.state.errors["name"]}</ValidationError>
 
         <label>Aprašymas</label>
         <textarea 
@@ -133,7 +160,6 @@ class BrandForm extends React.Component {
           onChange={this.handleChange.bind(this, "description")}
           maxLength="500"
         />
-        <span style={{ color: "red" }}>{this.state.errors["description"]}</span>
 
         <div className="Form-double-label-div">
           <label>Kategorija</label>
@@ -165,10 +191,11 @@ class BrandForm extends React.Component {
               return <option value={company.companyId} key={company.companyId}>{company.name}</option>
           }) }
         </select>
-        <span style={{ color: "red" }}>{this.state.errors["companyId"]}</span>
+        <ValidationError>{this.state.errors["companyId"]}</ValidationError>
 
         <input type="submit" value="KURTI" onClick={ this.collectData }/>
-        {this.state.createSucessful ? <Redirect to="/" /> : <div></div>}
+        <SuccessMessage>{this.state.successMessage}</SuccessMessage>
+        <ServerError>{this.state.duplicateMessage}</ServerError>
       </form>
 		)
 	}
@@ -191,3 +218,6 @@ const Categories = (props) => {
     </div>
   );
 };
+
+
+// {this.state.createSucessful ? <Redirect to="/" /> : <div></div>}
