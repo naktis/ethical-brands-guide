@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import HomePage from './HomePage';
+import HomePage from './Home/HomePage';
 import CreatePage from './Create/CreatePage';
 import ViewPage from './View/ViewPage';
-import EditPage from './EditPage';
+import EditPage from './Edit/EditPage';
 import EditCategoryPage from './Edit/EditCategoryPage';
 import EditCompanyPage from './Edit/EditCompanyPage';
 

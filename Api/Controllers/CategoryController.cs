@@ -29,7 +29,7 @@ namespace Api.Controllers
         [HttpGet("{key}")]
         public async Task<ActionResult<CategoryOutDto>> GetCategory(int key)
         {
-            if (_validator.KeyNegative(key))
+            if (!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))
@@ -59,7 +59,7 @@ namespace Api.Controllers
         [HttpPut("{key}")]
         public async Task<ActionResult<CategoryOutDto>> UpdateCategory([FromRoute] int key, [FromBody] CategoryInDto newCategory)
         {
-            if (_validator.KeyNegative(key))
+            if (!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (await _provider.Exists(newCategory))
@@ -77,7 +77,7 @@ namespace Api.Controllers
         [HttpDelete("{key}")]
         public async Task<IActionResult> DeleteCategory(int key)
         {
-            if (_validator.KeyNegative(key))
+            if (!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))

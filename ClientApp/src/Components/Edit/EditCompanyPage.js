@@ -93,7 +93,6 @@ class EditCompanyPage extends React.Component {
       _this.setState({ successMessage: "Įmonė sėkmingai sukurta" });
       _this.fetchCompanies();
       console.log(response);
-      console.log(_this.state.successMessage);
     })
     .catch(function (error) {
       console.log(error);
@@ -135,7 +134,6 @@ class EditCompanyPage extends React.Component {
     } else {
       errors.rating[field] = "";
     }
-    console.log(field);
 
     this.setState({ errors: errors });
     return ratingValid;

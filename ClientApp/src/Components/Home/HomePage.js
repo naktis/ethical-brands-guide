@@ -3,6 +3,7 @@ import BrandCard from "./BrandCard";
 import axios from "axios";
 import SelectOption from "./SelectOption";
 import { Link } from 'react-router-dom';
+import './Home.css';
 
 class HomePage extends React.Component {
   _isMounted = false;
@@ -21,7 +22,21 @@ class HomePage extends React.Component {
       brandKey: 0,
       brandName: "",
       brandDescription: "",
-      brandCategoryId: 0
+      brandCategoryId: 0,
+      paging: {
+        currentPage: 1,
+        nextBrands: [],
+        buttons: {
+          back: {
+            state: "disabled",
+            class: "Disabled-button"
+          },
+          next: {
+            state: "",
+            class: ""
+          }
+        }
+      }
 		};
 
     this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -31,6 +46,7 @@ class HomePage extends React.Component {
     this.makeRatingCountString = this.makeRatingCountString.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
+    this.handleNextButtonEnable = this.handleNextButtonEnable.bind(this);
 	}
 
   componentDidMount() {
@@ -64,6 +80,15 @@ class HomePage extends React.Component {
       }).catch((error) => {
         console.log(error);
     })
+
+    axios.get("https://localhost:5001/api/Brand?PageNumber=2").then(function(response) {
+      let paging = _this.state.paging;
+      paging.nextBrands = response.data
+      _this.setState({ paging: paging})
+      _this.handleNextButtonEnable();
+      }).catch((error) => {
+        console.log(error);
+    })
   }
 
   componentWillUnmount() {
@@ -83,10 +108,10 @@ class HomePage extends React.Component {
     return <h1>{this.state.brandCount} prekės ženklų reitingai</h1>
   };
 
-  handleSearch(query, sortType, categoryId){
+  handleSearch(query, sortType, categoryId, pageNumber){
     const _this = this;
 
-    axios.get(`https://localhost:44321/api/Brand?query=${query}&sortType=${sortType}&categoryId=${categoryId}`)
+    axios.get(`https://localhost:5001/api/Brand?PageNumber=${pageNumber}&query=${query}&sortType=${sortType}&categoryId=${categoryId}`)
       .then(function(response) {
       _this.setState({
         brands: response.data,
@@ -100,15 +125,15 @@ class HomePage extends React.Component {
   }
 
   handleRatingChange(e) {
-    this.handleSearch(this.state.query, e.target.value, this.state.categoryId);
+    this.handleSearch(this.state.query, e.target.value, this.state.categoryId, this.state.paging.currentPage);
   }
 
   handleCategoryChange(e) {
-    this.handleSearch(this.state.query, this.state.sortType, e.target.value);
+    this.handleSearch(this.state.query, this.state.sortType, e.target.value, this.state.paging.currentPage);
   }
 
   handleSearchClick() {
-    this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId);
+    this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId, this.state.paging.currentPage);
   }
 
  handleQueryChange = (e) => {
@@ -132,6 +157,60 @@ class HomePage extends React.Component {
     })
   }
   */
+
+  nextPage() {
+    const _this = this;
+    let currentPage = this.state.paging.currentPage;
+
+    this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId, currentPage+1);
+
+    axios.get(`https://localhost:5001/api/Brand?PageNumber=${currentPage+2}&query=${this.state.query}&sortType=${this.state.sortType}&categoryId=${this.state.categoryId}`)
+      .then(function(response) {
+        let paging = _this.state.paging;
+        paging.nextBrands = response.data
+
+        if(_this.state.paging.currentPage === 1) {
+          paging.buttons.back.state = "";
+          paging.buttons.back.class = "";
+        }
+        paging.currentPage = currentPage+1;
+
+
+        _this.setState({ paging: paging})
+        _this.handleNextButtonEnable();
+      }).catch((error) => {
+        console.log(error);
+    })
+  }
+
+  handleNextButtonEnable() {
+    let paging = this.state.paging;
+
+    if(this.state.paging.nextBrands.length === 0 ) {
+      paging.buttons.next.state = "disabled";
+      paging.buttons.next.class = "Disabled-button";
+    }
+
+    this.setState({ paging: paging })
+  }
+
+  previousPage() {
+    const _this = this;
+    let currentPage = this.state.paging.currentPage;
+
+    this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId, currentPage-1);
+
+    let paging = _this.state.paging;
+    paging.buttons.next.state = "";
+    paging.buttons.next.class = "";
+    paging.currentPage = currentPage-1;
+
+    if(paging.currentPage === 1) {
+      paging.buttons.back.state = "disabled";
+      paging.buttons.back.class = "Disabled-button";
+    }
+    _this.setState({ paging: paging})
+  }
 
   render() {
     return(
@@ -172,6 +251,21 @@ class HomePage extends React.Component {
                   <BrandCard brand={brand} key={brand.brandId} sortType={this.state.sortType} />
                 </Link>)
           }, this) }
+        </div>
+        <div className="Paging-div">
+          <button 
+            disabled={this.state.paging.buttons.back.state}
+            className={this.state.paging.buttons.back.class}
+            onClick={this.previousPage.bind(this)}>
+            &#8592;
+          </button>
+          <div>{this.state.paging.currentPage}</div>
+          <button 
+            disabled={this.state.paging.buttons.next.state} 
+            className={this.state.paging.buttons.next.class}
+            onClick={this.nextPage.bind(this)}>
+            &#8594;
+          </button>
         </div>
       </main>
     )

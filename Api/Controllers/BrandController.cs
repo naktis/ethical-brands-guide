@@ -34,7 +34,7 @@ namespace Api.Controllers
         [HttpGet("{key}")]
         public async Task<ActionResult<CategoryOutDto>> GetBrand(int key)
         {
-            if(_validator.KeyNegative(key))
+            if(!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))
@@ -45,14 +45,12 @@ namespace Api.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BrandOutMultiDto>>> GetBrands(
-            string query, string sortType = "any", int categoryId = 0)
+            [FromQuery] BrandParametersDto brandParams)
         {
-            if (_validator.KeyNegative(categoryId) || 
-                _validator.QueryTooLong(query) ||
-                _validator.SortTypeInvalid(sortType))
+            if (!await _validator.BrandParamsValid(brandParams))
                 return BadRequest();
 
-            return Ok(await _provider.Get(query, sortType, categoryId));
+            return Ok(_provider.Get(brandParams));
         }
 
         [HttpGet("Count")]
@@ -73,7 +71,7 @@ namespace Api.Controllers
         [HttpPut("{key}")]
         public async Task<ActionResult<BrandOutDto>> UpdateBrand([FromRoute] int key, [FromBody] BrandInDto newBrand)
         {
-            if (_validator.KeyNegative(key))
+            if (!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))
@@ -88,7 +86,7 @@ namespace Api.Controllers
         [HttpDelete("{key}")]
         public async Task<IActionResult> DeleteBrand(int key)
         {
-            if (_validator.KeyNegative(key))
+            if (!_validator.NumberWhole(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))

@@ -5,6 +5,7 @@ using Business.Services.Interfaces;
 using Data.Context;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,13 +17,25 @@ namespace Business.Services
         private readonly AppDbContext _context;
         private readonly IBrandMapper _mapper;
         private readonly IBrandCategoryProvider _bcProvider;
+        private readonly IDefaultSetter _defaultSetter;
+        private readonly Dictionary<string, Func<Brand, double>> sortFunctions;
 
         public BrandProvider(AppDbContext context, IBrandMapper mapper, 
-            IBrandCategoryProvider bcProvider)
+            IBrandCategoryProvider bcProvider, IDefaultSetter defaultSetter)
         {
             _context = context;
             _mapper = mapper;
             _bcProvider = bcProvider;
+            _defaultSetter = defaultSetter;
+
+            sortFunctions = new Dictionary<string, Func<Brand, double>>()
+            {
+                {"any", b => b.BrandId },
+                {"total", b => b.Company.Rating.TotalRating },
+                {"planet", b => b.Company.Rating.PlanetRating },
+                {"people", b => b.Company.Rating.PeopleRating },
+                {"animals", b => b.Company.Rating.AnimalsRating }
+            };
         }
 
         public async Task<BrandOutPostDto> Add(BrandInDto dto)
@@ -79,37 +92,52 @@ namespace Business.Services
             return _mapper.EntityToDto(brand);
         }
 
-        public async Task<IEnumerable<BrandOutMultiDto>> Get(string query, string sortType = "any", int categoryId = 0)
+        public IEnumerable<BrandOutMultiDto> Get(BrandParametersDto brandParamsRaw)
         {
+            var brandParams = _defaultSetter.SetMissingBrandParams(brandParamsRaw);
+
             var brands = new List<Brand>();
 
-            if (query == null && categoryId == 0)
-                brands = await _context.Brands
+            if (brandParams.Query == null && brandParams.CategoryId == 0)
+                brands = _context.Brands
                     .Include(b => b.Company)
                     .ThenInclude(c => c.Rating)
-                    .ToListAsync();
-            else if (query != null && categoryId == 0)
-                brands = await _context.Brands
-                    .Where(b => b.Name.Contains(query))
+                    .OrderByDescending(sortFunctions[brandParams.SortType])
+                    .Skip((brandParams.PageNumber - 1) * brandParams.PageSize)
+                    .Take(brandParams.PageSize)
+                    .ToList();
+            else if (brandParams.Query != null && brandParams.CategoryId == 0)
+                brands = _context.Brands
+                    .Where(b => b.Name.Contains(brandParams.Query))
                     .Include(b => b.Company)
                     .ThenInclude(c => c.Rating)
-                    .ToListAsync();
-            else if (query == null && categoryId != 0)
-                brands = await _context.Brands
+                    .OrderByDescending(sortFunctions[brandParams.SortType])
+                    .Skip((brandParams.PageNumber - 1) * brandParams.PageSize)
+                    .Take(brandParams.PageSize)
+                    .ToList();
+            else if (brandParams.Query == null && brandParams.CategoryId != 0)
+                brands = _context.Brands
                     .Where(b => b.BrandsCategories
-                        .Any(c => c.Category.CategoryId == categoryId))
+                        .Any(c => c.Category.CategoryId == brandParams.CategoryId))
                     .Include(b => b.Company)
                     .ThenInclude(c => c.Rating)
-                    .ToListAsync();
+                    .OrderByDescending(sortFunctions[brandParams.SortType])
+                    .Skip((brandParams.PageNumber - 1) * brandParams.PageSize)
+                    .Take(brandParams.PageSize)
+                    .ToList();
             else // query != null && categoryId != null
-                brands = await _context.Brands.Where(
+                brands = _context.Brands.Where(
                     b => b.BrandsCategories
-                    .Any(c => c.Category.CategoryId == categoryId) && b.Name.Contains(query))
+                    .Any(c => c.Category.CategoryId == brandParams.CategoryId) &&
+                              b.Name.Contains(brandParams.Query))
                     .Include(b => b.Company)
                     .ThenInclude(c => c.Rating)
-                    .ToListAsync();
+                    .OrderByDescending(sortFunctions[brandParams.SortType])
+                    .Skip((brandParams.PageNumber - 1) * brandParams.PageSize)
+                    .Take(brandParams.PageSize)
+                    .ToList();
 
-            return Sort(_mapper.EntitiesToDtos(brands), sortType);
+            return _mapper.EntitiesToDtos(brands);
         }
 
         public async Task<bool> KeyExists(int key)
@@ -132,20 +160,6 @@ namespace Business.Services
             _context.Brands.RemoveRange(brands);
 
             await _context.SaveChangesAsync();
-        }
-
-        private IEnumerable<BrandOutMultiDto> Sort(IList<BrandOutMultiDto> brands, string sortType)
-        {
-            var sortOptions = new Dictionary<string, IList<BrandOutMultiDto>>()
-            {
-                {"any", brands},
-                {"total", brands.OrderByDescending(b => b.RatingTotal).ToList()},
-                {"planet", brands.OrderByDescending(b => b.RatingPlanet).ToList()},
-                {"people", brands.OrderByDescending(b => b.RatingPeople).ToList()},
-                {"animals", brands.OrderByDescending(b => b.RatingAnimals).ToList()}
-            };
-
-            return sortOptions[sortType];
         }
     }
 }

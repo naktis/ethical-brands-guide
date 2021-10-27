@@ -8,7 +8,7 @@ namespace Business.Services.Interfaces
     public interface IBrandProvider : IProvider<BrandInDto, BrandOutDto>
     {
         public Task<BrandOutPostDto> Add(BrandInDto dto);
-        public Task<IEnumerable<BrandOutMultiDto>> Get(string query, string sortType, int categoryId);
+        public IEnumerable<BrandOutMultiDto> Get(BrandParametersDto parameters);
         public Task<int> Count();
         public Task RemoveRangeByCompany(int companyId);
     }

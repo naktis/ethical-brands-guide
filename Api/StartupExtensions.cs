@@ -18,6 +18,7 @@ namespace Api
             services.AddTransient<IRatingMapper, RatingMapper>();
             services.AddTransient<IBrandCategoryMapper, BrandCategoryMapper>();
             services.AddTransient<IBrandCategoryProvider, BrandCategoryProvider>();
+            services.AddTransient<IDefaultSetter, DefaultSetter>();
 
             services.AddTransient<ICategoryProvider, CategoryProvider>();
             services.AddTransient<ICompanyProvider, CompanyProvider>();
