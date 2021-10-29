@@ -1,0 +1,37 @@
+.Brand-details {
+  color: black;
+  max-width: 1000px;
+  background-color: white;
+  padding: 10px 50px 20px 50px;
+  border-radius: 5px;
+}
+
+.View-page {
+  padding-top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.View-page button:hover {
+  background-color: #6b7aa1;
+}
+
+.Sides {
+  max-width: 30px;
+  min-width: 200px;
+}
+
+.loading {
+  min-width: 500px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1070px) {
+  .Ratings-div {
+    display: flex;
+    flex-direction: column;
+  }
+}

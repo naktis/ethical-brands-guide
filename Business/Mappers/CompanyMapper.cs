@@ -2,11 +2,7 @@
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
 using Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Mappers
 {
@@ -19,14 +15,14 @@ namespace Business.Mappers
             _ratingMapper = ratingMapper;
         }
 
-        public CompanyOutDto EntityToDto(Company company, Rating rating)
+        public CompanyOutDto EntityToDto(Company company)
         {
             return new CompanyOutDto
             {
                 CompanyId = company.CompanyId,
                 Name = company.Name,
                 Description = company.Description,
-                Rating = _ratingMapper.EntityToDto(rating)
+                Rating = _ratingMapper.EntityToDto(company.Rating)
             };
         }
 
@@ -40,7 +36,7 @@ namespace Business.Mappers
             };
         }
 
-        public IEnumerable<CompanyOutMultiDto> EntityToDto(IEnumerable<Company> entities)
+        public IEnumerable<CompanyOutMultiDto> EntitiesToDtos(IEnumerable<Company> entities)
         {
             var companies = new List<CompanyOutMultiDto>();
 
@@ -54,7 +50,7 @@ namespace Business.Mappers
         {
             oldCompany.Name = newCompany.Name;
             oldCompany.Description = newCompany.Description;
-            oldCompany.Rating = _ratingMapper.EntityFromDto(newCompany.Rating);
+            oldCompany.Rating = _ratingMapper.CopyFromDto(oldCompany.Rating, newCompany.Rating);
 
             return oldCompany;
         }

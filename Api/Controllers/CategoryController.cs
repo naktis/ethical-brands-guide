@@ -1,7 +1,7 @@
-﻿using Api.Validators;
+﻿using Api.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
-using Business.Services;
+using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -15,21 +15,21 @@ namespace Api.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryProvider _provider;
-        private readonly IValidator _validator;
+        private readonly IKeyValidator _keyValidator;
 
         public CategoryController(ILogger<CategoryController> logger, 
-            ICategoryProvider provider, IValidator validator)
+            ICategoryProvider provider, IKeyValidator keyValidator)
         {
             _logger = logger;
             _provider = provider;
-            _validator = validator;
+            _keyValidator = keyValidator;
         }
 
 
         [HttpGet("{key}")]
         public async Task<ActionResult<CategoryOutDto>> GetCategory(int key)
         {
-            if (_validator.KeyNegative(key))
+            if (!_keyValidator.Validate(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))
@@ -59,7 +59,7 @@ namespace Api.Controllers
         [HttpPut("{key}")]
         public async Task<ActionResult<CategoryOutDto>> UpdateCategory([FromRoute] int key, [FromBody] CategoryInDto newCategory)
         {
-            if (_validator.KeyNegative(key))
+            if (!_keyValidator.Validate(key))
                 return BadRequest();
 
             if (await _provider.Exists(newCategory))
@@ -77,7 +77,7 @@ namespace Api.Controllers
         [HttpDelete("{key}")]
         public async Task<IActionResult> DeleteCategory(int key)
         {
-            if (_validator.KeyNegative(key))
+            if (!_keyValidator.Validate(key))
                 return BadRequest();
 
             if (!await _provider.KeyExists(key))

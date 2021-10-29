@@ -34,5 +34,15 @@ namespace Business.Mappers
                 Description = dto.Description
             };
         }
+
+        public Rating CopyFromDto(Rating entity, RatingInDto dto)
+        {
+            entity.PlanetRating = dto.PlanetRating;
+            entity.PeopleRating = dto.PeopleRating;
+            entity.AnimalsRating = dto.AnimalsRating;
+            entity.Description = dto.Description;
+
+            return entity;
+        }
     }
 }

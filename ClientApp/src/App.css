@@ -19,7 +19,7 @@
   top: 0;
 }
 
-.App-header > div {
+.App-header > * {
   flex: 1;
   padding-left: 40px;
   padding-right: 40px;
@@ -32,12 +32,19 @@ h1 {
   padding-bottom: 10px;
 }
 
-.App-header h1 {
-  font-size: calc(10px + 2vmin);
+.Title {
+  font-size: 15px;
   text-align: left;
   font-family: "Cinzel", serif;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
+  white-space: nowrap;
+}
+
+.DecorationNone {
+  text-decoration: none;
 }
 
 #Header-button-div {
@@ -271,8 +278,9 @@ select {
 .Brand-categories {
   display: flex;
   justify-content: space-evenly;
-  height: 1.5em;
   align-items: center;
+  flex-wrap: wrap;
+  column-gap: 20px;
 }
 
 .Company-content {
@@ -310,19 +318,14 @@ select {
 .New-brand-form input[type="text"],
 .New-brand-form select,
 .New-brand-form textarea {
-  width: 100%;
   border-radius: 5px;
   height: 50px;
   font-size: large;
   padding-left: 10px;
   font-family: "Roboto", sans-serif;
   font-weight: lighter;
-  color: gray;
+  color: black;
   border-style: solid;
-}
-
-textarea {
-  padding-top: 10px;
 }
 
 .New-brand-form input[type="text"] {
@@ -330,18 +333,14 @@ textarea {
   flex-wrap: wrap;
 }
 
-.New-brand-form select {
-  width: 105%;
-}
-
 .New-brand-form input[type="submit"] {
   margin-top: 20px;
   height: 40px;
-  margin-bottom: 50px;
   cursor: pointer;
   background-color: #11324d;
   color: white;
   border-radius: 5px;
+  width: 100%;
 }
 
 .New-brand-form input[type="submit"]:hover {
@@ -378,5 +377,31 @@ textarea {
   .Company-content {
     flex-direction: column;
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .App-header > div {
+    flex-grow: 1;
+    padding-right: 10px;
+  }
+
+  #Header-button-div {
+    padding-right: 40px;
+  }
+
+  .Brand-card {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1070px) {
+  .Company-content {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .Brand-details p {
+    font-size: initial;
   }
 }

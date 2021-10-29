@@ -1,8 +1,10 @@
 ﻿using Api.Validators;
+using Api.Validators.Interfaces;
 using Business.Calculators;
 using Business.Mappers;
 using Business.Mappers.Interfaces;
 using Business.Services;
+using Business.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api
@@ -15,6 +17,9 @@ namespace Api
             services.AddTransient<ICategoryMapper, CategoryMapper>();
             services.AddTransient<ICompanyMapper, CompanyMapper>();
             services.AddTransient<IRatingMapper, RatingMapper>();
+            services.AddTransient<IBrandCategoryMapper, BrandCategoryMapper>();
+            services.AddTransient<IBrandCategoryProvider, BrandCategoryProvider>();
+            services.AddTransient<IDefaultSetter, DefaultSetter>();
 
             services.AddTransient<ICategoryProvider, CategoryProvider>();
             services.AddTransient<ICompanyProvider, CompanyProvider>();
@@ -22,7 +27,10 @@ namespace Api
 
             services.AddTransient<IRatingCalculator, RatingCalculator>();
 
-            services.AddTransient<IValidator, Validator>();
+            services.AddTransient<IKeyValidator, KeyValidator>();
+            services.AddTransient<IBrandParamsValidator, BrandParamsValidator>();
+            services.AddTransient<INewBrandValidator, NewBrandValidator>();
+            services.AddTransient<ICompanyValidator, CompanyValidator>();
 
             return services;
         }

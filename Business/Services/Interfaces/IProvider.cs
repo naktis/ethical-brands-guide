@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace Business.Services
+namespace Business.Services.Interfaces
 {
     public interface IProvider<TIn, TOut> 
         where TIn : class 
@@ -14,6 +10,6 @@ namespace Business.Services
         public Task Update(int key, TIn dto);
         public Task Delete(int key);
         public Task<bool> KeyExists(int key);
-
+        public Task<bool> Exists(TIn dto);
     }
 }

@@ -1,0 +1,125 @@
+.Edit-category-list {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.Edit-page,
+.New-company {
+  font-size: large;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+.Edit-page h1 {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.Item-Row {
+  padding: 10px 10px 10px 10px;
+  border: solid 1px;
+}
+
+.Item-Row:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.Edit-page button {
+  background-color: #11324d;
+}
+
+.New-category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0px 0px 0px;
+}
+
+.New-category * {
+  width: 100%;
+}
+
+.New-category input[type="text"] {
+  flex: 500%;
+  font-size: medium;
+}
+
+.Edit-category-label {
+  margin: 50px 0px 0px 0px;
+}
+
+.Edit-page fieldset {
+  max-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.Edit-page fieldset label {
+  margin-right: 20px;
+  min-width: 150px;
+}
+
+.Edit-page input[type="text"] {
+  font-size: medium;
+  padding: 5px 5px 5px 5px;
+  max-width: 490px;
+  height: 35px;
+}
+
+.Edit-page fieldset input[type="text"] {
+  max-width: 30px;
+  height: 30px;
+  text-align: center;
+  padding-left: 0px;
+}
+
+.Edit-page fieldset div {
+  display: flex;
+  align-items: center;
+}
+
+.Edit-page fieldset textarea {
+  min-width: 465px;
+  max-width: 625px;
+}
+
+.New-company {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  margin-top: 20px;
+}
+
+.Edit-page > label {
+  font-weight: bold;
+}
+
+.New-company-button {
+  width: 100px;
+  margin-top: 10px;
+  align-self: center;
+}
+
+.New-company textarea,
+.New-company input[type="text"],
+.New-company fieldset {
+  border-radius: 5px;
+  font-size: large;
+  padding-left: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+  color: black;
+  border-style: solid;
+  border-color: rgb(209, 209, 209);
+}
+
+.Duplicate-message {
+  color: red;
+  text-align: center;
+}
