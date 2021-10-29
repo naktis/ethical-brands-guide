@@ -218,6 +218,3 @@ const Categories = (props) => {
     </div>
   );
 };
-
-
-// {this.state.createSucessful ? <Redirect to="/" /> : <div></div>}

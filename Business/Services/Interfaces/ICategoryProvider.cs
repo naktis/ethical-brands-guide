@@ -9,7 +9,6 @@ namespace Business.Services.Interfaces
     {
         public Task<CategoryOutDto> Add(CategoryInDto category);
         public Task<IEnumerable<CategoryOutDto>> GetAll();
-        public Task<bool> Exists(CategoryInDto category);
         public Task<bool> AllExist(List<int> categoryIds);
     }
 }

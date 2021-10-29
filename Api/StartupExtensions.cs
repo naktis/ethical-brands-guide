@@ -1,4 +1,5 @@
 ﻿using Api.Validators;
+using Api.Validators.Interfaces;
 using Business.Calculators;
 using Business.Mappers;
 using Business.Mappers.Interfaces;
@@ -26,7 +27,10 @@ namespace Api
 
             services.AddTransient<IRatingCalculator, RatingCalculator>();
 
-            services.AddTransient<IValidator, Validator>();
+            services.AddTransient<IKeyValidator, KeyValidator>();
+            services.AddTransient<IBrandParamsValidator, BrandParamsValidator>();
+            services.AddTransient<INewBrandValidator, NewBrandValidator>();
+            services.AddTransient<ICompanyValidator, CompanyValidator>();
 
             return services;
         }

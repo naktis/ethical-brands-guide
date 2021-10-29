@@ -9,6 +9,5 @@ namespace Business.Services.Interfaces
     {
         public Task<CompanyOutDto> Add(CompanyInDto company);
         public Task<IEnumerable<CompanyOutMultiDto>> GetAll();
-        public Task<bool> Exists(CompanyInDto company);
     }
 }

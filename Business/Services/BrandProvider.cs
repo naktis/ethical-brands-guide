@@ -161,5 +161,13 @@ namespace Business.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> Exists(BrandInDto brand)
+        {
+            if (await _context.Brands.FirstOrDefaultAsync(b => b.Name == brand.Name && b.CompanyId == brand.CompanyId) == null)
+                return false;
+
+            return true;
+        }
     }
 }

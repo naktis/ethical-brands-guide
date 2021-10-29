@@ -10,6 +10,6 @@ namespace Business.Services.Interfaces
         public Task Update(int key, TIn dto);
         public Task Delete(int key);
         public Task<bool> KeyExists(int key);
-
+        public Task<bool> Exists(TIn dto);
     }
 }

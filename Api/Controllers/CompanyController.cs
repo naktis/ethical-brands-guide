@@ -1,4 +1,4 @@
-﻿using Api.Validators;
+﻿using Api.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
@@ -15,20 +15,23 @@ namespace Api.Controllers
     {
         private readonly ILogger<CategoryController> _logger;
         private readonly ICompanyProvider _provider;
-        private readonly IValidator _validator;
+        private readonly IKeyValidator _keyValidator;
 
         public CompanyController(ILogger<CategoryController> logger, 
-            ICompanyProvider provider, IValidator validator)
+            ICompanyProvider provider, IKeyValidator keyValidator)
         {
             _logger = logger;
             _provider = provider;
-            _validator = validator;
+            _keyValidator = keyValidator;
         }
 
 
         [HttpGet("{key}")]
         public async Task<ActionResult<CompanyOutDto>> GetCompany(int key)
         {
+            if (!_keyValidator.Validate(key))
+                return BadRequest();
+
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
@@ -56,6 +59,9 @@ namespace Api.Controllers
         [HttpPut("{key}")]
         public async Task<ActionResult<CompanyOutDto>> UpdateCompany([FromRoute] int key, [FromBody] CompanyInDto newCompany)
         {
+            if (!_keyValidator.Validate(key))
+                return BadRequest();
+
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
@@ -68,6 +74,9 @@ namespace Api.Controllers
         [HttpDelete("{key}")]
         public async Task<IActionResult> DeleteCompany(int key)
         {
+            if (!_keyValidator.Validate(key))
+                return BadRequest();
+
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
