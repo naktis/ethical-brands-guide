@@ -3,6 +3,7 @@ using Api.Validators.Interfaces;
 using Business.Calculators;
 using Business.Mappers;
 using Business.Mappers.Interfaces;
+using Business.Security;
 using Business.Services;
 using Business.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ namespace Api
             services.AddTransient<IBrandProvider, BrandProvider>();
 
             services.AddTransient<IRatingCalculator, RatingCalculator>();
+            services.AddTransient<IHasher, Hasher>();
 
             services.AddTransient<IKeyValidator, KeyValidator>();
             services.AddTransient<IBrandParamsValidator, BrandParamsValidator>();

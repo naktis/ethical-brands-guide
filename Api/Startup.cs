@@ -1,3 +1,4 @@
+using Business.Options;
 using Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,8 @@ namespace Api
                 options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
             services.ConfigureDependencyInjection();
+
+            services.Configure<HashingOptions>(Configuration.GetSection("Hashing"));
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
