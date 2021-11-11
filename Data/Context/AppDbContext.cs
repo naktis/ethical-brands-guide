@@ -17,6 +17,7 @@ namespace Data.Context
                 .Property(c => c.Name)
                 .IsRequired();
 
+
             modelBuilder.Entity<BrandCategory>()
                 .HasKey(x => new { x.BrandId, x.CategoryId });
 
@@ -30,10 +31,10 @@ namespace Data.Context
                 .WithMany(c => c.BrandsCategories)
                 .HasForeignKey(bc => bc.CategoryId);
 
+
             modelBuilder.Entity<Company>()
                 .Property(c => c.Name)
                 .IsRequired();
-
 
             modelBuilder.Entity<Company>()
                 .HasMany(c => c.Brands)
@@ -45,7 +46,26 @@ namespace Data.Context
                 .WithOne(r => r.Company)
                 .IsRequired();
 
+            modelBuilder.Entity<User>()
+                .Property(u => u.Username)
+                .IsRequired();
 
+            modelBuilder.Entity<User>()
+                .Property(u => u.Email)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Password)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.Type)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .HasMany(c => c.Brands)
+                .WithOne(b => b.Creator)
+                .IsRequired();
         }
 
         public DbSet<Brand> Brands { get; set; }
@@ -53,5 +73,6 @@ namespace Data.Context
         public DbSet<BrandCategory> BrandsCategories { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
