@@ -1,6 +1,6 @@
 ﻿namespace Data.Models
 {
-    public enum UserTypes
+    public enum UserType
     {
         Registered,
         Admin

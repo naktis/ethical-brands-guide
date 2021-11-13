@@ -27,6 +27,7 @@ namespace Api
 
             services.ConfigureDependencyInjection();
 
+            services.Configure<AccountOptions>(Configuration.GetSection("Account"));
             services.Configure<HashingOptions>(Configuration.GetSection("Hashing"));
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>

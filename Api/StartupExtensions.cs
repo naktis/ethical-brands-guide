@@ -20,14 +20,17 @@ namespace Api
             services.AddTransient<IRatingMapper, RatingMapper>();
             services.AddTransient<IBrandCategoryMapper, BrandCategoryMapper>();
             services.AddTransient<IBrandCategoryProvider, BrandCategoryProvider>();
+            services.AddTransient<IUserMapper, UserMapper>();
             services.AddTransient<IDefaultSetter, DefaultSetter>();
 
             services.AddTransient<ICategoryProvider, CategoryProvider>();
             services.AddTransient<ICompanyProvider, CompanyProvider>();
             services.AddTransient<IBrandProvider, BrandProvider>();
+            services.AddTransient<IUserProvider, UserProvider>();
 
             services.AddTransient<IRatingCalculator, RatingCalculator>();
             services.AddTransient<IHasher, Hasher>();
+            services.AddTransient<IGenerator, Generator>();
 
             services.AddTransient<IKeyValidator, KeyValidator>();
             services.AddTransient<IBrandParamsValidator, BrandParamsValidator>();

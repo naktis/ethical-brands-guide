@@ -8,7 +8,7 @@ namespace Data.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public UserTypes Type { get; set; }
+        public UserType Type { get; set; }
 
         public ICollection<Brand> Brands { get; set; }
     }
