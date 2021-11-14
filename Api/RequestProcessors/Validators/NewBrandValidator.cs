@@ -1,8 +1,8 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Services.Interfaces;
 
-namespace Api.Validators
+namespace Api.RequestProcessors.Validators
 {
     public class NewBrandValidator : INewBrandValidator
     {
@@ -11,25 +11,23 @@ namespace Api.Validators
         const int MaxDescriptionLength = 500;
         private readonly ICompanyProvider _companyProvider;
         private readonly IBrandProvider _brandProvider;
+        private readonly ISharedValidator _sharedValidator;
 
-        public NewBrandValidator(ICompanyProvider companyProvider, IBrandProvider brandProvider)
+        public NewBrandValidator(ICompanyProvider companyProvider, IBrandProvider brandProvider,
+            ISharedValidator sharedValidator)
         {
             _companyProvider = companyProvider;
             _brandProvider = brandProvider;
+            _sharedValidator = sharedValidator;
         }
         public bool Validate(BrandInDto brand)
         {
-            if (TextGoodLength(brand.Name, MaxNameLength, MinNameLength) &&
-                TextGoodLength(brand.Description, MaxDescriptionLength) &&
+            if (_sharedValidator.TextGoodLength(brand.Name, MaxNameLength, MinNameLength) &&
+                _sharedValidator.TextGoodLength(brand.Description, MaxDescriptionLength) &&
                 _companyProvider.KeyExists(brand.CompanyId).Result &&
                 !_brandProvider.Exists(brand).Result)
                 return true;
             return false;
-        }
-
-        private bool TextGoodLength(string text, int max, int min = 0)
-        {
-            return text.Length >= min && text.Length <= max;
         }
     }
 }

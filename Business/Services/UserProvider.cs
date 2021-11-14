@@ -17,33 +17,35 @@ namespace Business.Services
         private readonly IUserMapper _mapper;
         private readonly IHasher _hasher;
         private readonly IGenerator _generator;
+        private readonly IDefaultSetter _defaultSetter;
 
         public UserProvider(AppDbContext context, IUserMapper mapper, IHasher hasher,
-            IGenerator generator)
+            IGenerator generator, IDefaultSetter defaultSetter)
         {
             _context = context;
             _mapper = mapper;
             _hasher = hasher;
             _generator = generator;
+            _defaultSetter = defaultSetter;
         }
 
         public async Task<UserOutDto> Add(UserInDto userDto)
         {
             var user = _mapper.EntityFromDto(userDto);
-            var password = _generator.GeneratePassword();
-            user.Password = _hasher.Hash(password);
+            user = _defaultSetter.SetDefaultUserType(user);
+
+            // var password = _generator.GeneratePassword();
+            user.Password = _hasher.Hash(userDto.Password);
 
             var createdUser = await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-
-            // TODO: send email with password
 
             return _mapper.EntityToDto(createdUser.Entity);
         }
 
         public async Task<LoginResultDto> Authenticate(LoginDto request)
         {
-            var user = await GetUserByEmailPassword(request);
+            var user = await GetUserByCredentials(request);
 
             if (user != null)
             {
@@ -65,10 +67,7 @@ namespace Business.Services
 
         public async Task<bool> Exists(UserInDto request)
         {
-            var username = await GetUserByUsername(request.Username);
-            var email = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-            return (username != null || email != null);
+            return await GetUserByUsername(request.Username) != null;
         }
 
         public async Task<UserOutDto> Get(int key)
@@ -85,9 +84,9 @@ namespace Business.Services
             return await Get(key) != null;
         }
 
-        private async Task<User> GetUserByEmailPassword(LoginDto request)
+        private async Task<User> GetUserByCredentials(LoginDto request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            var user = await GetUserByUsername(request.Username);
 
             if (user != null)
             {
@@ -103,9 +102,9 @@ namespace Business.Services
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
 
-        public async Task<bool> EmailMatchesPass(LoginDto request)
+        public async Task<bool> UsernameMatchesPass(LoginDto request)
         {
-            return await GetUserByEmailPassword(request) != null;
+            return await GetUserByCredentials(request) != null;
         }
     }
 }

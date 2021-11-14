@@ -1,8 +1,13 @@
-﻿using Business.Dto.InputDto;
+﻿using Api.RequestProcessors.TokenExtractors;
+using Api.RequestProcessors.Validators.Interfaces;
+using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
+using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -13,38 +18,45 @@ namespace Api.Controllers
     {
         private readonly ILogger _logger;
         private readonly IUserProvider _provider;
+        private readonly IClaimExtractor _extractor;
+        private readonly IUserValidator _validator;
 
-        public UserController(ILogger<CategoryController> logger, IUserProvider provider)
+        public UserController(ILogger<CategoryController> logger, IUserProvider provider,
+            IClaimExtractor extractor, IUserValidator validator)
         {
             _logger = logger;
             _provider = provider;
+            _extractor = extractor;
+            _validator = validator;
         }
 
         [HttpPost(Name = nameof(PostUser))]
-        public async Task<ActionResult<UserOutDto>> PostUser(UserInDto brand)
+        [Authorize]
+        public async Task<ActionResult<UserOutDto>> PostUser(UserInDto user)
         {
-            /* TODO: User Validation
-            if (!_brandValidator.Validate(brand))
+            var role = _extractor.GetRole(HttpContext.User.Identity as ClaimsIdentity);
+            if (role != UserType.Admin.ToString())
+                return Forbid();
+
+            if (!_validator.Validate(user) || await _provider.Exists(user))
                 return BadRequest();
-            */
 
-            var createdUser = await _provider.Add(brand);
+            var createdUser = await _provider.Add(user);
 
-            _logger.LogInformation($"New brand (id={createdUser.UserId}) has been added");
+            _logger.LogInformation($"New user (id={createdUser.UserId}) has been added");
             return CreatedAtRoute(nameof(PostUser), createdUser);
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<ActionResult<LoginResultDto>> Login([FromBody] LoginDto request)
         {
-            /* TODO: Login Validation
-            if (!_userValidator.ValidateLogin(request))
+            if (!_validator.ValidateLogin(request))
                 return BadRequest();
-            */
 
-            if (!await _provider.EmailMatchesPass(request))
+            if (!await _provider.UsernameMatchesPass(request))
             {
-                _logger.LogInformation($"Log in denied for email address {request.Email}");
+                _logger.LogInformation($"Log in denied for username {request.Username}");
                 return NotFound();
             }
 

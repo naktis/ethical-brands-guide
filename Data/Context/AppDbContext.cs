@@ -50,9 +50,11 @@ namespace Data.Context
                 .Property(u => u.Username)
                 .IsRequired();
 
+            /*
             modelBuilder.Entity<User>()
                 .Property(u => u.Email)
                 .IsRequired();
+            */
 
             modelBuilder.Entity<User>()
                 .Property(u => u.Password)
@@ -64,8 +66,7 @@ namespace Data.Context
 
             modelBuilder.Entity<User>()
                 .HasMany(c => c.Brands)
-                .WithOne(b => b.Creator)
-                .IsRequired();
+                .WithOne(b => b.Creator);
         }
 
         public DbSet<Brand> Brands { get; set; }

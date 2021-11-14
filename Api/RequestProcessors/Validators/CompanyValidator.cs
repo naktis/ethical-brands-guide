@@ -1,4 +1,4 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
 
 namespace Api.Validators
@@ -9,22 +9,24 @@ namespace Api.Validators
         const int MaxNameLength = 50;
         const int MaxDescriptionLength = 500;
         const int MaxRating = 5;
+        private readonly ISharedValidator _sharedValidator;
+
+        public CompanyValidator(ISharedValidator sharedValidator)
+        {
+            _sharedValidator = sharedValidator;
+        }
+
         public bool Validate(CompanyInDto company)
         {
-            if (TextGoodLength(company.Name, MaxNameLength, MinNameLength) &&
-                TextGoodLength(company.Description, MaxDescriptionLength) &&
-                TextGoodLength(company.Rating.Description, MaxDescriptionLength) &&
+            if (_sharedValidator.TextGoodLength(company.Name, MaxNameLength, MinNameLength) &&
+                _sharedValidator.TextGoodLength(company.Description, MaxDescriptionLength) &&
+                _sharedValidator.TextGoodLength(company.Rating.Description, MaxDescriptionLength) &&
                 RatingValid(company.Rating.AnimalsRating) && 
                 RatingValid(company.Rating.PeopleRating) &&
                 RatingValid(company.Rating.PlanetRating))
                 return true;
 
             return false;
-        }
-
-        private bool TextGoodLength(string text, int max, int min = 0)
-        {
-            return text.Length >= min && text.Length <= max;
         }
 
         private bool RatingValid(int rating)

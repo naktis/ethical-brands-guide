@@ -1,9 +1,9 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace Api.Validators
+namespace Api.RequestProcessors.Validators
 {
     public class BrandParamsValidator : IBrandParamsValidator
     {

@@ -12,7 +12,7 @@ namespace Data.Models
         public int CompanyId { get; set; }
         public Company Company { get; set; }
 
-        public int CreatorId { get; set; }
+        public int? CreatorId { get; set; }
         public User Creator { get; set; }
 
         public ICollection<BrandCategory> BrandsCategories { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Business.Dto.InputDto;
 
-namespace Api.Validators.Interfaces
+namespace Api.RequestProcessors.Validators.Interfaces
 {
     public interface INewBrandValidator : IValidator<BrandInDto> {}
 }

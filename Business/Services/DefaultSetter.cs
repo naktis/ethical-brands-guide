@@ -1,5 +1,6 @@
 ﻿using Business.Dto.InputDto;
 using Business.Services.Interfaces;
+using Data.Models;
 
 namespace Business.Services
 {
@@ -26,6 +27,12 @@ namespace Business.Services
                 brandParams.PageNumber = 1;
 
             return brandParams;
+        }
+
+        public User SetDefaultUserType(User user)
+        {
+            user.Type = UserType.Registered;
+            return user;
         }
     }
 }

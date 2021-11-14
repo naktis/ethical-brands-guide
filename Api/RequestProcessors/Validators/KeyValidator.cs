@@ -1,6 +1,6 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 
-namespace Api.Validators
+namespace Api.RequestProcessors.Validators
 {
     public class KeyValidator : IKeyValidator
     {

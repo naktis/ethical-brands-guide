@@ -38,9 +38,11 @@ namespace Business.Services
             };
         }
 
-        public async Task<BrandOutPostDto> Add(BrandInDto dto)
+        public async Task<BrandOutPostDto> Add(BrandInDto dto, int creatorId)
         {
             var entity = _mapper.EntityFromDto(dto);
+
+            entity.CreatorId = creatorId;
 
             var company = await _context.Companies.FindAsync(dto.CompanyId);
             entity.Company = company;
@@ -83,13 +85,17 @@ namespace Business.Services
         {
             var brand = await _context.Brands
                 .Where(b => b.BrandId == key)
+                .Include(b => b.Creator)
                 .Include(b => b.Company)
                 .ThenInclude(c => c.Rating)
                 .Include(b => b.BrandsCategories)
                 .ThenInclude(bc => bc.Category)
                 .FirstOrDefaultAsync();
 
-            return _mapper.EntityToDto(brand);
+            var brandDto = _mapper.EntityToDto(brand);
+            brandDto.CreatorName = brand.Creator.Username;
+
+            return brandDto;
         }
 
         public IEnumerable<BrandOutMultiDto> Get(BrandParametersDto brandParamsRaw)

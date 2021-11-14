@@ -1,7 +1,8 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace Api.Controllers
 
 
         [HttpGet("{key}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CompanyOutDto>> GetCompany(int key)
         {
             if (!_keyValidator.Validate(key))
@@ -39,12 +41,14 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CompanyOutDto>>> GetCompanies()
         {
             return Ok(await _provider.GetAll());
         }
 
         [HttpPost(Name = nameof(PostCompany))]
+        [Authorize]
         public async Task<ActionResult<CompanyOutDto>> PostCompany(CompanyInDto company)
         {
             if (await _provider.Exists(company))
@@ -57,6 +61,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{key}")]
+        [Authorize]
         public async Task<ActionResult<CompanyOutDto>> UpdateCompany([FromRoute] int key, [FromBody] CompanyInDto newCompany)
         {
             if (!_keyValidator.Validate(key))
@@ -72,6 +77,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{key}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCompany(int key)
         {
             if (!_keyValidator.Validate(key))

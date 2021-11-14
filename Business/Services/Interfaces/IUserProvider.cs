@@ -11,6 +11,6 @@ namespace Business.Services.Interfaces
         public Task Delete(int key);
         public Task<bool> KeyExists(int key);
         public Task<bool> Exists(UserInDto dto);
-        public Task<bool> EmailMatchesPass(LoginDto request);
+        public Task<bool> UsernameMatchesPass(LoginDto request);
     }
 }

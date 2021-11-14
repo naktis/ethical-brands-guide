@@ -10,16 +10,15 @@ namespace Business.Mappers
     {
         public User CopyFromDto(User entity, UserInDto dto)
         {
-            throw new NotImplementedException();
+            entity.Username = dto.Username;
+            return entity;
         }
 
         public User EntityFromDto(UserInDto user)
         {
             return new User
             {
-                Username = user.Username,
-                Email = user.Email,
-                Type = UserType.Registered
+                Username = user.Username
             };
         }
 
@@ -29,8 +28,7 @@ namespace Business.Mappers
             {
                 UserId = user.UserId,
                 Username = user.Username,
-                Email = user.Email,
-                Type = user.Type
+                Type = user.Type.ToString()
             };
         }
 
@@ -40,8 +38,7 @@ namespace Business.Mappers
             {
                 UserId = user.UserId,
                 Username = user.Username,
-                Email = user.Email,
-                Type = user.Type
+                Type = user.Type.ToString()
             };
         }
     }
