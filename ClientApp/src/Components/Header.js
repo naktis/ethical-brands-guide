@@ -3,11 +3,10 @@ import axios from "axios";
 import { Link } from 'react-router-dom'
 
 class Header extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-		  show: false,
-		  
+		  show: false
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -43,12 +42,16 @@ class Header extends React.Component {
 						<h1>Etiškų maisto prekių ženklų gidas</h1>
 					</Link>
 				</div>
-				
+				{ this.props.user.token !== "" ? 
 				<div id="Header-button-div">
-					<Link to="/create">
-						<button>SUKURTI ŽENKLĄ</button>
-					</Link>
-				</div>
+				<Link
+					to={{
+						pathname: "/create",
+						user: this.props.user}}
+				>
+					<button>SUKURTI ŽENKLĄ</button>
+				</Link>
+				</div>: <div></div>}
 			</header>
 		)
 	}

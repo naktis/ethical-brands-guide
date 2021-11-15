@@ -88,7 +88,11 @@ class EditCompanyPage extends React.Component {
     let newCompany = this.state.fields;
 
     const _this = this;
-    axios.post('https://localhost:5001/api/Company', newCompany)
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.location.user.token}` }
+    }
+
+    axios.post('https://localhost:5001/api/Company', newCompany, config)
     .then(function (response) {
       _this.setState({ successMessage: "Įmonė sėkmingai sukurta" });
       _this.fetchCompanies();

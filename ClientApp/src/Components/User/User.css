@@ -1,0 +1,14 @@
+.Login-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-size: large;
+  row-gap: 10px;
+}
+
+.Login-form h2 {
+  font-family: "Lora", serif;
+  font-weight: lighter;
+  text-align: center;
+  font-size: xx-large;
+}

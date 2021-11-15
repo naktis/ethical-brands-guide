@@ -69,7 +69,11 @@ class EditCategoryPage extends React.Component {
     }
 
     const _this = this;
-    axios.post('https://localhost:5001/api/Category', category)
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.location.user.token}` }
+    }
+
+    axios.post('https://localhost:5001/api/Category', category, config)
     .then(function (response) {
       _this.fetchCategories();
       _this.setState({ successMessage: "Kategorija sėkmingai sukurta" });

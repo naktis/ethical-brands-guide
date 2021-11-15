@@ -93,7 +93,9 @@ namespace Business.Services
                 .FirstOrDefaultAsync();
 
             var brandDto = _mapper.EntityToDto(brand);
-            brandDto.CreatorName = brand.Creator.Username;
+
+            if (brand.Creator != null)
+                brandDto.CreatorName = brand.Creator.Username;
 
             return brandDto;
         }
