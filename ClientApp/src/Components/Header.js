@@ -47,9 +47,29 @@ class Header extends React.Component {
 				<Link
 					to={{
 						pathname: "/create",
-						user: this.props.user}}
+						user: this.props.user
+					}}
 				>
-					<button>SUKURTI ŽENKLĄ</button>
+					<button>NAUJAS ŽENKLAS</button>
+				</Link>
+				
+				{ this.props.user.type === "Admin" ?
+					<Link
+						to={{
+							pathname: "/users",
+							user: this.props.user
+						}}
+					>
+						<button>NAUDOTOJAI</button>
+					</Link> : null
+				}
+				
+				<Link to="./">
+					<img 
+						src="./img/logout.png" 
+						onClick={this.props.handleLogout} 
+						alt="Log out"
+					></img>
 				</Link>
 				</div>: <div></div>}
 			</header>

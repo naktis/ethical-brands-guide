@@ -8,6 +8,7 @@ import EditPage from './Edit/EditPage';
 import EditCategoryPage from './Edit/EditCategoryPage';
 import EditCompanyPage from './Edit/EditCompanyPage';
 import LoginPage from './User/LoginPage';
+import UserPage from './User/UserPage';
 
 const Main = (props) => {
   return (
@@ -18,6 +19,7 @@ const Main = (props) => {
       <Route exact path="/edit" component={EditPage}/>
       <Route exact path="/categories" component={EditCategoryPage}/>
       <Route exact path="/companies" component={EditCompanyPage}/>
+      <Route exact path="/users" component={UserPage}/>
       <Route 
         exact path="/login" 
         render={() => <LoginPage 

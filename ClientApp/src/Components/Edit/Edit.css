@@ -44,7 +44,8 @@
   width: 100%;
 }
 
-.New-category input[type="text"] {
+.New-category input[type="text"],
+.New-category input[type="password"] {
   flex: 500%;
   font-size: medium;
 }
@@ -65,7 +66,8 @@
   min-width: 150px;
 }
 
-.Edit-page input[type="text"] {
+.Edit-page input[type="text"],
+.Edit-page input[type="password"] {
   font-size: medium;
   padding: 5px 5px 5px 5px;
   max-width: 490px;

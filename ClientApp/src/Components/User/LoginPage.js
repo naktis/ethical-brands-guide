@@ -16,6 +16,8 @@ class LoginPage extends React.Component {
       errors: {},
 			mismatchMessage: "",
 		};
+
+    console.log(this.props.user);
 	}
 
 	handleChange(field, e) {
@@ -34,12 +36,12 @@ class LoginPage extends React.Component {
 
 		if (!fields["username"]) {
       formValid = false;
-      errors["username"] = "Enter your user name";
+      errors["username"] = "Įveskite naudotojo vardą";
     }
 
 		if (!fields["password"]) {
       formValid = false;
-      errors["password"] = "Enter your password";
+      errors["password"] = "Įveskite slaptažodį";
     }
 
 		this.setState({ errors: errors });
@@ -53,7 +55,7 @@ class LoginPage extends React.Component {
 			_this.props.handleLogin(response.data);
 		})
 		.catch(function (error) {
-			_this.setState({ mismatchMessage: "Username and password do not match."});
+			_this.setState({ mismatchMessage: "Naudotojas su nurodytu vardu ir slaptažodžiu neegzistuoja"});
 			console.log(error);
 		});
 	}
@@ -71,9 +73,9 @@ class LoginPage extends React.Component {
 		return(
 			<GenericPage>
         <div className="Login-form">
-          <h2>Log in to your account</h2>
+          <h2>Prisijungimas</h2>
 
-          <label>User name</label>
+          <label>Naudotojo vardas</label>
           <input 
             type="text"
             value={this.state.fields["username"]}
@@ -82,7 +84,7 @@ class LoginPage extends React.Component {
           />
           <ValidationError>{this.state.errors["username"]}</ValidationError>
 
-          <label>Password</label>
+          <label>Slaptažodis</label>
           <input 
             type="password"
             value={this.state.fields["password"]}
@@ -91,7 +93,7 @@ class LoginPage extends React.Component {
           />
           <ValidationError>{this.state.errors["password"]}</ValidationError>
 
-          <input type="submit" value="LOG IN" onClick={ this.collectData.bind(this) }/>
+          <input type="submit" value="PRISIJUNGTI" onClick={ this.collectData.bind(this) }/>
           <ServerError>{this.state.mismatchMessage}</ServerError>
         </div>
       </GenericPage>

@@ -6,10 +6,6 @@ import './Create.css';
 import { Redirect } from "react-router";
 
 class CreatePage extends React.Component {
-	constructor(props) {
-		super(props);
-		//console.log(this.props.location.user);
-	}
 	/*constructor(props) {
 		super(props);
 		this.state = {
@@ -46,7 +42,7 @@ class CreatePage extends React.Component {
 		return(
 			<GenericPage>
 				{ this.props.location.user === undefined ? 
-				<Redirect to="/login" /> 
+				<Redirect to="/" /> 
 				: 
 				<BrandForm 
 					brand={ this.emptyBrand() } 
