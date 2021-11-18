@@ -73,7 +73,7 @@ class EditCompanyPage extends React.Component {
     if (!this.state.fields.name) {
       formValid = false;
       errors.name = "Įveskite pavadinimą";
-    } else if (this.state.fields.name < 3) {
+    } else if (this.state.fields.name.length < 3) {
       formValid = false;
       errors.name  = "Pavadinimą turi sudaryti daugiau nei 2 simboliai";
     }

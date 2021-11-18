@@ -1,7 +1,4 @@
-﻿// Based on source code by Eric Damtoft:
-// https://medium.com/dealeron-dev/storing-passwords-in-net-core-3de29a3da4d2
-
-using Business.Options;
+﻿using Business.Options;
 using Business.Security;
 using Microsoft.Extensions.Options;
 using System;

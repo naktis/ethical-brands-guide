@@ -1,5 +1,6 @@
 ﻿using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Services.Interfaces
@@ -12,5 +13,6 @@ namespace Business.Services.Interfaces
         public Task<bool> KeyExists(int key);
         public Task<bool> Exists(UserInDto dto);
         public Task<bool> UsernameMatchesPass(LoginDto request);
+        public Task<IEnumerable<UserOutDto>> GetAll();
     }
 }

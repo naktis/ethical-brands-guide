@@ -7,6 +7,7 @@
   padding: 0px;
   padding-bottom: 5px;
   text-align: center;
+  display: none;
 }
 
 .Generic-page {
@@ -22,6 +23,7 @@
   flex: 500%;
   max-width: 1000px;
   border-radius: 5px;
+  margin: 40px;
 }
 
 .Generic-content {
@@ -31,6 +33,7 @@
   width: fit-content;
   min-width: 500px;
   margin: auto;
+  border-radius: 5px;
 }
 
 .New-brand-form h1 {

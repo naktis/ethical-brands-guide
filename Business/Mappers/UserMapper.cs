@@ -11,6 +11,7 @@ namespace Business.Mappers
         public User CopyFromDto(User entity, UserInDto dto)
         {
             entity.Username = dto.Username;
+            entity.Type = (UserType)Enum.Parse(typeof(UserType), dto.Type);
             return entity;
         }
 
@@ -18,8 +19,9 @@ namespace Business.Mappers
         {
             return new User
             {
-                Username = user.Username
-            };
+                Username = user.Username,
+                Type = (UserType)Enum.Parse(typeof(UserType), user.Type)
+        };
         }
 
         public UserOutDto EntityToDto(User user)

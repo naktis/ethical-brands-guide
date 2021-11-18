@@ -7,6 +7,7 @@ using Data.Context;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Services
@@ -32,9 +33,10 @@ namespace Business.Services
         public async Task<UserOutDto> Add(UserInDto userDto)
         {
             var user = _mapper.EntityFromDto(userDto);
-            user = _defaultSetter.SetDefaultUserType(user);
 
+            // user = _defaultSetter.SetDefaultUserType(user);
             // var password = _generator.GeneratePassword();
+
             user.Password = _hasher.Hash(userDto.Password);
 
             var createdUser = await _context.Users.AddAsync(user);
@@ -84,6 +86,21 @@ namespace Business.Services
             return await Get(key) != null;
         }
 
+        public async Task<IEnumerable<UserOutDto>> GetAll()
+        {
+            var users = new List<UserOutDto>();
+
+            foreach (var u in await _context.Users.ToListAsync())
+                users.Add(_mapper.EntityToDto(u));
+
+            return users;
+        }
+
+        public async Task<bool> UsernameMatchesPass(LoginDto request)
+        {
+            return await GetUserByCredentials(request) != null;
+        }
+
         private async Task<User> GetUserByCredentials(LoginDto request)
         {
             var user = await GetUserByUsername(request.Username);
@@ -100,11 +117,6 @@ namespace Business.Services
         private async Task<User> GetUserByUsername(string username)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
-        }
-
-        public async Task<bool> UsernameMatchesPass(LoginDto request)
-        {
-            return await GetUserByCredentials(request) != null;
         }
     }
 }

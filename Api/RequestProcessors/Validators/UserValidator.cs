@@ -1,5 +1,6 @@
 ﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
+using Data.Models;
 using System;
 using System.Linq;
 
@@ -20,7 +21,9 @@ namespace Api.RequestProcessors.Validators
 
         public bool Validate(UserInDto user)
         {
-            return ValidateUsername(user.Username) && ValidatePassword(user.Password);
+            return ValidateUsername(user.Username) && 
+                   ValidatePassword(user.Password) &&
+                   ValidateType(user.Type);
         }
 
         public bool ValidateLogin(LoginDto user)
@@ -37,6 +40,11 @@ namespace Api.RequestProcessors.Validators
         private bool ValidatePassword(string password)
         {
             return _sharedValidator.TextGoodLength(password, MaxPassLength, MinPassLength);
+        }
+
+        private bool ValidateType(string type)
+        {
+            return Enum.IsDefined(typeof(UserType), type);
         }
     }
 }

@@ -12,3 +12,23 @@
   text-align: center;
   font-size: xx-large;
 }
+
+input[type="text"] {
+  padding-left: 10px;
+  font-size: large;
+}
+
+.List-of-editables {
+  text-align: left;
+  font-size: large;
+  padding-top: 20px;
+}
+
+.List-of-editables label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.Item-row-container {
+  margin-top: 20px;
+}

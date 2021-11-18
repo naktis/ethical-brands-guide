@@ -7,6 +7,7 @@ using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace Api.Controllers
         private readonly IClaimExtractor _extractor;
         private readonly IUserValidator _validator;
 
-        public UserController(ILogger<CategoryController> logger, IUserProvider provider,
+        public UserController(ILogger<UserController> logger, IUserProvider provider,
             IClaimExtractor extractor, IUserValidator validator)
         {
             _logger = logger;
@@ -63,6 +64,17 @@ namespace Api.Controllers
             var result = await _provider.Authenticate(request);
             _logger.LogInformation($"Log in accepted for user with id = {result.UserId}");
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<UserOutDto>>> GetUsers()
+        {
+            var role = _extractor.GetRole(HttpContext.User.Identity as ClaimsIdentity);
+            if (role != UserType.Admin.ToString())
+                return Forbid();
+
+            return Ok(await _provider.GetAll());
         }
     }
 }
