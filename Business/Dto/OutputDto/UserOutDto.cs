@@ -1,10 +1,11 @@
-﻿using Commons;
+﻿using Data.Models;
 
 namespace Business.Dto.OutputDto
 {
     public class UserOutDto
     {
-        public string Name { get; set; }
-        public UserType Type { get; set; }
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string Type { get; set; }
     }
 }

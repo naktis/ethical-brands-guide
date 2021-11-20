@@ -51,8 +51,10 @@ h1 {
   padding-top: 10px;
   margin-bottom: 10px;
   display: flex;
-  direction: rtl;
   flex-grow: 1;
+  gap: 15px;
+  justify-content: flex-end;
+  padding-left: 10px;
 }
 
 button {
@@ -62,6 +64,9 @@ button {
   background-color: inherit;
   border-radius: 5px;
   font-family: "Lato", sans-serif;
+  border: none;
+  border-bottom-style: solid;
+  border-bottom-color: white;
 }
 
 button:hover {
@@ -109,7 +114,8 @@ main {
   padding-left: 15px;
 }
 
-#input-row img:hover {
+#input-row img:hover,
+#Header-button-div img:hover {
   cursor: pointer;
   opacity: 60%;
 }
@@ -316,8 +322,11 @@ select {
 }
 
 .New-brand-form input[type="text"],
-.New-brand-form select,
-.New-brand-form textarea {
+select,
+.New-brand-form textarea,
+.Login-form input[type="text"],
+.Edit-page input[type="text"],
+input[type="password"] {
   border-radius: 5px;
   height: 50px;
   font-size: large;
@@ -333,7 +342,8 @@ select {
   flex-wrap: wrap;
 }
 
-.New-brand-form input[type="submit"] {
+.New-brand-form input[type="submit"],
+.Login-form input[type="submit"] {
   margin-top: 20px;
   height: 40px;
   cursor: pointer;
@@ -378,6 +388,10 @@ select {
     flex-direction: column;
     justify-content: center;
   }
+}
+
+#Header-button-div img {
+  max-height: 50px;
 }
 
 @media screen and (max-width: 550px) {

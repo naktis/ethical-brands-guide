@@ -44,7 +44,8 @@
   width: 100%;
 }
 
-.New-category input[type="text"] {
+.New-category input[type="text"],
+.New-category input[type="password"] {
   flex: 500%;
   font-size: medium;
 }
@@ -63,13 +64,6 @@
 .Edit-page fieldset label {
   margin-right: 20px;
   min-width: 150px;
-}
-
-.Edit-page input[type="text"] {
-  font-size: medium;
-  padding: 5px 5px 5px 5px;
-  max-width: 490px;
-  height: 35px;
 }
 
 .Edit-page fieldset input[type="text"] {
@@ -107,7 +101,6 @@
 }
 
 .New-company textarea,
-.New-company input[type="text"],
 .New-company fieldset {
   border-radius: 5px;
   font-size: large;
@@ -122,4 +115,9 @@
 .Duplicate-message {
   color: red;
   text-align: center;
+}
+
+select {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }

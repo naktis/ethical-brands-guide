@@ -5,6 +5,7 @@ import './Edit.css';
 import ValidationError from "../Shared/Messages/ValidationError";
 import ServerError from "../Shared/Messages/ServerError";
 import SuccessMessage from "../Shared/Messages/SuccessMessage";
+import { Redirect } from "react-router";
 
 class EditCompanyPage extends React.Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class EditCompanyPage extends React.Component {
     if (!this.state.fields.name) {
       formValid = false;
       errors.name = "Įveskite pavadinimą";
-    } else if (this.state.fields.name < 3) {
+    } else if (this.state.fields.name.length < 3) {
       formValid = false;
       errors.name  = "Pavadinimą turi sudaryti daugiau nei 2 simboliai";
     }
@@ -88,7 +89,11 @@ class EditCompanyPage extends React.Component {
     let newCompany = this.state.fields;
 
     const _this = this;
-    axios.post('https://localhost:5001/api/Company', newCompany)
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.location.user.token}` }
+    }
+
+    axios.post('https://localhost:5001/api/Company', newCompany, config)
     .then(function (response) {
       _this.setState({ successMessage: "Įmonė sėkmingai sukurta" });
       _this.fetchCompanies();
@@ -162,84 +167,95 @@ class EditCompanyPage extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.setState = (state,callback)=>{
+        return;
+    };
+  }
+
 	render() {
 		return(
 			<GenericPage>
-        <div className="Edit-page">
-				<h1>Įmonės</h1>
-        <label>Sukurti naują įmonę</label>
+        { this.props.location.user === undefined ? 
+				<Redirect to="/" /> 
+				: 
+        <div>
+          <div className="Edit-page">
+            <h1>Įmonės</h1>
+            <label>Sukurti naują įmonę</label>
 
-        <div className="New-company">
-          <label>Pavadinimas</label>
-          <input 
-            type="text" 
-            value={this.state.fields["name"]}
-            onChange={this.handleChange.bind(this, "name")}
-            maxLength="50"
-          />
-          <ValidationError>{this.state.errors["name"]}</ValidationError>
-          
-          <label>Įmonės aprašymas</label>
-          <textarea 
-            value={this.state.fields["description"]}
-            onChange={this.handleChange.bind(this, "description")}
-            maxLength="500"
-          />
-
-          <fieldset>
-            <legend>Reitingai</legend>
-            <div>
-              <label>Tvarumas</label>
+            <div className="New-company">
+              <label>Pavadinimas</label>
               <input 
                 type="text" 
-                value={this.state.fields.rating["planetRating"]}
-                onChange={this.handleRatingChange.bind(this, "planetRating")}
-                maxLength="1"
+                value={this.state.fields["name"]}
+                onChange={this.handleChange.bind(this, "name")}
+                maxLength="50"
               />
-            </div>
-            <ValidationError>{this.state.errors["rating"]["planetRating"]}</ValidationError>
-
-            <div>
-              <label>Socialinė gerovė </label>
-              <input 
-                type="text" 
-                value={this.state.fields["rating"]["peopleRating"]}
-                onChange={this.handleRatingChange.bind(this, "peopleRating")}
-                maxLength="1"
+              <ValidationError>{this.state.errors["name"]}</ValidationError>
+              
+              <label>Įmonės aprašymas</label>
+              <textarea 
+                value={this.state.fields["description"]}
+                onChange={this.handleChange.bind(this, "description")}
+                maxLength="500"
               />
-            </div>
-            <ValidationError>{this.state.errors["rating"]["peopleRating"]}</ValidationError>
 
-            <div>
-              <label>Gyvūnų gerovė </label>
-              <input 
-                type="text" 
-                value={this.state.fields["rating"]["animalsRating"]}
-                onChange={this.handleRatingChange.bind(this, "animalsRating")}
-                maxLength="1"
-              />
-            </div>
-            <ValidationError>{this.state.errors["rating"]["animalsRating"]}</ValidationError>
+              <fieldset>
+                <legend>Reitingai</legend>
+                <div>
+                  <label>Tvarumas</label>
+                  <input 
+                    type="text" 
+                    value={this.state.fields.rating["planetRating"]}
+                    onChange={this.handleRatingChange.bind(this, "planetRating")}
+                    maxLength="1"
+                  />
+                </div>
+                <ValidationError>{this.state.errors["rating"]["planetRating"]}</ValidationError>
 
-            <label>Reitingų paaiškinimas</label>
-            <textarea 
-              value={this.state.fields["rating"]["description"]}
-              onChange={this.handleRatingDescChange.bind(this)}
-              maxLength="500"
-            />
-          </fieldset>
-        </div>
-        <button className="New-company-button" onClick={this.handleSubmit.bind(this)}>Kurti</button>
-        <SuccessMessage>{this.state.successMessage}</SuccessMessage>
-        <ServerError>{this.state.duplicateMessage}</ServerError>
-  
-        <label className="Edit-category-label">Keisti įmones</label>
-        <div className="Edit-category-list">
-          { this.state.companies.map(function (company){
-            return <div className="Item-Row" key={company.companyId}>{company.name}</div>
-              }) }
-        </div>
-        </div>
+                <div>
+                  <label>Socialinė gerovė </label>
+                  <input 
+                    type="text" 
+                    value={this.state.fields["rating"]["peopleRating"]}
+                    onChange={this.handleRatingChange.bind(this, "peopleRating")}
+                    maxLength="1"
+                  />
+                </div>
+                <ValidationError>{this.state.errors["rating"]["peopleRating"]}</ValidationError>
+
+                <div>
+                  <label>Gyvūnų gerovė </label>
+                  <input 
+                    type="text" 
+                    value={this.state.fields["rating"]["animalsRating"]}
+                    onChange={this.handleRatingChange.bind(this, "animalsRating")}
+                    maxLength="1"
+                  />
+                </div>
+                <ValidationError>{this.state.errors["rating"]["animalsRating"]}</ValidationError>
+
+                <label>Reitingų paaiškinimas</label>
+                <textarea 
+                  value={this.state.fields["rating"]["description"]}
+                  onChange={this.handleRatingDescChange.bind(this)}
+                  maxLength="500"
+                />
+              </fieldset>
+            </div>
+            <button className="New-company-button" onClick={this.handleSubmit.bind(this)}>Kurti</button>
+            <SuccessMessage>{this.state.successMessage}</SuccessMessage>
+            <ServerError>{this.state.duplicateMessage}</ServerError>
+      
+            <label className="Edit-category-label">Keisti įmones</label>
+            <div className="Edit-category-list">
+              { this.state.companies.map(function (company){
+                return <div className="Item-Row" key={company.companyId}>{company.name}</div>
+                  }) }
+            </div>
+          </div>
+        </div>}
 			</GenericPage>
 		)
 	}

@@ -1,10 +1,14 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.TokenExtractors;
+using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -20,11 +24,13 @@ namespace Api.Controllers
         private readonly IBrandParamsValidator _bpValidator;
         private readonly IKeyValidator _keyValidator;
         private readonly INewBrandValidator _brandValidator;
+        private readonly IClaimExtractor _extractor;
 
         public BrandController(ILogger<CategoryController> logger, 
             IBrandProvider provider, IBrandParamsValidator bpValidator, 
             ICompanyProvider companyProvider, ICategoryProvider categoryProvider,
-            IKeyValidator keyValidator, INewBrandValidator brandValidator)
+            IKeyValidator keyValidator, INewBrandValidator brandValidator,
+            IClaimExtractor extractor)
         {
             _logger = logger;
             _provider = provider;
@@ -33,10 +39,12 @@ namespace Api.Controllers
             _categoryProvider = categoryProvider;
             _keyValidator = keyValidator;
             _brandValidator = brandValidator;
+            _extractor = extractor;
         }
 
 
         [HttpGet("{key}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CategoryOutDto>> GetBrand(int key)
         {
             if(!_keyValidator.Validate(key))
@@ -49,8 +57,9 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<BrandOutMultiDto>> GetBrands(
-            [FromQuery] BrandParametersDto brandParams)
+            [FromQuery]BrandParameters brandParams)
         {
             if (!_bpValidator.Validate(brandParams))
                 return BadRequest();
@@ -59,24 +68,28 @@ namespace Api.Controllers
         }
 
         [HttpGet("Count")]
+        [AllowAnonymous]
         public async Task<ActionResult<CategoryOutDto>> GetBrand()
         {
             return Ok(await _provider.Count());
         }
 
         [HttpPost(Name = nameof(PostBrand))]
+        [Authorize]
         public async Task<ActionResult<BrandOutPostDto>> PostBrand(BrandInDto brand)
         {
             if (!_brandValidator.Validate(brand))
                 return BadRequest();
 
-            var createdBrand = await _provider.Add(brand);
+            var creatorId = _extractor.GetUserId(HttpContext.User.Identity as ClaimsIdentity);
+            var createdBrand = await _provider.Add(brand, creatorId);
 
             _logger.LogInformation($"New brand (id={createdBrand.BrandId}) has been added");
             return CreatedAtRoute(nameof(PostBrand), createdBrand);
         }
 
         [HttpPut("{key}")]
+        [Authorize]
         public async Task<ActionResult<BrandOutDto>> UpdateBrand([FromRoute] int key, [FromBody] BrandInDto newBrand)
         {
             if (!_keyValidator.Validate(key))
@@ -92,6 +105,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{key}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBrand(int key)
         {
             if (!_keyValidator.Validate(key))

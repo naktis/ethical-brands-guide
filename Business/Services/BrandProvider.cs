@@ -1,4 +1,5 @@
 ﻿using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
 using Business.Services.Interfaces;
@@ -17,16 +18,14 @@ namespace Business.Services
         private readonly AppDbContext _context;
         private readonly IBrandMapper _mapper;
         private readonly IBrandCategoryProvider _bcProvider;
-        private readonly IDefaultSetter _defaultSetter;
         private readonly Dictionary<string, Func<Brand, double>> sortFunctions;
 
         public BrandProvider(AppDbContext context, IBrandMapper mapper, 
-            IBrandCategoryProvider bcProvider, IDefaultSetter defaultSetter)
+            IBrandCategoryProvider bcProvider)
         {
             _context = context;
             _mapper = mapper;
             _bcProvider = bcProvider;
-            _defaultSetter = defaultSetter;
 
             sortFunctions = new Dictionary<string, Func<Brand, double>>()
             {
@@ -38,9 +37,11 @@ namespace Business.Services
             };
         }
 
-        public async Task<BrandOutPostDto> Add(BrandInDto dto)
+        public async Task<BrandOutPostDto> Add(BrandInDto dto, int creatorId)
         {
             var entity = _mapper.EntityFromDto(dto);
+
+            entity.CreatorId = creatorId;
 
             var company = await _context.Companies.FindAsync(dto.CompanyId);
             entity.Company = company;
@@ -83,19 +84,23 @@ namespace Business.Services
         {
             var brand = await _context.Brands
                 .Where(b => b.BrandId == key)
+                .Include(b => b.Creator)
                 .Include(b => b.Company)
                 .ThenInclude(c => c.Rating)
                 .Include(b => b.BrandsCategories)
                 .ThenInclude(bc => bc.Category)
                 .FirstOrDefaultAsync();
 
-            return _mapper.EntityToDto(brand);
+            var brandDto = _mapper.EntityToDto(brand);
+
+            if (brand.Creator != null)
+                brandDto.CreatorName = brand.Creator.Username;
+
+            return brandDto;
         }
 
-        public IEnumerable<BrandOutMultiDto> Get(BrandParametersDto brandParamsRaw)
+        public IEnumerable<BrandOutMultiDto> Get(BrandParameters brandParams)
         {
-            var brandParams = _defaultSetter.SetMissingBrandParams(brandParamsRaw);
-
             var brands = new List<Brand>();
 
             if (brandParams.Query == null && brandParams.CategoryId == 0)

@@ -1,11 +1,7 @@
-﻿using Commons;
-
-namespace Business.Dto.InputDto
+﻿namespace Business.Dto.InputDto
 {
-    public class UserInDto
+    public class UserInDto : LoginDto 
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public UserType Type { get; set; }
+        public string Type { get; set; }
     }
 }

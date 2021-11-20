@@ -11,11 +11,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{91BBBDD7-E530-4D3D-B912-0E5441E014EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{D7D000F1-34EB-4022-AE5B-40DD026F7FC8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E} = {0E0688C4-1042-4E88-89E5-BE9A0AFED28E}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.csproj", "{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +30,6 @@ Global
 		{D7D000F1-34EB-4022-AE5B-40DD026F7FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D000F1-34EB-4022-AE5B-40DD026F7FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D000F1-34EB-4022-AE5B-40DD026F7FC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E0688C4-1042-4E88-89E5-BE9A0AFED28E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

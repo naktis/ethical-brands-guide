@@ -7,6 +7,8 @@ import ServerError from "../Shared/Messages/ServerError";
 import SuccessMessage from "../Shared/Messages/SuccessMessage";
 
 class BrandForm extends React.Component {
+  _isMounted = false;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -30,6 +32,7 @@ class BrandForm extends React.Component {
 
   componentDidMount() {
     const _this = this;
+    this._isMounted = true;
 
     axios.get("https://localhost:5001/api/Category").then(function(response) {
       _this.setCategories(response.data)
@@ -44,6 +47,10 @@ class BrandForm extends React.Component {
       }).catch((error) => {
         console.log(error);
     })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   setCategories(categories) {
@@ -129,7 +136,11 @@ class BrandForm extends React.Component {
 
   handleSubmit(brand) {
 		const _this = this;
-		axios.post('https://localhost:5001/api/Brand', brand)
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.user.token}` }
+    }
+
+		axios.post('https://localhost:5001/api/Brand', brand, config)
 		.then(function (response) {
 			_this.setState({ successMessage: "Prekės ženklas sėkmingai sukurtas"});
 			console.log(response);
@@ -145,7 +156,7 @@ class BrandForm extends React.Component {
 			<form className="New-brand-form">
         <h1>{this.props.title}</h1>
 
-        <label>Pavadinimas:</label>
+        <label>Pavadinimas</label>
         <input 
           type="text" 
           value={this.state.fields["name"]}
@@ -163,7 +174,16 @@ class BrandForm extends React.Component {
 
         <div className="Form-double-label-div">
           <label>Kategorija</label>
-          <div><Link to="/categories">Redaguoti kategorijas</Link></div>
+          <div>
+            <Link 
+              to={{
+                pathname: "/categories",
+                user: this.props.user
+              }}
+            >
+              Redaguoti kategorijas
+            </Link>
+          </div>
         </div>
         <ReactSelect
           options={this.state.categoryOptions}
@@ -179,7 +199,16 @@ class BrandForm extends React.Component {
 
         <div className="Form-double-label-div">
           <label>Įmonė</label>
-          <div><Link to="/companies">Redaguoti įmones</Link></div>
+          <div>
+            <Link 
+              to={{
+                pathname: "/companies",
+                user: this.props.user
+              }}
+            >
+                Redaguoti įmones
+            </Link>
+          </div>
         </div>
         <select 
           value={this.state.fields["companyId"]} 

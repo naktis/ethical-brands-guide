@@ -1,9 +1,9 @@
-﻿using Api.Validators.Interfaces;
-using Business.Dto.InputDto;
+﻿using Api.RequestProcessors.Validators.Interfaces;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace Api.Validators
+namespace Api.RequestProcessors.Validators
 {
     public class BrandParamsValidator : IBrandParamsValidator
     {
@@ -14,7 +14,7 @@ namespace Api.Validators
             _categoryProvider = categoryProvider;
         }
 
-        public bool Validate(BrandParametersDto brandParams)
+        public bool Validate(BrandParameters brandParams)
         {
             if (QueryValid(brandParams.Query) &&
                 SortTypeValid(brandParams.SortType) &&

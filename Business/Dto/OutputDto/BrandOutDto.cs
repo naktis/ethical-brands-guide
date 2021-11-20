@@ -8,6 +8,7 @@ namespace Business.Dto.OutputDto
         public string Name { get; set; }
         public string Description { get; set; }
         public CompanyOutDto Company { get; set; }
+        public string CreatorName { get; set; }
         public IEnumerable<CategoryOutDto> Categories { get; set; }
     }
 }

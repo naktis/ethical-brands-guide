@@ -3,6 +3,7 @@ import React from "react";
 import BrandForm from './BrandForm'
 import GenericPage from "../Shared/GenericPage";
 import './Create.css';
+import { Redirect } from "react-router";
 
 class CreatePage extends React.Component {
 	/*constructor(props) {
@@ -40,7 +41,15 @@ class CreatePage extends React.Component {
 	render() {
 		return(
 			<GenericPage>
-				<BrandForm brand={ this.emptyBrand() } title="Naujo prekės ženklo kūrimas"/>
+				{ this.props.location.user === undefined ? 
+				<Redirect to="/" /> 
+				: 
+				<BrandForm 
+					brand={ this.emptyBrand() } 
+					title="Naujo prekės ženklo kūrimas"
+					user={ this.props.location.user}
+				/> 
+				}
 			</GenericPage>
 		)
 	}

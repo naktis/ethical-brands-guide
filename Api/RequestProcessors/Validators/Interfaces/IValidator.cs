@@ -1,4 +1,4 @@
-﻿namespace Api.Validators.Interfaces
+﻿namespace Api.RequestProcessors.Validators.Interfaces
 {
     public interface IValidator<T>
     {

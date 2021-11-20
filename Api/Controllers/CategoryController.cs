@@ -1,7 +1,8 @@
-﻿using Api.Validators.Interfaces;
+﻿using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -25,8 +26,8 @@ namespace Api.Controllers
             _keyValidator = keyValidator;
         }
 
-
         [HttpGet("{key}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CategoryOutDto>> GetCategory(int key)
         {
             if (!_keyValidator.Validate(key))
@@ -39,12 +40,14 @@ namespace Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CategoryOutDto>>> GetCategories()
         {
             return Ok(await _provider.GetAll());
         }
 
         [HttpPost(Name = nameof(PostCategory))]
+        [Authorize]
         public async Task<ActionResult<CategoryOutDto>> PostCategory(CategoryInDto category)
         {
             if (await _provider.Exists(category))
@@ -57,6 +60,7 @@ namespace Api.Controllers
         }
 
         [HttpPut("{key}")]
+        [Authorize]
         public async Task<ActionResult<CategoryOutDto>> UpdateCategory([FromRoute] int key, [FromBody] CategoryInDto newCategory)
         {
             if (!_keyValidator.Validate(key))
@@ -75,6 +79,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{key}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCategory(int key)
         {
             if (!_keyValidator.Validate(key))

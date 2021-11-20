@@ -5,6 +5,7 @@ import ValidationError from "../Shared/Messages/ValidationError";
 import ServerError from "../Shared/Messages/ServerError";
 import SuccessMessage from "../Shared/Messages/SuccessMessage";
 import './Edit.css';
+import { Redirect } from "react-router";
 
 class EditCategoryPage extends React.Component {
   constructor(props) {
@@ -69,7 +70,11 @@ class EditCategoryPage extends React.Component {
     }
 
     const _this = this;
-    axios.post('https://localhost:5001/api/Category', category)
+    const config = {
+      headers: { Authorization: `Bearer ${this.props.location.user.token}` }
+    }
+
+    axios.post('https://localhost:5001/api/Category', category, config)
     .then(function (response) {
       _this.fetchCategories();
       _this.setState({ successMessage: "Kategorija sėkmingai sukurta" });
@@ -83,33 +88,45 @@ class EditCategoryPage extends React.Component {
     this.setState({ newCategory: "" });
   }
 
+  componentWillUnmount() {
+    this.setState = (state,callback)=>{
+        return;
+    };
+  }
+
 	render() {
 		return(
 			<GenericPage>
-        <div className="Edit-page">
-				<h1>Kategorijos</h1>
-        <label>Sukurti naują kategoriją</label>
-        <div className="New-category">
-          <input 
-            type="text" 
-            value={this.state.newCategory}
-            onChange={this.handleChange.bind(this)}
-            maxLength="40"
-            placeholder="Kategorijos pavadinimas"
-          />
-          <button onClick={this.handleSubmit.bind(this)}>Kurti</button>
+        { this.props.location.user === undefined ? 
+				<Redirect to="/" /> 
+				: 
+        <div>
+          <div className="Edit-page">
+            <h1>Kategorijos</h1>
+            <label>Sukurti naują kategoriją</label>
+            <div className="New-category">
+              <input 
+                type="text" 
+                value={this.state.newCategory}
+                onChange={this.handleChange.bind(this)}
+                maxLength="40"
+                placeholder="Kategorijos pavadinimas"
+              />
+              <button onClick={this.handleSubmit.bind(this)}>Kurti</button>
+            </div>
+            <ValidationError>{this.state.error}</ValidationError>
+            <ServerError>{this.state.duplicateMessage}</ServerError>
+            <SuccessMessage>{this.state.successMessage}</SuccessMessage>
+      
+            <label className="Edit-category-label">Keisti kategorijas</label>
+            <div className="Edit-category-list">
+              { this.state.categories.map(function (category){
+                return <div className="Item-Row" key={category.categoryId}>{category.name}</div>
+                  }) }
+            </div>
+          </div>
         </div>
-        <ValidationError>{this.state.error}</ValidationError>
-        <ServerError>{this.state.duplicateMessage}</ServerError>
-        <SuccessMessage>{this.state.successMessage}</SuccessMessage>
-  
-        <label className="Edit-category-label">Keisti kategorijas</label>
-        <div className="Edit-category-list">
-          { this.state.categories.map(function (category){
-            return <div className="Item-Row" key={category.categoryId}>{category.name}</div>
-              }) }
-        </div>
-        </div>
+        }
 			</GenericPage>
 		)
 	}
