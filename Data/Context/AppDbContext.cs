@@ -50,12 +50,6 @@ namespace Data.Context
                 .Property(u => u.Username)
                 .IsRequired();
 
-            /*
-            modelBuilder.Entity<User>()
-                .Property(u => u.Email)
-                .IsRequired();
-            */
-
             modelBuilder.Entity<User>()
                 .Property(u => u.Password)
                 .IsRequired();

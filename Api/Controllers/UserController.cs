@@ -22,8 +22,9 @@ namespace Api.Controllers
         private readonly IClaimExtractor _extractor;
         private readonly IUserValidator _validator;
 
-        public UserController(ILogger<UserController> logger, IUserProvider provider,
-            IClaimExtractor extractor, IUserValidator validator)
+        public UserController(ILogger<UserController> logger, 
+            IUserProvider provider, IClaimExtractor extractor, 
+            IUserValidator validator)
         {
             _logger = logger;
             _provider = provider;

@@ -1,4 +1,5 @@
 ﻿using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
 using Business.Services.Interfaces;
@@ -17,16 +18,14 @@ namespace Business.Services
         private readonly AppDbContext _context;
         private readonly IBrandMapper _mapper;
         private readonly IBrandCategoryProvider _bcProvider;
-        private readonly IDefaultSetter _defaultSetter;
         private readonly Dictionary<string, Func<Brand, double>> sortFunctions;
 
         public BrandProvider(AppDbContext context, IBrandMapper mapper, 
-            IBrandCategoryProvider bcProvider, IDefaultSetter defaultSetter)
+            IBrandCategoryProvider bcProvider)
         {
             _context = context;
             _mapper = mapper;
             _bcProvider = bcProvider;
-            _defaultSetter = defaultSetter;
 
             sortFunctions = new Dictionary<string, Func<Brand, double>>()
             {
@@ -100,10 +99,8 @@ namespace Business.Services
             return brandDto;
         }
 
-        public IEnumerable<BrandOutMultiDto> Get(BrandParametersDto brandParamsRaw)
+        public IEnumerable<BrandOutMultiDto> Get(BrandParameters brandParams)
         {
-            var brandParams = _defaultSetter.SetMissingBrandParams(brandParamsRaw);
-
             var brands = new List<Brand>();
 
             if (brandParams.Query == null && brandParams.CategoryId == 0)

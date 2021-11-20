@@ -1,5 +1,5 @@
 ﻿using Api.RequestProcessors.Validators.Interfaces;
-using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Services.Interfaces;
 using System.Collections.Generic;
 
@@ -14,7 +14,7 @@ namespace Api.RequestProcessors.Validators
             _categoryProvider = categoryProvider;
         }
 
-        public bool Validate(BrandParametersDto brandParams)
+        public bool Validate(BrandParameters brandParams)
         {
             if (QueryValid(brandParams.Query) &&
                 SortTypeValid(brandParams.SortType) &&

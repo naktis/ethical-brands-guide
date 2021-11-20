@@ -1,6 +1,7 @@
 ﻿using Api.RequestProcessors.TokenExtractors;
 using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +59,7 @@ namespace Api.Controllers
         [HttpGet]
         [AllowAnonymous]
         public ActionResult<IEnumerable<BrandOutMultiDto>> GetBrands(
-            [FromQuery] BrandParametersDto brandParams)
+            [FromQuery]BrandParameters brandParams)
         {
             if (!_bpValidator.Validate(brandParams))
                 return BadRequest();

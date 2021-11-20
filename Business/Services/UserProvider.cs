@@ -18,16 +18,14 @@ namespace Business.Services
         private readonly IUserMapper _mapper;
         private readonly IHasher _hasher;
         private readonly IGenerator _generator;
-        private readonly IDefaultSetter _defaultSetter;
 
         public UserProvider(AppDbContext context, IUserMapper mapper, IHasher hasher,
-            IGenerator generator, IDefaultSetter defaultSetter)
+            IGenerator generator)
         {
             _context = context;
             _mapper = mapper;
             _hasher = hasher;
             _generator = generator;
-            _defaultSetter = defaultSetter;
         }
 
         public async Task<UserOutDto> Add(UserInDto userDto)

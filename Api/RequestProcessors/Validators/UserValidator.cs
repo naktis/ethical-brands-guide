@@ -44,6 +44,9 @@ namespace Api.RequestProcessors.Validators
 
         private bool ValidateType(string type)
         {
+            if (type == null)
+                return false;
+
             return Enum.IsDefined(typeof(UserType), type);
         }
     }
