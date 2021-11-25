@@ -17,6 +17,7 @@ class HomePage extends React.Component {
       categoryId: 0,
       brands: [],
       query: "",
+      queryUnsaved: "",
       sortType: "any",
       brandId: 0,
       brandKey: 0,
@@ -39,10 +40,6 @@ class HomePage extends React.Component {
       }
 		};
 
-    this.handleQueryChange = this.handleQueryChange.bind(this);
-    this.handleSearchClick = this.handleSearchClick.bind(this);
-    this.handleRatingChange = this.handleRatingChange.bind(this);
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.makeRatingCountString = this.makeRatingCountString.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.getEmptyBrand = this.getEmptyBrand.bind(this);
@@ -83,9 +80,9 @@ class HomePage extends React.Component {
 
     axios.get("https://localhost:5001/api/Brand?PageNumber=2").then(function(response) {
       let paging = _this.state.paging;
-      paging.nextBrands = response.data
-      _this.setState({ paging: paging})
-      _this.handleNextButtonEnable();
+      paging.nextBrands = response.data;
+      _this.setState({ paging: paging});
+      _this.handleNextButtonEnable(response.data);
       }).catch((error) => {
         console.log(error);
     })
@@ -113,12 +110,19 @@ class HomePage extends React.Component {
 
     axios.get(`https://localhost:5001/api/Brand?PageNumber=${pageNumber}&query=${query}&sortType=${sortType}&categoryId=${categoryId}`)
       .then(function(response) {
-      _this.setState({
-        brands: response.data,
-        query: query,
-        sortType: sortType,
-        categoryId: categoryId
-        })
+        _this.setState({
+          brands: response.data,
+          query: query,
+          sortType: sortType,
+          categoryId: categoryId
+        });
+
+        if (pageNumber === 1) {
+          let paging = _this.state.paging;
+          paging.currentPage = 1;
+          _this.setState({ paging: paging });
+          _this.updatePagingStates(pageNumber+1);
+        }
       }).catch((error) => {
         console.log(error);
     })
@@ -133,11 +137,12 @@ class HomePage extends React.Component {
   }
 
   handleSearchClick() {
-    this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId, this.state.paging.currentPage);
+    this.setState({ query: this.state.queryUnsaved });
+    this.handleSearch(this.state.queryUnsaved, this.state.sortType, this.state.categoryId, 1);
   }
 
  handleQueryChange = (e) => {
-    this.setState({ query: e.target.value });
+    this.setState({ queryUnsaved: e.target.value });
   }
 
  getEmptyBrand() {
@@ -159,36 +164,50 @@ class HomePage extends React.Component {
   */
 
   nextPage() {
-    const _this = this;
     let currentPage = this.state.paging.currentPage;
-
     this.handleSearch(this.state.query, this.state.sortType, this.state.categoryId, currentPage+1);
+    this.updatePagingStates(currentPage+2);
 
-    axios.get(`https://localhost:5001/api/Brand?PageNumber=${currentPage+2}&query=${this.state.query}&sortType=${this.state.sortType}&categoryId=${this.state.categoryId}`)
+    let paging = this.state.paging;
+    
+    if(this.state.paging.currentPage === 1) {
+      paging.buttons.back.state = "";
+      paging.buttons.back.class = "";
+    }
+
+    paging.currentPage = currentPage+1;
+    this.setState({ paging: paging });
+  }
+
+  updatePagingStates(pageNumber) {
+    const _this = this;
+    axios.get(`https://localhost:5001/api/Brand?PageNumber=${pageNumber}&query=${this.state.query}&sortType=${this.state.sortType}&categoryId=${this.state.categoryId}`)
       .then(function(response) {
         let paging = _this.state.paging;
-        paging.nextBrands = response.data
-
-        if(_this.state.paging.currentPage === 1) {
-          paging.buttons.back.state = "";
-          paging.buttons.back.class = "";
-        }
-        paging.currentPage = currentPage+1;
-
+        paging.nextBrands = response.data;
 
         _this.setState({ paging: paging})
-        _this.handleNextButtonEnable();
+        _this.handleNextButtonEnable(response.data);
       }).catch((error) => {
         console.log(error);
     })
   }
 
-  handleNextButtonEnable() {
+  handleNextButtonEnable(nextBrands) {
     let paging = this.state.paging;
+    console.log(nextBrands);
 
-    if(this.state.paging.nextBrands.length === 0 ) {
+    if(nextBrands.length === 0 ) {
       paging.buttons.next.state = "disabled";
       paging.buttons.next.class = "Disabled-button";
+    } else {
+      paging.buttons.next.state = "";
+      paging.buttons.next.class = "";
+    }
+
+    if(paging.currentPage === 1) {
+      paging.buttons.back.state = "disabled";
+      paging.buttons.back.class = "Disabled-button";
     }
 
     this.setState({ paging: paging })
@@ -209,7 +228,7 @@ class HomePage extends React.Component {
       paging.buttons.back.state = "disabled";
       paging.buttons.back.class = "Disabled-button";
     }
-    _this.setState({ paging: paging})
+    _this.setState({ paging: paging});
   }
 
   render() {
@@ -218,15 +237,33 @@ class HomePage extends React.Component {
         <div id="main-search-div">
           { this.makeRatingCountString() }
           <div id="input-row">
-            <input type="text" id="query" name="query" required minLength="3" 
-            maxLength="30" placeholder="Įveskite pavadinimą" value={this.state.query} onChange ={this.handleQueryChange}></input>
-            <img src="/img/search.png" alt="Search icon" onClick={this.handleSearchClick}></img>
+            <input 
+              type="text" 
+              required 
+              minLength="3"
+              maxLength="30" 
+              placeholder="Įveskite pavadinimą" 
+              value={this.state.queryUnsaved} 
+              onChange ={this.handleQueryChange.bind(this)}
+            >
+            </input>
+            <img 
+              src="/img/search.png" 
+              alt="Search icon" 
+              onClick={this.handleSearchClick.bind(this)}
+            >
+            </img>
           </div>
         </div>
         <div id="filter-div">
           <div>
             <h3>Kategorija</h3>
-            <select name="category" id="category" value={this.state.categoryId} onChange={this.handleCategoryChange}>
+            <select 
+              name="category" 
+              id="category" 
+              value={this.state.categoryId} 
+              onChange={this.handleCategoryChange.bind(this)}
+            >
               <SelectOption category={{categoryId: 0, name: "Visos"}} />
               { this.state.categories.map(function (category){
                   return <SelectOption category={category} key={category.categoryId}/>
@@ -235,7 +272,12 @@ class HomePage extends React.Component {
           </div>
           <div>
             <h3>Rikiavimas pagal reitingą</h3>
-            <select name="ratingSort" id="ratingSort" value={this.state.sortType} onChange={this.handleRatingChange}>
+            <select 
+              name="ratingSort" 
+              id="ratingSort" 
+              value={this.state.sortType} 
+              onChange={this.handleRatingChange.bind(this)}
+            >
               <option value="any">Nėra</option>
               <option value="total">Bendras</option>
               <option value="planet">Tvarumas</option>
