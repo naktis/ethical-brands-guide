@@ -4,6 +4,7 @@ import axios from "axios";
 import SelectOption from "./SelectOption";
 import { Link } from 'react-router-dom';
 import './Home.css';
+import Footer from "./Footer";
 
 class HomePage extends React.Component {
   _isMounted = false;
@@ -309,6 +310,7 @@ class HomePage extends React.Component {
             &#8594;
           </button>
         </div>
+        <Footer />
       </main>
     )
   }

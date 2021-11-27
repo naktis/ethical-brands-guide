@@ -10,8 +10,14 @@ namespace Business.Dto.InputDto
         [MaxLength(50)]
         public string Name { get; set; }
 
+        private string email { get; set; }
+
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        public string Email { get; set; }
+        public string Email 
+        { 
+            get { return email; } 
+            set { email = value == "" ? null : value; } 
+        }
 
         [MaxLength(500)]
         public string Description { get; set; }

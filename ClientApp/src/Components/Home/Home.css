@@ -39,3 +39,78 @@
   background-color: inherit;
   cursor: default;
 }
+
+footer {
+  background-color: #11324d;
+  padding: 20px;
+  font-size: large;
+  margin-top: auto;
+}
+
+footer a {
+  color: #e7e0c9;
+  margin-left: 10px;
+}
+
+#Request-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 550px;
+}
+
+#Request-form h2 {
+  margin-top: 0px;
+  font-family: "Lora", serif;
+  text-align: center;
+  font-weight: lighter;
+}
+
+.Label-div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+#Request-form input[type="text"],
+#Request-form textarea {
+  padding: 10px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: lighter;
+  font-size: large;
+  border-radius: 5px;
+  border-style: solid;
+  max-width: 520px;
+  max-height: 200px;
+  min-width: 520px;
+}
+
+#Request-form label,
+#Request-form .Validation-error,
+#Request-form .Server-error,
+#Request-form .Success-message {
+  font-size: large;
+}
+
+.Optional-text,
+.Additional-info {
+  font-style: italic;
+  font-size: medium;
+  color: rgba(41, 41, 41, 0.753);
+}
+
+#Request-form input[type="submit"] {
+  background-color: #3d6485;
+  padding: 10px;
+  color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+#Request-form input[type="submit"]:hover {
+  background-color: #172b3b;
+  cursor: pointer;
+}

@@ -9,6 +9,7 @@ import EditCategoryPage from './Edit/EditCategoryPage';
 import EditCompanyPage from './Edit/EditCompanyPage';
 import LoginPage from './User/LoginPage';
 import UserPage from './User/UserPage';
+import RequestPage from './Create/RequestPage';
 
 const Main = (props) => {
   return (
@@ -20,6 +21,7 @@ const Main = (props) => {
       <Route exact path="/categories" component={EditCategoryPage}/>
       <Route exact path="/companies" component={EditCompanyPage}/>
       <Route exact path="/users" component={UserPage}/>
+      <Route exact path="/request" component={RequestPage}/>
       <Route 
         exact path="/login" 
         render={() => <LoginPage 
