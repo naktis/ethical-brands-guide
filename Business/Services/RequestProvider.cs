@@ -30,6 +30,7 @@ namespace Business.Services
         {
             var requests = _context.Requests
                 .Where(r => r.BrandId == null)
+                .OrderByDescending(r => r.RequestId)
                 .Skip((paging.PageNumber - 1) * paging.PageSize)
                 .Take(paging.PageSize)
                 .ToList();

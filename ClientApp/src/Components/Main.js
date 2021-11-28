@@ -10,6 +10,7 @@ import EditCompanyPage from './Edit/EditCompanyPage';
 import LoginPage from './User/LoginPage';
 import UserPage from './User/UserPage';
 import RequestPage from './Create/RequestPage';
+import RequestsPage from './Menu/Requests/RequestsPage';
 
 const Main = (props) => {
   return (
@@ -21,6 +22,7 @@ const Main = (props) => {
       <Route exact path="/categories" component={EditCategoryPage}/>
       <Route exact path="/companies" component={EditCompanyPage}/>
       <Route exact path="/users" component={UserPage}/>
+      <Route exact path="/requests" component={RequestsPage}/>
       <Route exact path="/request" component={RequestPage}/>
       <Route 
         exact path="/login" 
