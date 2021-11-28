@@ -104,13 +104,15 @@ footer a {
 }
 
 #Request-form input[type="submit"] {
-  background-color: #3d6485;
-  padding: 10px;
+  background-color: #172b3b;
+  padding: 12px;
   color: white;
   border-radius: 5px;
   margin-top: 20px;
+  width: 150px;
+  align-self: center;
 }
 #Request-form input[type="submit"]:hover {
-  background-color: #172b3b;
+  background-color: #3d6485;
   cursor: pointer;
 }

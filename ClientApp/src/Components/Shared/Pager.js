@@ -1,4 +1,5 @@
 import React from "react";
+import './Shared.css';
 
 class Pager extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ class Pager extends React.Component {
         onClick={this.handlePreviousPage.bind(this)}>
         &#8592;
       </button>
-      <div>{this.state.currentPage}</div>
+      <div className="Current-page-number">{this.state.currentPage}</div>
       <button 
         disabled={this.state.buttons.next.state} 
         className={this.state.buttons.next.class}

@@ -20,7 +20,7 @@ class RequestsList extends React.Component {
     const _this = this;
     const config = {
       headers: { Authorization: `Bearer ${this.props.token}` }
-    }
+    };
 
     axios.get(`https://localhost:5001/api/Request?PageNumber=${page}`, config)
     .then(function(response) {
