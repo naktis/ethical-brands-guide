@@ -16,8 +16,6 @@ class LoginPage extends React.Component {
       errors: {},
 			mismatchMessage: "",
 		};
-
-    console.log(this.props.user);
 	}
 
 	handleChange(field, e) {
