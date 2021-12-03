@@ -44,34 +44,45 @@ class Header extends React.Component {
 				</div>
 				{ this.props.user.token !== "" ? 
 				<div id="Header-button-div">
-				<Link
-					to={{
-						pathname: "/create",
-						user: this.props.user
-					}}
-				>
-					<button>NAUJAS ŽENKLAS</button>
-				</Link>
-				
-				{ this.props.user.type === "Admin" ?
 					<Link
 						to={{
-							pathname: "/users",
+							pathname: "/create",
 							user: this.props.user
 						}}
 					>
-						<button>NAUDOTOJAI</button>
-					</Link> : null
-				}
-				
-				<Link to="./">
-					<img 
-						src="./img/logout.png" 
-						onClick={this.props.handleLogout} 
-						alt="Log out"
-					></img>
-				</Link>
-				</div>: <div></div>}
+						<button>NAUJAS ŽENKLAS</button>
+					</Link>
+
+					<Link
+						to={{
+							pathname: "/requests",
+							user: this.props.user
+						}}
+					>
+						<button>UŽKLAUSOS</button>
+					</Link>
+					
+					{ this.props.user.type === "Admin" ?
+						<Link
+							to={{
+								pathname: "/users",
+								user: this.props.user
+							}}
+						>
+							<button>NAUDOTOJAI</button>
+						</Link> : null
+					}
+					
+					<Link to="./">
+						<img 
+							src="./img/logout.png" 
+							onClick={this.props.handleLogout} 
+							alt="Log out"
+						></img>
+					</Link>
+				</div>
+				: 
+				<div></div>}
 			</header>
 		)
 	}

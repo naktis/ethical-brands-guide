@@ -15,6 +15,7 @@ namespace Data.Models
         public int? CreatorId { get; set; }
         public User Creator { get; set; }
 
+        public Request Request { get; set; }
         public ICollection<BrandCategory> BrandsCategories { get; set; }
     }
 }

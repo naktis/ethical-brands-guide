@@ -1,4 +1,5 @@
 ﻿using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Mappers.Interfaces;
 using Business.Security;
@@ -8,6 +9,7 @@ using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Business.Services
@@ -31,10 +33,6 @@ namespace Business.Services
         public async Task<UserOutDto> Add(UserInDto userDto)
         {
             var user = _mapper.EntityFromDto(userDto);
-
-            // user = _defaultSetter.SetDefaultUserType(user);
-            // var password = _generator.GeneratePassword();
-
             user.Password = _hasher.Hash(userDto.Password);
 
             var createdUser = await _context.Users.AddAsync(user);
@@ -84,14 +82,20 @@ namespace Business.Services
             return await Get(key) != null;
         }
 
-        public async Task<IEnumerable<UserOutDto>> GetAll()
+        public IEnumerable<UserOutDto> GetAll(PagingParameters paging)
         {
-            var users = new List<UserOutDto>();
+            var users = _context.Users
+                .OrderByDescending(r => r.UserId)
+                .Skip((paging.PageNumber - 1) * paging.PageSize)
+                .Take(paging.PageSize)
+                .ToList();
 
-            foreach (var u in await _context.Users.ToListAsync())
-                users.Add(_mapper.EntityToDto(u));
+            var userDtos = new List<UserOutDto>();
 
-            return users;
+            foreach (var u in users)
+                userDtos.Add(_mapper.EntityToDto(u));
+
+            return userDtos;
         }
 
         public async Task<bool> UsernameMatchesPass(LoginDto request)

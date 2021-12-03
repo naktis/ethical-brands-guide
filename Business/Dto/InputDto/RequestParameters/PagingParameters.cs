@@ -1,11 +1,11 @@
-﻿namespace Business.Dto.InputDto.RequestParameters
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Business.Dto.InputDto.RequestParameters
 {
     public class PagingParameters
     {
-        const int maxPageSize = 50;
-        const int defaultPageSize = 10;
-
         private int pageNumber = 1;
+
         public int PageNumber
         {
             get
@@ -21,6 +21,7 @@
         }
 
         private int pageSize = defaultPageSize;
+
         public int PageSize
         {
             get
@@ -36,5 +37,8 @@
                 else pageSize = value;
             }
         }
+
+        const int maxPageSize = 50;
+        const int defaultPageSize = 10;
     }
 }

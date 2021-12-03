@@ -61,6 +61,11 @@
   text-align: center;
 }
 
+.Current-page-number {
+  text-align: center;
+  font-size: larger;
+}
+
 @media screen and (max-width: 790px) {
   .Back-button {
     display: none;

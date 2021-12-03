@@ -28,6 +28,7 @@ namespace Api
             services.AddTransient<IBrandProvider, BrandProvider>();
             services.AddTransient<IUserProvider, UserProvider>();
             services.AddTransient<IBrandCategoryProvider, BrandCategoryProvider>();
+            services.AddTransient<IRequestProvider, RequestProvider>();
 
             services.AddTransient<IRatingCalculator, RatingCalculator>();
             services.AddTransient<IHasher, Hasher>();

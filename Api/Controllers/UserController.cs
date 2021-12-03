@@ -1,6 +1,7 @@
 ﻿using Api.RequestProcessors.TokenExtractors;
 using Api.RequestProcessors.Validators.Interfaces;
 using Business.Dto.InputDto;
+using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
 using Data.Models;
@@ -69,13 +70,13 @@ namespace Api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<UserOutDto>>> GetUsers()
+        public ActionResult<IEnumerable<UserOutDto>> GetUsers([FromQuery] PagingParameters paging)
         {
             var role = _extractor.GetRole(HttpContext.User.Identity as ClaimsIdentity);
             if (role != UserType.Admin.ToString())
                 return Forbid();
 
-            return Ok(await _provider.GetAll());
+            return Ok(_provider.GetAll(paging));
         }
     }
 }

@@ -129,7 +129,7 @@ class UserForm extends React.Component {
               </select>
             </div>
 
-            <button className="New-company-button" onClick={this.handleSubmit.bind(this)}>Kurti</button>
+            <button className="New-company-button" onClick={this.handleSubmit.bind(this)}>KURTI</button>
             <SuccessMessage>{this.state.successMessage}</SuccessMessage>
             <ServerError>{this.state.duplicateMessage}</ServerError>
           </div>

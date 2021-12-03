@@ -26,3 +26,10 @@ textarea {
   cursor: pointer;
   color: #697885;
 }
+
+.New-brand-form input[type="submit"] {
+  width: 100px;
+  align-self: center;
+  height: 50px;
+  margin-top: 10px;
+}

@@ -46,6 +46,7 @@ namespace Data.Context
                 .WithOne(r => r.Company)
                 .IsRequired();
 
+
             modelBuilder.Entity<User>()
                 .Property(u => u.Username)
                 .IsRequired();
@@ -59,8 +60,17 @@ namespace Data.Context
                 .IsRequired();
 
             modelBuilder.Entity<User>()
-                .HasMany(c => c.Brands)
+                .HasMany(u => u.Brands)
                 .WithOne(b => b.Creator);
+
+
+            modelBuilder.Entity<Request>()
+                .HasOne(r => r.Brand)
+                .WithOne(b => b.Request);
+
+            modelBuilder.Entity<Request>()
+                .Property(r => r.Name)
+                .IsRequired();
         }
 
         public DbSet<Brand> Brands { get; set; }
@@ -69,5 +79,6 @@ namespace Data.Context
         public DbSet<Company> Companies { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Request> Requests { get; set; }
     }
 }
