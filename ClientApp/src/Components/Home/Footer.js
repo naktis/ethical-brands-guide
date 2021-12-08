@@ -6,8 +6,8 @@ class Footer extends React.Component {
   render() {
     return(
       <footer>
-        Nerandi prekės ženklo?
-        <Link to="/request">Pasiūlyk jį įvertinti</Link>
+        Nerandate prekės ženklo?
+        <Link to="/request">Pasiūlykite jį įvertinti</Link>
       </footer>
     )
   }

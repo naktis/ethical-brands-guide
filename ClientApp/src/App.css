@@ -129,7 +129,7 @@ main {
   flex-direction: column;
 }
 
-#result-div {
+.result-div {
   max-width: 1200px;
   display: flex;
   flex-wrap: wrap;

@@ -112,7 +112,17 @@ footer a {
   width: 150px;
   align-self: center;
 }
+
 #Request-form input[type="submit"]:hover {
   background-color: #3d6485;
   cursor: pointer;
+}
+
+.Brands-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.No-results-message {
+  color: black;
 }
