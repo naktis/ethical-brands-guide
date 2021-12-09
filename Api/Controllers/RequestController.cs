@@ -1,4 +1,5 @@
-﻿using Business.Dto.InputDto;
+﻿using Api.RequestProcessors.Validators.Interfaces;
+using Business.Dto.InputDto;
 using Business.Dto.InputDto.RequestParameters;
 using Business.Dto.OutputDto;
 using Business.Services.Interfaces;
@@ -16,11 +17,14 @@ namespace Api.Controllers
     {
         private readonly ILogger _logger;
         private readonly IRequestProvider _provider;
+        private readonly IKeyValidator _keyValidator;
 
-        public RequestController(ILogger<RequestController> logger, IRequestProvider provider)
+        public RequestController(ILogger<RequestController> logger, IRequestProvider provider,
+            IKeyValidator keyValidator)
         {
             _logger = logger;
             _provider = provider;
+            _keyValidator = keyValidator;
         }
 
         [HttpPost(Name = nameof(PostRequest))]
@@ -36,6 +40,22 @@ namespace Api.Controllers
         public ActionResult<IEnumerable<RequestOutDto>> GetRequests([FromQuery]PagingParameters paging)
         {
             return Ok(_provider.GetAll(paging));
+        }
+
+        [HttpDelete("{key}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteRequest(int key)
+        {
+            if (!_keyValidator.Validate(key))
+                return BadRequest();
+
+            if (!await _provider.KeyExists(key))
+                return NotFound();
+
+            await _provider.Delete(key);
+
+            _logger.LogInformation($"Request with id={key} has been deleted");
+            return Ok();
         }
     }
 }

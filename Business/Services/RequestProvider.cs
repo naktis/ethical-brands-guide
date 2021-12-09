@@ -46,5 +46,13 @@ namespace Business.Services
         {
             return await _context.Requests.FindAsync(key) != null;
         }
+
+        public async Task Delete(int key)
+        {
+            var request = await _context.Requests.FindAsync(key);
+            _context.Requests.Remove(request);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

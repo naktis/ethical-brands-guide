@@ -36,6 +36,13 @@ class RequestRow extends React.Component {
                 alt="Edit"
               ></img>
             </Link>
+
+						<img 
+							src="/img/delete.png" 
+							alt="Delete"
+              onClick={() => this.props.handleDelete(this.props.request)}
+						></img>
+
           </div>
         </div>
         {this.state.showDescription ?
@@ -58,3 +65,5 @@ class RequestRow extends React.Component {
 }
 
 export default RequestRow;
+
+             // 

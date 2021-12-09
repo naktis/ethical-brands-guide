@@ -40,7 +40,7 @@
 
 .Item-Row img {
   max-width: 20px;
-  max-height: 25px;
+  height: 20px;
 }
 
 .Request-row {
@@ -53,7 +53,7 @@
   gap: 20px;
 }
 
-.More-button:hover {
+.Item-Row img:hover {
   cursor: pointer;
 }
 

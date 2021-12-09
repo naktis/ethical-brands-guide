@@ -8,7 +8,8 @@ class RequestsList extends React.Component {
 		super(props);
 		this.state = {
       requests: [],
-      nextRequests: []
+      nextRequests: [],
+      key: 0
 		};
 	}
 
@@ -53,6 +54,7 @@ class RequestsList extends React.Component {
                   key={request.requestId} 
                   request={request}
                   user={this.props.user}
+                  handleDelete={this.props.handleDelete.bind(this)}
                 >
                   <div className="Request-title">
                     <div className="Request-id">#{request.requestId}</div>

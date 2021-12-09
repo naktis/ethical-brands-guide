@@ -153,15 +153,6 @@ class HomePage extends React.Component {
       companyId: 0
     }
   }
-/*
-  deleteBrand() {
-    axios.delete(`https://localhost:44321/api/Brand/${this.state.brandId}`).then(function(response) {
-      console.log(`Brand has been deleted`);
-      }).catch((error) => {
-        console.log(error);
-    })
-  }
-  */
 
   nextPage() {
     let currentPage = this.state.paging.currentPage;
@@ -195,7 +186,6 @@ class HomePage extends React.Component {
 
   handleNextButtonEnable(nextBrands) {
     let paging = this.state.paging;
-    console.log(nextBrands);
 
     if(nextBrands.length === 0 ) {
       paging.buttons.next.state = "disabled";

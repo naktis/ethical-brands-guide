@@ -10,7 +10,8 @@ class BrandOptions extends React.Component {
       deleted: false
     };
   }
-  handleBrandDeletion() {
+
+  handleDelete() {
     if (window.confirm(`Ar tikrai norite ištrinti prekės ženklą ${this.props.brand.name}?`)) {
       const _this = this;
 
@@ -46,7 +47,7 @@ class BrandOptions extends React.Component {
 					</Link>
         </div>
         <div>
-          <div onClick={this.handleBrandDeletion.bind(this)}>
+          <div onClick={this.handleDelete.bind(this)}>
 						<img 
 							src="/img/delete.png" 
 							alt="Delete"

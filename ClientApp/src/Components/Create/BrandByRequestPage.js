@@ -5,12 +5,13 @@ import { Redirect } from "react-router";
 import axios from "axios";
 
 class BrandByRequestPage extends React.Component {
+	_isMounted = false;
+
   constructor(props) {
 		super(props);
 		this.state = {
 			successMessage: "",
 			duplicateMessage: "",
-			key: 0,
 			brand: {
 				brandId: this.props.location.request.requestId,
 				name: this.props.location.request.name,
@@ -21,6 +22,10 @@ class BrandByRequestPage extends React.Component {
 			createdBrandId: 0
 		};
 	};
+
+	componentDidMount() {
+    this._isMounted = true;
+	}
 
   handleSubmit(brand, id) {
 		const _this = this;
@@ -56,12 +61,15 @@ class BrandByRequestPage extends React.Component {
 		.catch(function (error) {
 			_this.setState({ 
 				duplicateMessage: "Tokia prekės ženklo ir įmonės kombinacija jau egzistuoja", 
-				successMessage: "",
-				key: _this.state.key+1
+				successMessage: ""
 			});
 			console.log(error);
 		});
 	};
+
+	componentWillUnmount() {
+    this._isMounted = false;
+  }
 
 	title() {
 		return `Naujo prekės ženklo kūrimas (Užklausa #${this.props.location.request.requestId})`;
@@ -74,6 +82,16 @@ class BrandByRequestPage extends React.Component {
 	render() {
 		return(
 			<GenericPage>
+				{
+					this.state.createdBrandId !== 0 ?
+					<Redirect
+						to={{
+							pathname: this.createdBrandUri(),
+							user: this.props.location.user
+						}}/>
+						:
+						null
+				}
 				{ 
 					this.props.location.user === undefined ? 
 						<Redirect to="/" /> 
@@ -86,18 +104,7 @@ class BrandByRequestPage extends React.Component {
 							successMessage={this.state.successMessage}
 							duplicateMessage={this.state.duplicateMessage}
 							handleSubmit={this.handleSubmit.bind(this)}
-							key={this.state.key}
 						/>
-				}
-				{
-					this.state.createdBrandId !== 0 ?
-					<Redirect
-						to={{
-							pathname: this.createdBrandUri(),
-							user: this.props.location.user
-						}}/>
-						:
-						null
 				}
 			</GenericPage>
 		)
@@ -105,5 +112,3 @@ class BrandByRequestPage extends React.Component {
 }
 
 export default BrandByRequestPage;
-
-// to={this.createdBrandUri()
