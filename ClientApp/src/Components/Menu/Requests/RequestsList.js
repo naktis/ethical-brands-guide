@@ -19,7 +19,7 @@ class RequestsList extends React.Component {
   fetchRequests(page) {
     const _this = this;
     const config = {
-      headers: { Authorization: `Bearer ${this.props.token}` }
+      headers: { Authorization: `Bearer ${this.props.user.token}` }
     };
 
     axios.get(`https://localhost:5001/api/Request?PageNumber=${page}`, config)
@@ -49,8 +49,17 @@ class RequestsList extends React.Component {
           <div>
             <div className="Request-page-header">Neįvertinti prekių ženklai</div>
             { this.state.requests.map(function (request){
-                return <RequestRow key={request.requestId} request={request}>{request.name}</RequestRow>
-              })
+                return <RequestRow 
+                  key={request.requestId} 
+                  request={request}
+                  user={this.props.user}
+                >
+                  <div className="Request-title">
+                    <div className="Request-id">#{request.requestId}</div>
+                    <div className="Request-name">{request.name}</div>
+                  </div>
+                </RequestRow>
+              }, this)
             }
             <Pager 
               fetch={ this.fetchRequests.bind(this) }

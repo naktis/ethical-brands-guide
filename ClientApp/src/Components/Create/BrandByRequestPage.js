@@ -4,29 +4,23 @@ import GenericPage from "../Shared/GenericPage";
 import { Redirect } from "react-router";
 import axios from "axios";
 
-class EditBrandPage extends React.Component {
-	_isMounted = false;
-
+class BrandByRequestPage extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
 			successMessage: "",
 			duplicateMessage: "",
 			key: 0,
-      brand: {
-        brandId: this.props.location.brand.brandId,
-        name: this.props.location.brand.name,
-        description: this.props.location.brand.description,
-        companyId: this.props.location.brand.company.companyId,
-        categories: this.props.location.brand.categories
-      },
-			updatedBrandId: 0
+			brand: {
+				brandId: this.props.location.request.requestId,
+				name: this.props.location.request.name,
+				description: this.props.location.request.description,
+				categories: [],
+				companyId: 0
+			},
+			createdBrandId: 0
 		};
 	};
-
-	componentDidMount() {
-    this._isMounted = true;
-	}
 
   handleSubmit(brand, id) {
 		const _this = this;
@@ -44,34 +38,17 @@ class EditBrandPage extends React.Component {
 			name: brand["name"],
 			description: brand["description"],
 			companyId: brand["companyId"],
-			categoryIds: categoryIds
+			categoryIds: categoryIds,
+      requestId: id
 		}
 
-		axios.put(`https://localhost:5001/api/Brand/${id}`, newBrand, config)
+		axios.post(`https://localhost:5001/api/Brand`, newBrand, config)
 		.then(function (response) {
-      let categories = [];
-      if (brand["categories"] !== null)
-        brand["categories"].forEach(o => {
-          categories.push({
-            categoryId: o.value, 
-            name: o.label
-          });
-      });
-
-      let updatedBrand = {
-        name: brand["name"],
-        description: brand["description"],
-        companyId: brand["companyId"],
-        categories: categories,
-        brandId: _this.state.brand.brandId
-      }
-
 			_this.setState({ 
-				successMessage: "Prekės ženklas sėkmingai atnaujintas", 
+				successMessage: "Prekės ženklas sėkmingai pridėtas", 
 				duplicateMessage: "",
 				key: _this.state.key+1,
-        brand: updatedBrand,
-				updatedBrandId: id
+				createdBrandId: response.data.brandId
 			});
 
 			console.log(response);
@@ -86,12 +63,12 @@ class EditBrandPage extends React.Component {
 		});
 	};
 
-	componentWillUnmount() {
-    this._isMounted = false;
-  }
+	title() {
+		return `Naujo prekės ženklo kūrimas (Užklausa #${this.props.location.request.requestId})`;
+	}
 
-	updatedBrandUri() {
-		return `/view/${this.state.updatedBrandId}`;
+	createdBrandUri() {
+		return `/view/${this.state.createdBrandId}`;
 	}
 
 	render() {
@@ -102,21 +79,21 @@ class EditBrandPage extends React.Component {
 						<Redirect to="/" /> 
 						: 
 						<BrandForm 
-							brand={ this.state.brand } 
-							title="Prekės ženklo atnaujinimas"
-							user={ this.props.location.user}
-							submitMessage="ATNAUJINTI"
+							brand={this.state.brand} 
+							title={this.title()}
+							user={this.props.location.user}
+							submitMessage="KURTI"
 							successMessage={this.state.successMessage}
 							duplicateMessage={this.state.duplicateMessage}
 							handleSubmit={this.handleSubmit.bind(this)}
 							key={this.state.key}
-						/> 
+						/>
 				}
 				{
-					this.state.updatedBrandId !== 0 ?
+					this.state.createdBrandId !== 0 ?
 					<Redirect
 						to={{
-							pathname: this.updatedBrandUri(),
+							pathname: this.createdBrandUri(),
 							user: this.props.location.user
 						}}/>
 						:
@@ -127,4 +104,6 @@ class EditBrandPage extends React.Component {
 	}
 }
 
-export default EditBrandPage;
+export default BrandByRequestPage;
+
+// to={this.createdBrandUri()

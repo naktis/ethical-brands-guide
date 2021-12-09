@@ -12,5 +12,6 @@ namespace Business.Services.Interfaces
         public IEnumerable<BrandOutMultiDto> Get(BrandParameters parameters);
         public Task<int> Count();
         public Task RemoveRangeByCompany(int companyId);
+        public Task<bool> NameAvailable(BrandInDto dto, int key);
     }
 }

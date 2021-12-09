@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class RequestRow extends React.Component {
   constructor(props){
@@ -10,9 +11,32 @@ class RequestRow extends React.Component {
 
   render() {
     return(
-      <div className="Item-Row" onClick={() => this.setState({ showDescription: !this.state.showDescription })}>
-        <div className="Request-name">
-          {this.props.children}
+      <div className="Item-Row" >
+        <div className="Request-row">
+          <div className="Request-name" >
+            {this.props.children}
+          </div>
+          <div className="Request-options">
+            <img 
+              src="/img/more.png" 
+              alt="View more"
+              className="More-button"
+              onClick={() => this.setState({ showDescription: !this.state.showDescription })}
+            ></img>
+           
+            <Link
+              to={{
+                pathname: "/createBrandByRequest",
+                user: this.props.user,
+                request: this.props.request
+              }}
+            >
+              <img 
+                src="/img/edit.png" 
+                alt="Edit"
+              ></img>
+            </Link>
+          </div>
         </div>
         {this.state.showDescription ?
           <div>

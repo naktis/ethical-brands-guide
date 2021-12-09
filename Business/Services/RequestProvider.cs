@@ -41,5 +41,10 @@ namespace Business.Services
 
             return requestDtos;
         }
+
+        public async Task<bool> KeyExists(int key)
+        {
+            return await _context.Requests.FindAsync(key) != null;
+        }
     }
 }

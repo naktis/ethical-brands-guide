@@ -8,13 +8,14 @@ class RequestsPage extends React.Component {
   render() {
     return(
       <GenericPage>
-        { this.props.location.user === undefined ? 
-          <Redirect to="/" /> 
-          : 
-          <div className="Requests-page">
-            <h1>Prekių ženklų užklausos</h1>
-            <RequestsList token={ this.props.location.user.token }/>
-          </div>
+        { 
+          this.props.location.user === undefined ? 
+            <Redirect to="/" /> 
+            : 
+            <div className="Requests-page">
+              <h1>Prekių ženklų užklausos</h1>
+              <RequestsList user={this.props.location.user} />
+            </div>
         }
       </GenericPage>
     )

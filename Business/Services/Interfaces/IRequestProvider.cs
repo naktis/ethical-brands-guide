@@ -10,5 +10,6 @@ namespace Business.Services.Interfaces
     {
         public Task<RequestOutDto> Add(RequestInDto request);
         public IEnumerable<RequestOutDto> GetAll(PagingParameters paging);
+        public Task<bool> KeyExists(int key);
     }
 }

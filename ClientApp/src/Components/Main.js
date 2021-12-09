@@ -11,6 +11,7 @@ import UserPage from './User/UserPage';
 import RequestPage from './Create/RequestPage';
 import RequestsPage from './Menu/Requests/RequestsPage';
 import EditBrandPage from './Edit/EditBrandPage';
+import BrandByRequestPage from './Create/BrandByRequestPage';
 
 const Main = (props) => {
   return (
@@ -28,6 +29,7 @@ const Main = (props) => {
       <Route exact path="/requests" component={RequestsPage} />
       <Route exact path="/request" component={RequestPage} />
       <Route exact path="/editBrand" component={EditBrandPage} />
+      <Route exact path="/createBrandByRequest" component={BrandByRequestPage} />
       <Route 
         exact path="/login" 
         render={() => <LoginPage handleLogin={props.handleLogin} />}

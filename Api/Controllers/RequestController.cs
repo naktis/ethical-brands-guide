@@ -27,7 +27,6 @@ namespace Api.Controllers
         public async Task<ActionResult<RequestOutDto>> PostRequest(RequestInDto request)
         {
             var createdRequest = await _provider.Add(request);
-
             _logger.LogInformation($"New request (id={createdRequest.RequestId}) has been added");
             return CreatedAtRoute(nameof(PostRequest), createdRequest);
         }
