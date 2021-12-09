@@ -100,7 +100,12 @@ class BrandDetails extends React.Component {
                 </table>
               </div>
             </div>
-            <BrandOptions brand={this.state.brand} user={this.props.user}/>
+            {
+              this.props.user === undefined || this.props.user.token === "" ?
+              null
+              :
+              <BrandOptions brand={this.state.brand} user={this.props.user}/>
+            }
           </div> :
           <div className="Brand-details loading">
             <p>Prekės ženklas nerastas</p>
