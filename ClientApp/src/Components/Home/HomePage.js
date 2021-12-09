@@ -290,7 +290,11 @@ class HomePage extends React.Component {
         { 
           this.state.brands.length !== 0 ?
             <div className="Brands-div">
-              <BrandGrid brands={this.state.brands} sortType={this.state.sortType} />
+              <BrandGrid 
+                brands={this.state.brands} 
+                sortType={this.state.sortType} 
+                user={this.props.user}
+              />
               <div className="Paging-div">
                 <button 
                   disabled={this.state.paging.buttons.back.state}

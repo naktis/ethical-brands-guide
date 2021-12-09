@@ -45,12 +45,22 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header user={this.state.user} handleLogout={this.handleLogout.bind(this)} />
-        <Main handleLogin={this.handleLogin.bind(this)} />
-        { this.state.loggedIn ? <Redirect to={{
-          pathname: '/',
-          user: this.state.user
-        }}/> : null }
+        <Header 
+          user={this.state.user} 
+          handleLogout={this.handleLogout.bind(this)} 
+        />
+        <Main 
+          user={this.state.user}
+          handleLogin={this.handleLogin.bind(this)} 
+        />
+        { 
+          this.state.loggedIn ? <Redirect to={{
+            pathname: '/',
+            user: this.state.user
+          }}/> 
+          : 
+          null 
+        }
       </div>
     );
   }
