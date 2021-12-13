@@ -4,8 +4,8 @@
 
 textarea {
   padding-top: 10px;
-  max-width: 700px;
   min-width: 495px;
+  max-width: 900px;
   min-height: 100px;
   max-height: 400px;
   width: auto;
@@ -28,7 +28,8 @@ textarea {
 }
 
 .New-brand-form input[type="submit"] {
-  width: 100px;
+  width: fit-content;
+  min-width: 100px;
   align-self: center;
   height: 50px;
   margin-top: 10px;

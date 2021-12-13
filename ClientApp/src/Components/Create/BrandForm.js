@@ -22,12 +22,12 @@ class BrandForm extends React.Component {
         "categories": null
       },
       errors: {},
-      duplicateMessage: this.props.duplicateMessage,
-      successMessage: this.props.successMessage
+      duplicateMessage: "",
+      successMessage: "",
+      id: 0
 		};
 
     this.collectData = this.collectData.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class BrandForm extends React.Component {
       _this.setCategories(response.data)
       }).catch((error) => {
         console.log(error);
-    })
+    });
 
     axios.get("https://localhost:5001/api/Company").then(function(response) {
       _this.setState({
@@ -46,7 +46,29 @@ class BrandForm extends React.Component {
       })
       }).catch((error) => {
         console.log(error);
-    })
+    });
+
+    let fields = this.state.fields;
+    fields.name = this.props.brand.name;
+    let id = this.props.brand.brandId;
+    fields.description = this.props.brand.description;
+    fields.companyId = this.props.brand.companyId;
+    fields.categories = [];
+    
+    this.props.brand.categories.forEach(c => {
+      let selectOption = {
+        value: c.categoryId,
+        label: c.name
+      };
+      fields.categories.push(selectOption);
+    });
+
+    this.setState({
+      fields: fields,
+      duplicateMessage: this.props.duplicateMessage,
+      successMessage: this.props.successMessage,
+      id: id
+    });
   }
 
   componentWillUnmount() {
@@ -113,16 +135,8 @@ class BrandForm extends React.Component {
       return;
 
     let fields = this.state.fields;
+    this.props.handleSubmit(fields, this.state.id);
 
-    fields["categoryIds"] = [];
-    if (fields["categories"] !== null)
-      fields["categories"].forEach(o => {
-        fields["categoryIds"].push(o.value);
-    })
-    delete fields["categories"];
-
-    //this.props.handleSubmit(fields);
-    this.handleSubmit(fields);
     this.setState({
       createSucessful: true,
       fields: {
@@ -134,22 +148,7 @@ class BrandForm extends React.Component {
     });
   }
 
-  handleSubmit(brand) {
-		const _this = this;
-    const config = {
-      headers: { Authorization: `Bearer ${this.props.user.token}` }
-    }
 
-		axios.post('https://localhost:5001/api/Brand', brand, config)
-		.then(function (response) {
-			_this.setState({ successMessage: "Prekės ženklas sėkmingai sukurtas"});
-			console.log(response);
-		})
-		.catch(function (error) {
-			_this.setState({ duplicateMessage: "Tokia prekės ženklo ir įmonės kombinacija jau egzistuoja"});
-			console.log(error);
-		});
-	}
 
 	render() {
 		return(
@@ -222,7 +221,7 @@ class BrandForm extends React.Component {
         </select>
         <ValidationError>{this.state.errors["companyId"]}</ValidationError>
 
-        <input type="submit" value="KURTI" onClick={ this.collectData }/>
+        <input type="submit" value={this.props.submitMessage} onClick={ this.collectData }/>
         <SuccessMessage>{this.state.successMessage}</SuccessMessage>
         <ServerError>{this.state.duplicateMessage}</ServerError>
       </form>

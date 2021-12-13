@@ -112,7 +112,36 @@ footer a {
   width: 150px;
   align-self: center;
 }
+
 #Request-form input[type="submit"]:hover {
   background-color: #3d6485;
+  cursor: pointer;
+}
+
+.Brands-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.No-results-message {
+  color: black;
+}
+
+.Brand-options {
+  display: flex;
+  padding: 10px 10px 0px 20px;
+  gap: 20px;
+}
+
+.Brand-options img {
+  max-width: 20px;
+}
+
+.Brand-options img:hover {
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.Brand-content:hover {
   cursor: pointer;
 }

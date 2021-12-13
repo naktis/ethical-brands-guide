@@ -44,8 +44,8 @@ namespace Business.Services
 
             var company = await _context.Companies.FindAsync(key);
             var rating = await _context.Ratings.FindAsync(company.RatingId);
-            _context.Ratings.Remove(rating);
             _context.Companies.Remove(company);
+            _context.Ratings.Remove(rating);
 
             await _context.SaveChangesAsync();
         }

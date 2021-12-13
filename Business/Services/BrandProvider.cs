@@ -46,8 +46,21 @@ namespace Business.Services
             var company = await _context.Companies.FindAsync(dto.CompanyId);
             entity.Company = company;
 
+            Request request = new Request();
+            if (dto.RequestId != null) 
+            {
+                request = await _context.Requests.FindAsync(dto.RequestId);
+                entity.Request = request;
+            }
+
             var createdBrand = await _context.Brands.AddAsync(entity);
             company.Brands.Add(createdBrand.Entity);
+
+            if (dto.RequestId != null)
+            {
+                request.Brand = createdBrand.Entity;
+            }
+
             await _context.SaveChangesAsync();
 
             if (dto.CategoryIds.Any())
@@ -60,6 +73,10 @@ namespace Business.Services
         {
             var brand = await _context.Brands.FindAsync(key);
             var brandCategories = await _context.BrandsCategories.Where(x => x.BrandId == key).ToListAsync();
+            var request = await _context.Requests.FirstOrDefaultAsync(x => x.BrandId == key);
+
+            if (request != null)
+                request.Brand = null;
 
             _context.BrandsCategories.RemoveRange(brandCategories);
             _context.Brands.Remove(brand);
@@ -169,10 +186,18 @@ namespace Business.Services
 
         public async Task<bool> Exists(BrandInDto brand)
         {
-            if (await _context.Brands.FirstOrDefaultAsync(b => b.Name == brand.Name && b.CompanyId == brand.CompanyId) == null)
-                return false;
+            return !(await _context.Brands
+                .FirstOrDefaultAsync(b => b.Name == brand.Name && b.CompanyId == brand.CompanyId) == null);
+        }
 
-            return true;
+        public async Task<bool> NameAvailable(BrandInDto brand, int key)
+        {
+            return await _context.Brands
+                .FirstOrDefaultAsync(b => 
+                    b.Name == brand.Name && 
+                    b.CompanyId == brand.CompanyId &&
+                    b.BrandId != key
+                ) == null;
         }
     }
 }

@@ -8,5 +8,6 @@ namespace Business.Dto.InputDto
         public string Description { get; set; }
         public int CompanyId { get; set; }
         public IEnumerable<int> CategoryIds { get; set; }
+        public int? RequestId { get; set; }
     }
 }

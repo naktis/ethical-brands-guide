@@ -98,6 +98,9 @@ namespace Api.Controllers
             if (!await _provider.KeyExists(key))
                 return NotFound();
 
+            if (!_brandValidator.Validate(newBrand, key))
+                return BadRequest();
+
             await _provider.Update(key, newBrand);
 
             _logger.LogInformation($"Brand with id={key} has been updated");

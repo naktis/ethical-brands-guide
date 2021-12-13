@@ -45,6 +45,7 @@ h1 {
 
 .DecorationNone {
   text-decoration: none;
+  color: black;
 }
 
 #Header-button-div {
@@ -129,7 +130,7 @@ main {
   flex-direction: column;
 }
 
-#result-div {
+.result-div {
   max-width: 1200px;
   display: flex;
   flex-wrap: wrap;
@@ -184,7 +185,6 @@ select {
 
 .Brand-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
 }
 
 .Brand-card h2 {

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import BrandOptions from "./BrandOptions";
 
 class BrandDetails extends React.Component {
   constructor(props) {
@@ -99,9 +100,15 @@ class BrandDetails extends React.Component {
                 </table>
               </div>
             </div>
+            {
+              this.props.user === undefined || this.props.user.token === "" ?
+              null
+              :
+              <BrandOptions brand={this.state.brand} user={this.props.user}/>
+            }
           </div> :
           <div className="Brand-details loading">
-            <p>Puslapis nerastas</p>
+            <p>Prekės ženklas nerastas</p>
           </div>
         }
       </div>

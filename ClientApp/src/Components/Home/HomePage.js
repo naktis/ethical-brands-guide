@@ -1,10 +1,9 @@
 import React from "react";
-import BrandCard from "./BrandCard";
 import axios from "axios";
 import SelectOption from "./SelectOption";
-import { Link } from 'react-router-dom';
 import './Home.css';
 import Footer from "./Footer";
+import BrandGrid from "./BrandGrid";
 
 class HomePage extends React.Component {
   _isMounted = false;
@@ -154,15 +153,6 @@ class HomePage extends React.Component {
       companyId: 0
     }
   }
-/*
-  deleteBrand() {
-    axios.delete(`https://localhost:44321/api/Brand/${this.state.brandId}`).then(function(response) {
-      console.log(`Brand has been deleted`);
-      }).catch((error) => {
-        console.log(error);
-    })
-  }
-  */
 
   nextPage() {
     let currentPage = this.state.paging.currentPage;
@@ -196,7 +186,6 @@ class HomePage extends React.Component {
 
   handleNextButtonEnable(nextBrands) {
     let paging = this.state.paging;
-    console.log(nextBrands);
 
     if(nextBrands.length === 0 ) {
       paging.buttons.next.state = "disabled";
@@ -287,29 +276,34 @@ class HomePage extends React.Component {
             </select>
           </div>
         </div>
-        <div id="result-div">
-          { this.state.brands.map(function (brand){
-              return (
-                <Link to={`/view/${brand.brandId}`} className="DecorationNone" key={brand.brandId}>
-                  <BrandCard brand={brand} key={brand.brandId} sortType={this.state.sortType} />
-                </Link>)
-          }, this) }
-        </div>
-        <div className="Paging-div">
-          <button 
-            disabled={this.state.paging.buttons.back.state}
-            className={this.state.paging.buttons.back.class}
-            onClick={this.previousPage.bind(this)}>
-            &#8592;
-          </button>
-          <div>{this.state.paging.currentPage}</div>
-          <button 
-            disabled={this.state.paging.buttons.next.state} 
-            className={this.state.paging.buttons.next.class}
-            onClick={this.nextPage.bind(this)}>
-            &#8594;
-          </button>
-        </div>
+
+        { 
+          this.state.brands.length !== 0 ?
+            <div className="Brands-div">
+              <BrandGrid 
+                brands={this.state.brands} 
+                sortType={this.state.sortType} 
+                user={this.props.user}
+              />
+              <div className="Paging-div">
+                <button 
+                  disabled={this.state.paging.buttons.back.state}
+                  className={this.state.paging.buttons.back.class}
+                  onClick={this.previousPage.bind(this)}>
+                  &#8592;
+                </button>
+                <div>{this.state.paging.currentPage}</div>
+                <button 
+                  disabled={this.state.paging.buttons.next.state} 
+                  className={this.state.paging.buttons.next.class}
+                  onClick={this.nextPage.bind(this)}>
+                  &#8594;
+                </button>
+              </div>
+            </div>
+            : 
+            <p className="No-results-message">Prekės ženklų pagal parametrus nėra</p>
+        }
         <Footer />
       </main>
     )

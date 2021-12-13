@@ -8,10 +8,6 @@
   max-width: 470px;
 }
 
-.Requests-page .Item-Row:hover {
-  cursor: pointer;
-}
-
 .Description-header {
   margin-top: 10px;
   margin-bottom: 5px;
@@ -28,4 +24,49 @@
   font-weight: bold;
   margin-bottom: 20px;
   padding-top: 20px;
+}
+
+.Request-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.Request-info button {
+  margin-top: 20px;
+  background-color: #11324d;
+  max-width: 100px;
+  align-self: center;
+}
+
+.Item-Row img {
+  max-width: 20px;
+  height: 20px;
+}
+
+.Request-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Request-options {
+  display: flex;
+  gap: 20px;
+}
+
+.Item-Row img:hover {
+  cursor: pointer;
+}
+
+.Request-title {
+  display: flex;
+  gap: 10px;
+  max-width: 400px;
+}
+
+.Request-name {
+  word-break: break-all;
+}
+
+.Request-id {
+  word-break: normal;
 }
