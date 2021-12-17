@@ -24,6 +24,8 @@ Website for browsing ethically, ecologically and socially responsible food brand
 
 [Triggering child rerender with a key](https://stackoverflow.com/questions/30034265/trigger-child-re-rendering-in-react-js)
 
+[Calling child's function with ref](https://stackoverflow.com/questions/44672021/call-child-component-method-from-parent-component-in-reactjs)
+
 #### Styling
 
 [Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
@@ -43,3 +45,5 @@ Website for browsing ethically, ecologically and socially responsible food brand
 ### Keeping sanity
 
 [What the dog doin?](https://www.youtube.com/watch?v=bmDdHk_X864)
+
+[Sherlock](https://www.netflix.com/lt/title/70202589)

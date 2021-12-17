@@ -1,9 +1,9 @@
 import React from "react";
-import ValidationError from "../Shared/Messages/ValidationError";
-import ServerError from "../Shared/Messages/ServerError";
-import SuccessMessage from "../Shared/Messages/SuccessMessage";
+import ValidationError from "../../Shared/Messages/ValidationError";
+import ServerError from "../../Shared/Messages/ServerError";
+import SuccessMessage from "../../Shared/Messages/SuccessMessage";
 import axios from "axios";
-import '../Edit/Edit.css';
+import '../../Edit/Edit.css';
 
 class UserForm extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from "react";
-import BrandForm from "../Create/BrandForm";
-import GenericPage from "../Shared/GenericPage";
+import BrandForm from "../../Shared/BrandForm";
+import GenericPage from "../../Shared/GenericPage";
 import { Redirect } from "react-router";
 import axios from "axios";
 
@@ -19,7 +19,8 @@ class BrandByRequestPage extends React.Component {
 				categories: [],
 				companyId: 0
 			},
-			createdBrandId: 0
+			createdBrandId: 0,
+			key: 0
 		};
 	};
 
@@ -45,7 +46,24 @@ class BrandByRequestPage extends React.Component {
 			companyId: brand["companyId"],
 			categoryIds: categoryIds,
       requestId: id
-		}
+		};
+
+		let categories = [];
+		if (brand["categories"] !== null)
+			brand["categories"].forEach(o => {
+				categories.push({
+					categoryId: o.value, 
+					name: o.label
+				});
+			});
+
+		let enteredBrand = {
+			name: brand["name"],
+			description: brand["description"],
+			companyId: brand["companyId"],
+			categories: categories,
+			brandId: _this.state.brand.brandId
+		};
 
 		axios.post(`https://localhost:5001/api/Brand`, newBrand, config)
 		.then(function (response) {
@@ -53,6 +71,7 @@ class BrandByRequestPage extends React.Component {
 				successMessage: "Prekės ženklas sėkmingai pridėtas", 
 				duplicateMessage: "",
 				key: _this.state.key+1,
+				brand: enteredBrand,
 				createdBrandId: response.data.brandId
 			});
 
@@ -61,7 +80,9 @@ class BrandByRequestPage extends React.Component {
 		.catch(function (error) {
 			_this.setState({ 
 				duplicateMessage: "Tokia prekės ženklo ir įmonės kombinacija jau egzistuoja", 
-				successMessage: ""
+				successMessage: "",
+				brand: enteredBrand,
+				key: _this.state.key+1
 			});
 			console.log(error);
 		});
@@ -82,29 +103,32 @@ class BrandByRequestPage extends React.Component {
 	render() {
 		return(
 			<GenericPage>
-				{
-					this.state.createdBrandId !== 0 ?
-					<Redirect
-						to={{
-							pathname: this.createdBrandUri(),
-							user: this.props.location.user
-						}}/>
-						:
-						null
-				}
 				{ 
 					this.props.location.user === undefined ? 
 						<Redirect to="/" /> 
 						: 
-						<BrandForm 
-							brand={this.state.brand} 
-							title={this.title()}
-							user={this.props.location.user}
-							submitMessage="KURTI"
-							successMessage={this.state.successMessage}
-							duplicateMessage={this.state.duplicateMessage}
-							handleSubmit={this.handleSubmit.bind(this)}
-						/>
+						<div>
+							{
+								this.state.createdBrandId !== 0 ?
+								<Redirect
+									to={{
+										pathname: this.createdBrandUri(),
+										user: this.props.location.user
+									}}/>
+									:
+									null
+							}
+							<BrandForm 
+								brand={this.state.brand} 
+								title={this.title()}
+								user={this.props.location.user}
+								submitMessage="KURTI"
+								successMessage={this.state.successMessage}
+								duplicateMessage={this.state.duplicateMessage}
+								handleSubmit={this.handleSubmit.bind(this)}
+								key={this.state.key}
+							/>
+						</div>
 				}
 			</GenericPage>
 		)

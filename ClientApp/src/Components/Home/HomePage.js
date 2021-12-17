@@ -3,7 +3,7 @@ import axios from "axios";
 import SelectOption from "./SelectOption";
 import './Home.css';
 import Footer from "./Footer";
-import BrandGrid from "./BrandGrid";
+import BrandGrid from "./Brands/BrandGrid";
 
 class HomePage extends React.Component {
   _isMounted = false;

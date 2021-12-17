@@ -1,5 +1,5 @@
 import React from "react";
-import BrandForm from "../Create/BrandForm";
+import BrandForm from "../Shared/BrandForm";
 import GenericPage from "../Shared/GenericPage";
 import { Redirect } from "react-router";
 import axios from "axios";
@@ -47,25 +47,25 @@ class EditBrandPage extends React.Component {
 			categoryIds: categoryIds
 		}
 
+		let categories = [];
+		if (brand["categories"] !== null)
+			brand["categories"].forEach(o => {
+				categories.push({
+					categoryId: o.value, 
+					name: o.label
+				});
+			});
+
+		let updatedBrand = {
+			name: brand["name"],
+			description: brand["description"],
+			companyId: brand["companyId"],
+			categories: categories,
+			brandId: _this.state.brand.brandId
+		}
+
 		axios.put(`https://localhost:5001/api/Brand/${id}`, newBrand, config)
 		.then(function (response) {
-      let categories = [];
-      if (brand["categories"] !== null)
-        brand["categories"].forEach(o => {
-          categories.push({
-            categoryId: o.value, 
-            name: o.label
-          });
-      });
-
-      let updatedBrand = {
-        name: brand["name"],
-        description: brand["description"],
-        companyId: brand["companyId"],
-        categories: categories,
-        brandId: _this.state.brand.brandId
-      }
-
 			_this.setState({ 
 				successMessage: "Prekės ženklas sėkmingai atnaujintas", 
 				duplicateMessage: "",
@@ -80,6 +80,7 @@ class EditBrandPage extends React.Component {
 			_this.setState({ 
 				duplicateMessage: "Tokia prekės ženklo ir įmonės kombinacija jau egzistuoja", 
 				successMessage: "",
+				brand: updatedBrand,
 				key: _this.state.key+1
 			});
 			console.log(error);

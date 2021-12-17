@@ -2,9 +2,9 @@ import React from "react";
 import axios from "axios";
 import { components, default as ReactSelect } from "react-select";
 import { Link  } from 'react-router-dom'
-import ValidationError from "../Shared/Messages/ValidationError";
-import ServerError from "../Shared/Messages/ServerError";
-import SuccessMessage from "../Shared/Messages/SuccessMessage";
+import ValidationError from "./Messages/ValidationError";
+import ServerError from "./Messages/ServerError";
+import SuccessMessage from "./Messages/SuccessMessage";
 
 class BrandForm extends React.Component {
   _isMounted = false;
@@ -147,8 +147,6 @@ class BrandForm extends React.Component {
       }
     });
   }
-
-
 
 	render() {
 		return(

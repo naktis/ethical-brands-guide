@@ -29,7 +29,7 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.Sql(@"INSERT INTO dbo.Users (username, email, password, type)
-                VALUES ('admin', 'brandsguideadmin@protonmail.com', 'admin', '1')");
+                VALUES ('admin', 'brandsguideadmin@protonmail.com', '1000.uk4pmoMuQYNePDwnBcaGZA==.BdUoQfwkuOUtxBni0ruSJofraqqR0PZ+EQgGUYz5L38=', '1')");
 
             migrationBuilder.Sql(@"UPDATE dbo.Brands SET CreatorId = 1
                 where CreatorId IS NULL");

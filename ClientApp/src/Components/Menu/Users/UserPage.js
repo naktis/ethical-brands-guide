@@ -1,6 +1,6 @@
 import React from "react";
-import GenericPage from "../Shared/GenericPage";
-import '../Edit/Edit.css';
+import GenericPage from "../../Shared/GenericPage";
+import '../../Edit/Edit.css';
 import { Redirect } from "react-router";
 import UserForm from "./UserForm";
 import UserList from "./UserList";

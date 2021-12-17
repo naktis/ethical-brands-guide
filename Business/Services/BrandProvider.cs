@@ -50,6 +50,7 @@ namespace Business.Services
             if (dto.RequestId != null) 
             {
                 request = await _context.Requests.FindAsync(dto.RequestId);
+                request.Email = null;
                 entity.Request = request;
             }
 

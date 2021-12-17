@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import Pager from "../Shared/Pager";
-import "./User.css";
+import Pager from "../../Shared/Pager";
+import "../../User/User.css";
 
 class UserList extends React.Component {
   constructor(props) {

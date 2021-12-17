@@ -1,11 +1,11 @@
 import React from "react";
 import axios from "axios";
-import BrandForm from './BrandForm'
-import GenericPage from "../Shared/GenericPage";
-import './Create.css';
+import BrandForm from '../../Shared/BrandForm'
+import GenericPage from "../../Shared/GenericPage";
+import './NewBrandPage.css';
 import { Redirect } from "react-router";
 
-class CreatePage extends React.Component {
+class NewBrandPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -86,4 +86,4 @@ class CreatePage extends React.Component {
 	}
 }
 
-export default CreatePage;
+export default NewBrandPage;

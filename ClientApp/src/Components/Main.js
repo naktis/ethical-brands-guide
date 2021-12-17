@@ -2,16 +2,16 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from './Home/HomePage';
-import CreatePage from './Create/CreatePage';
+import NewBrandPage from './Menu/NewBrand/NewBrandPage';
 import ViewPage from './View/ViewPage';
 import EditCategoryPage from './Edit/EditCategoryPage';
 import EditCompanyPage from './Edit/EditCompanyPage';
 import LoginPage from './User/LoginPage';
-import UserPage from './User/UserPage';
-import RequestPage from './Create/RequestPage';
+import UserPage from './Menu/Users/UserPage';
+import RequestPage from './Home/RequestPage';
 import RequestsPage from './Menu/Requests/RequestsPage';
 import EditBrandPage from './Edit/EditBrandPage';
-import BrandByRequestPage from './Create/BrandByRequestPage';
+import BrandByRequestPage from './Menu/Requests/BrandByRequestPage';
 
 const Main = (props) => {
   return (
@@ -21,7 +21,7 @@ const Main = (props) => {
         render={() => <HomePage user={props.user}/>}
       >
       </Route>
-      <Route exact path="/create" component={CreatePage} />
+      <Route exact path="/create" component={NewBrandPage} />
       <Route exact path="/view/:id" component={ViewPage} />
       <Route exact path="/categories" component={EditCategoryPage} />
       <Route exact path="/companies" component={EditCompanyPage} />
