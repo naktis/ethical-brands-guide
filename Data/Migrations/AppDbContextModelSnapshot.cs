@@ -79,6 +79,31 @@ namespace Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Data.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EntryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("EntryId")
+                        .IsUnique();
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Data.Models.Company", b =>
                 {
                     b.Property<int>("CompanyId")
@@ -111,17 +136,17 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AnimalsRating")
-                        .HasColumnType("int");
+                    b.Property<double>("AnimalsRating")
+                        .HasColumnType("float");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PeopleRating")
-                        .HasColumnType("int");
+                    b.Property<double>("PeopleRating")
+                        .HasColumnType("float");
 
-                    b.Property<int>("PlanetRating")
-                        .HasColumnType("int");
+                    b.Property<double>("PlanetRating")
+                        .HasColumnType("float");
 
                     b.Property<double>("TotalRating")
                         .HasColumnType("float");
@@ -129,6 +154,37 @@ namespace Data.Migrations
                     b.HasKey("RatingId");
 
                     b.ToTable("Ratings");
+                });
+
+            modelBuilder.Entity("Data.Models.RatingEntry", b =>
+                {
+                    b.Property<int>("RatingEntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AnimalsRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeopleRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlanetRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RatingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RatingEntryId");
+
+                    b.HasIndex("RatingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RatingEntries");
                 });
 
             modelBuilder.Entity("Data.Models.Request", b =>
@@ -219,6 +275,17 @@ namespace Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Data.Models.Comment", b =>
+                {
+                    b.HasOne("Data.Models.RatingEntry", "Entry")
+                        .WithOne("Comment")
+                        .HasForeignKey("Data.Models.Comment", "EntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Entry");
+                });
+
             modelBuilder.Entity("Data.Models.Company", b =>
                 {
                     b.HasOne("Data.Models.Rating", "Rating")
@@ -228,6 +295,25 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Rating");
+                });
+
+            modelBuilder.Entity("Data.Models.RatingEntry", b =>
+                {
+                    b.HasOne("Data.Models.Rating", "Rating")
+                        .WithMany("RatingEntries")
+                        .HasForeignKey("RatingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Models.User", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rating");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Models.Request", b =>
@@ -259,11 +345,20 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Rating", b =>
                 {
                     b.Navigation("Company");
+
+                    b.Navigation("RatingEntries");
+                });
+
+            modelBuilder.Entity("Data.Models.RatingEntry", b =>
+                {
+                    b.Navigation("Comment");
                 });
 
             modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.Navigation("Brands");
+
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }
