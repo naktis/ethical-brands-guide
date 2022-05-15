@@ -7,5 +7,6 @@ namespace Business.Services.Interfaces
     public interface IRatingProvider
     {
         public Task<CreatedItemOutDto> AddAsync(RatingEntryInDto rating);
+        public Task<RatingOutDto> GetGuestRatingAsync(int companyId);
     }
 }
