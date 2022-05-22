@@ -16,7 +16,7 @@ namespace Business.Dto.InputDto
         [MaxLength(500)]
         public string Comment { get; set; }
 
-        public RatingEntry GetRatingEntry()
+        public RatingEntry GetEntity()
         {
             return new RatingEntry
             {

@@ -33,6 +33,11 @@ namespace Business.Services
             entity.Rating.TotalRating = _calculator.GetTotal(entity.Rating);
 
             var createdCompany = await _context.Companies.AddAsync(entity);
+
+            var ratingEntry = company.Rating.ToEntity();
+            ratingEntry.RatingId = createdCompany.Entity.RatingId;
+            await _context.RatingEntries.AddAsync(ratingEntry);
+
             await _context.SaveChangesAsync();
 
             return _mapper.EntityToDto(createdCompany.Entity);
@@ -44,6 +49,13 @@ namespace Business.Services
 
             var company = await _context.Companies.FindAsync(key);
             var rating = await _context.Ratings.FindAsync(company.RatingId);
+
+            var ratingEntries = await _context.RatingEntries.Where(x => x.RatingId == company.RatingId).ToListAsync();
+            var ratingEntriesIds = ratingEntries.Select(x => x.RatingEntryId);
+            var comments = _context.Comments.Where(x => ratingEntriesIds.Contains(x.EntryId));
+            
+            _context.Comments.RemoveRange(comments);
+            _context.RatingEntries.RemoveRange(ratingEntries);
             _context.Companies.Remove(company);
             _context.Ratings.Remove(rating);
 
