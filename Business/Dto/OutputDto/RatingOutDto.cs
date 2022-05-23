@@ -10,6 +10,16 @@ namespace Business.Dto.OutputDto
         public string Description { get; set; }
         public double TotalRating { get; set; }
 
+        public RatingOutDto() { }
+        public RatingOutDto(Rating entity)
+        {
+            PlanetRating = entity.PlanetRating;
+            PeopleRating = entity.PeopleRating;
+            AnimalsRating = entity.AnimalsRating;
+            TotalRating = entity.TotalRating;
+            Description = entity.Description;
+        }
+
         public Rating ToEntity()
         {
             return new Rating

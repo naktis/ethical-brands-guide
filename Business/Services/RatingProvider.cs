@@ -73,7 +73,9 @@ namespace Business.Services
             var ratingId = (await _context.Companies.FindAsync(companyId)).RatingId;
             var expertRatings = _context.RatingEntries
                 .Where(re => re.RatingId == ratingId && re.UserId != null);
-            return AggregateRatings(expertRatings);
+
+            return expertRatings.Any() ? AggregateRatings(expertRatings) :
+                new RatingOutDto(await _context.Ratings.FindAsync(ratingId));
         }
 
         public async Task<RatingOutDto> GetGuestRatingAsync(int companyId)
@@ -81,7 +83,7 @@ namespace Business.Services
             var ratingId = (await _context.Companies.FindAsync(companyId)).RatingId;
             var guestRatings = _context.RatingEntries
                 .Where(re => re.RatingId == ratingId && re.UserId == null);
-            return AggregateRatings(guestRatings);
+            return guestRatings.Any() ? AggregateRatings(guestRatings) : new RatingOutDto();
         }
 
         public async Task<bool> CommentExistsAsync(int commentId)

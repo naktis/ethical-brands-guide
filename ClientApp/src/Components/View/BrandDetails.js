@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import BrandOptions from "./BrandOptions";
+import Comment from "./Comment";
 
 class BrandDetails extends React.Component {
   constructor(props) {
@@ -17,7 +18,10 @@ class BrandDetails extends React.Component {
           }
         },
         categories: []
-      }
+      },
+      expertRatings: {},
+      guestRatings: {},
+      comments: []
 		};
 	}
 
@@ -26,12 +30,36 @@ class BrandDetails extends React.Component {
 
     if (typeof this.props.id !== "undefined" && this.props.id !== 0) {
       axios.get(`https://localhost:5001/api/Brand/${this.props.id}`).then(function(response) {
-      _this.setState({
-        brand: response.data
-      })
+        _this.setState({
+          brand: response.data
+        });
+
+        axios.get(`https://localhost:5001/api/Rating/Guest/${response.data.company.companyId}`).then(function(response) {
+          _this.setState({
+            guestRatings: response.data
+          });
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        axios.get(`https://localhost:5001/api/Rating/Expert/${response.data.company.companyId}`).then(function(response) {
+          _this.setState({
+            expertRatings: response.data
+          });
+        }).catch((error) => {
+          console.log(error);
+        });
+
+        axios.get(`https://localhost:5001/api/Rating/Comments/${response.data.company.companyId}`).then(function(response) {
+          _this.setState({
+            comments: response.data
+          });
+        }).catch((error) => {
+          console.log(error);
+        });
       }).catch((error) => {
         console.log(error);
-    })
+      });
     }
   }
   
@@ -67,38 +95,106 @@ class BrandDetails extends React.Component {
             <p>{this.state.brand.description}</p>
             <div className="Company-content">
               <div>
-                <h3>Įmonė</h3>
+                <h3>ĮMONĖ</h3>
                 <p>{this.state.brand.company.name}</p>
                 <p>{this.state.brand.company.description}</p>
                 <p>{this.state.brand.company.rating.description}</p>
               </div>
-              <div className="Ratings-div">
-                <h3>Reitingai</h3>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>Tvarumas</td>
-                      {this.stars(this.state.brand.company.rating.planetRating)}
-                      <td>{this.state.brand.company.rating.planetRating}</td>
-                    </tr>
-                    <tr>
-                      <td>Socialinė gerovė</td>
-                      {this.stars(this.state.brand.company.rating.peopleRating)}
-                      <td>{this.state.brand.company.rating.peopleRating}</td>
-                    </tr>
-                    <tr>
-                      <td>Gyvūnų gerovė</td>
-                      {this.stars(this.state.brand.company.rating.animalsRating)}
-                      <td>{this.state.brand.company.rating.animalsRating}</td>
-                    </tr>
-                    <tr>
-                      <td>Bendras</td>
-                      {this.stars(this.state.brand.company.rating.totalRating)}
-                      <td>{this.state.brand.company.rating.totalRating}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            </div>
+            <h3>REITINGAI</h3>
+            <div className="Rating-grid">
+            <div className="Ratings-div">
+              <h3>Bendri</h3>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Tvarumas</td>
+                    {this.stars(this.state.brand.company.rating.planetRating)}
+                    <td>{this.state.brand.company.rating.planetRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Socialinė gerovė</td>
+                    {this.stars(this.state.brand.company.rating.peopleRating)}
+                    <td>{this.state.brand.company.rating.peopleRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Gyvūnų gerovė</td>
+                    {this.stars(this.state.brand.company.rating.animalsRating)}
+                    <td>{this.state.brand.company.rating.animalsRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Bendras</td>
+                    {this.stars(this.state.brand.company.rating.totalRating)}
+                    <td>{this.state.brand.company.rating.totalRating}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="Ratings-div">
+              <h3>Ekspertų</h3>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Tvarumas</td>
+                    {this.stars(this.state.expertRatings.planetRating)}
+                    <td>{this.state.expertRatings.planetRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Socialinė gerovė</td>
+                    {this.stars(this.state.expertRatings.peopleRating)}
+                    <td>{this.state.expertRatings.peopleRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Gyvūnų gerovė</td>
+                    {this.stars(this.state.expertRatings.animalsRating)}
+                    <td>{this.state.expertRatings.animalsRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Bendras</td>
+                    {this.stars(this.state.expertRatings.totalRating)}
+                    <td>{this.state.expertRatings.totalRating}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="Ratings-div">
+              <h3>Svečių</h3>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Tvarumas</td>
+                    {this.stars(this.state.guestRatings.planetRating)}
+                    <td>{this.state.guestRatings.planetRating === 0 ? "nėra" : this.state.guestRatings.planetRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Socialinė gerovė</td>
+                    {this.stars(this.state.guestRatings.peopleRating)}
+                    <td>{this.state.guestRatings.peopleRating === 0 ? "nėra" : this.state.guestRatings.peopleRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Gyvūnų gerovė</td>
+                    {this.stars(this.state.guestRatings.animalsRating)}
+                    <td>{this.state.guestRatings.animalsRating === 0 ? "nėra" : this.state.guestRatings.animalsRating}</td>
+                  </tr>
+                  <tr>
+                    <td>Bendras</td>
+                    {this.stars(this.state.guestRatings.totalRating)}
+                    <td>{this.state.guestRatings.totalRating === 0 ? "nėra" : this.state.guestRatings.animalsRating}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            </div>
+            <h3>KOMENTARAI</h3>
+            <div className="Comments">
+              {this.state.comments.length === 0 ? "Komentarų dar nėra." : 
+                <ul>
+                { this.state.comments.map(function (comment){
+                    return <Comment comment={comment} key={comment.id}/>
+                  }) 
+                }
+                </ul>
+              }
             </div>
             {
               this.props.user === undefined || this.props.user.token === "" ?
