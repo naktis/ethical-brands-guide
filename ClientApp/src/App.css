@@ -442,6 +442,18 @@ input[type="password"] {
 
 .Comment-row {
   text-align: left;
-  font-size: 15px;
   padding: 10px 0px;
+}
+
+.Comments, .New-rating {
+  font-size: 15px;
+  text-align: left;
+}
+
+.New-rating button {
+  background-color: #11324d;
+}
+
+.More-padding {
+  padding-top: 30px;
 }

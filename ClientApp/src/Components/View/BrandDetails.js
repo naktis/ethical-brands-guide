@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import BrandOptions from "./BrandOptions";
 import Comment from "./Comment";
+import RatingForm from "./RatingForm";
 
 class BrandDetails extends React.Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class BrandDetails extends React.Component {
       },
       expertRatings: {},
       guestRatings: {},
-      comments: []
+      comments: [],
+      refreshKey: 0
 		};
 	}
 
@@ -38,6 +40,7 @@ class BrandDetails extends React.Component {
           _this.setState({
             guestRatings: response.data
           });
+          console.log(response.data);
         }).catch((error) => {
           console.log(error);
         });
@@ -78,6 +81,10 @@ class BrandDetails extends React.Component {
       return <td className="stars">&#9734;&#9734;&#9734;&#9734;&#9734;</td>
     }
   }
+
+  refreshRatings() {
+    window.location.reload();
+  }
   
   render() {
     return(
@@ -101,7 +108,7 @@ class BrandDetails extends React.Component {
                 <p>{this.state.brand.company.rating.description}</p>
               </div>
             </div>
-            <h3>REITINGAI</h3>
+            <h3 className="More-padding">REITINGAI</h3>
             <div className="Rating-grid">
             <div className="Ratings-div">
               <h3>Bendri</h3>
@@ -179,13 +186,13 @@ class BrandDetails extends React.Component {
                   <tr>
                     <td>Bendras</td>
                     {this.stars(this.state.guestRatings.totalRating)}
-                    <td>{this.state.guestRatings.totalRating === 0 ? "nėra" : this.state.guestRatings.animalsRating}</td>
+                    <td>{this.state.guestRatings.totalRating === 0 ? "nėra" : this.state.guestRatings.totalRating}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             </div>
-            <h3>KOMENTARAI</h3>
+            <h3 className="More-padding">KOMENTARAI</h3>
             <div className="Comments">
               {this.state.comments.length === 0 ? "Komentarų dar nėra." : 
                 <ul>
@@ -196,6 +203,7 @@ class BrandDetails extends React.Component {
                 </ul>
               }
             </div>
+            <RatingForm companyId={this.state.brand.company.companyId} refreshRatings={this.refreshRatings.bind(this)}/>
             {
               this.props.user === undefined || this.props.user.token === "" ?
               null

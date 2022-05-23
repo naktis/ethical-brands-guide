@@ -30,15 +30,15 @@ namespace Business.Services
             var savedRatingEntry = await _context.RatingEntries.AddAsync(ratingEntry);
             await _context.SaveChangesAsync();
 
-            RecalculateGeneralRatingAsync(ratingEntry.RatingId);
+            await RecalculateGeneralRatingAsync(ratingEntry.RatingId);
 
-            if (ratingDto.Comment is not null)
+            if (ratingDto.Comment is not null && ratingDto.Comment != "")
             {
                 await _context.Comments.AddAsync(new Comment
                 {
                     Text = ratingDto.Comment,
                     Entry = savedRatingEntry.Entity,
-                    Approved = ratingDto.UserId is not null
+                    Approved = false
                 });
             }
 
@@ -116,41 +116,41 @@ namespace Business.Services
             return aggregatedRatings;
         }
 
-        private async void RecalculateGeneralRatingAsync(int ratingId)
+        private async Task RecalculateGeneralRatingAsync(int ratingId)
         {
             var rating = await _context.Ratings.FindAsync(ratingId);
 
             var animalsExpertAvg = _context.RatingEntries.Where(x => x.UserId != null).Average(x => x.AnimalsRating);
-            var animalsGuestAvg = _context.RatingEntries.Where(x => x.UserId == null).Average(x => x.AnimalsRating);
-            if (animalsGuestAvg == 0)
+            var animalsGuest = _context.RatingEntries.Where(x => x.UserId == null);
+            if (animalsGuest.Any())
             {
                 rating.AnimalsRating = Math.Round(animalsExpertAvg, 2);
             }
             else
             {
-                rating.AnimalsRating = Math.Round((animalsExpertAvg + animalsGuestAvg) / 2, 2);
+                rating.AnimalsRating = Math.Round((animalsExpertAvg + animalsGuest.Average(x => x.AnimalsRating)) / 2, 2);
             }
 
             var peopleExpertAvg = _context.RatingEntries.Where(x => x.UserId != null).Average(x => x.PeopleRating);
-            var peopleGuestAvg = _context.RatingEntries.Where(x => x.UserId == null).Average(x => x.PeopleRating);
-            if (peopleGuestAvg == 0)
+            var peopleGuest = _context.RatingEntries.Where(x => x.UserId == null);
+            if (peopleGuest.Any())
             {
                 rating.PeopleRating = Math.Round(peopleExpertAvg, 2);
             }
             else
             {
-                rating.PeopleRating = Math.Round((peopleExpertAvg + peopleGuestAvg) / 2, 2);
+                rating.PeopleRating = Math.Round((peopleExpertAvg + peopleGuest.Average(x => x.PeopleRating)) / 2, 2);
             }
 
             var planetExpertAvg = _context.RatingEntries.Where(x => x.UserId != null).Average(x => x.PlanetRating);
-            var planetGuestAvg = _context.RatingEntries.Where(x => x.UserId == null).Average(x => x.PlanetRating);
-            if (peopleGuestAvg == 0)
+            var planetGuest = _context.RatingEntries.Where(x => x.UserId == null);
+            if (planetGuest.Any())
             {
                 rating.PlanetRating = Math.Round(peopleExpertAvg, 2);
             }
             else
             {
-                rating.PlanetRating = Math.Round((peopleExpertAvg + peopleGuestAvg) / 2, 2);
+                rating.PlanetRating = Math.Round((peopleExpertAvg + peopleGuest.Average(x => x.PlanetRating)) / 2, 2);
             }
 
             rating.TotalRating = _calculator.GetTotal(rating);
