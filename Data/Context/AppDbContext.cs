@@ -5,7 +5,7 @@ namespace Data.Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {  }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,9 +41,11 @@ namespace Data.Context
                 .WithOne(b => b.Company)
                 .IsRequired();
 
-            modelBuilder.Entity<Company>()
-                .HasOne(c => c.Rating)
-                .WithOne(r => r.Company)
+
+            modelBuilder.Entity<Rating>()
+                .HasOne(r => r.Company)
+                .WithOne(c => c.Rating)
+                .HasForeignKey<Company>(c => c.RatingId)
                 .IsRequired();
 
 
@@ -71,6 +73,24 @@ namespace Data.Context
             modelBuilder.Entity<Request>()
                 .Property(r => r.Name)
                 .IsRequired();
+
+
+            modelBuilder.Entity<RatingEntry>()
+                .HasOne(re => re.Rating)
+                .WithMany(r => r.RatingEntries);
+
+            modelBuilder.Entity<RatingEntry>()
+                .HasOne(re => re.User)
+                .WithMany(u => u.Ratings);
+
+
+            modelBuilder.Entity<Comment>()
+                .Property(c => c.Text)
+                .IsRequired();
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Entry)
+                .WithOne(re => re.Comment);
         }
 
         public DbSet<Brand> Brands { get; set; }
@@ -80,5 +100,7 @@ namespace Data.Context
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Request> Requests { get; set; }
+        public DbSet<RatingEntry> RatingEntries { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

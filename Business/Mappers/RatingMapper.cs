@@ -14,14 +14,7 @@ namespace Business.Mappers
     {
         public RatingOutDto EntityToDto(Rating entity)
         {
-            return new RatingOutDto
-            {
-                PlanetRating = entity.PlanetRating,
-                PeopleRating = entity.PeopleRating,
-                AnimalsRating = entity.AnimalsRating,
-                TotalRating = entity.TotalRating,
-                Description = entity.Description
-            };
+            return new RatingOutDto(entity);
         }
 
         public Rating EntityFromDto(RatingInDto dto)

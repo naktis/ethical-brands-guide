@@ -10,5 +10,6 @@ namespace Data.Models
         public UserType Type { get; set; }
 
         public ICollection<Brand> Brands { get; set; }
+        public ICollection<RatingEntry> Ratings { get; set; }
     }
 }

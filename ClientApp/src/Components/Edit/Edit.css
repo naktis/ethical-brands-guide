@@ -61,29 +61,29 @@
   row-gap: 10px;
 }
 
-.Edit-page fieldset label {
+.Edit-page fieldset label, .New-rating-form label {
   margin-right: 20px;
   min-width: 150px;
 }
 
-.Edit-page fieldset input[type="text"] {
+.Edit-page fieldset input[type="text"], .New-rating-form input[type="text"]{
   max-width: 30px;
   height: 30px;
   text-align: center;
   padding-left: 0px;
 }
 
-.Edit-page fieldset div {
+.Edit-page fieldset div, .New-rating-form div {
   display: flex;
   align-items: center;
 }
 
-.Edit-page fieldset textarea {
+.Edit-page fieldset textarea, .New-rating-form textarea {
   min-width: 465px;
   max-width: 625px;
 }
 
-.New-company {
+.New-company, .New-rating-form {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -101,7 +101,8 @@
 }
 
 .New-company textarea,
-.New-company fieldset {
+.New-company fieldset, 
+.New-rating-form textarea {
   border-radius: 5px;
   font-size: large;
   padding-left: 10px;

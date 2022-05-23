@@ -1,14 +1,17 @@
-﻿namespace Data.Models
+﻿using System.Collections.Generic;
+
+namespace Data.Models
 {
     public class Rating
     {
         public int RatingId { get; set; }
-        public int PlanetRating { get; set; }
-        public int PeopleRating { get; set; }
-        public int AnimalsRating { get; set; }
+        public double PlanetRating { get; set; }
+        public double PeopleRating { get; set; }
+        public double AnimalsRating { get; set; }
         public double TotalRating { get; set; }
         public string Description { get; set; }
 
         public Company Company { get; set; }
+        public ICollection<RatingEntry> RatingEntries { get; set; }
     }
 }

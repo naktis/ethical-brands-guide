@@ -423,3 +423,37 @@ input[type="password"] {
     font-size: initial;
   }
 }
+
+.Rating-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  justify-content: space-evenly;
+}
+
+.Rating-grid .stars {
+  font-size: 22px;
+}
+
+.Brand-details h3 {
+  font-size: medium;
+}
+
+.Comment-row {
+  text-align: left;
+  padding: 10px 0px;
+}
+
+.Comments, .New-rating {
+  font-size: 15px;
+  text-align: left;
+}
+
+.New-rating button {
+  background-color: #11324d;
+}
+
+.More-padding {
+  padding-top: 30px;
+}
